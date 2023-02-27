@@ -1,0 +1,116 @@
+{
+	"name": "DS_O_PLN_DOOR_INSTALLATION_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Door_Installation_Raw_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_Time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Project_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sbu_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sr_No",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Building",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flat_No",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flat_No_A",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Jamb_Width",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Orientation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fire_Rating",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Frame",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Foam",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Architrave",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Shutter",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ironmongery",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Installer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Vendor",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_DOOR_INSTALLATION_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,37 @@
+{
+	"name": "DS_PG_Plangrid_Mapping_STG_SRC",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Sobha_PG_DB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Project_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Act_Project_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Cluster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Status",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Plangrid_Mapping"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

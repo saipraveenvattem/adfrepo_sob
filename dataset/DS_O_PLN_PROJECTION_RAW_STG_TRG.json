@@ -1,0 +1,80 @@
+{
+	"name": "DS_O_PLN_PROJECTION_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "PROJECTION_RAW_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "varchar"
+			},
+			{
+				"name": "tower",
+				"type": "varchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sl_No",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Area",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_Description",
+				"type": "varchar"
+			},
+			{
+				"name": "Projection_for_the_month",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plan_as_on_date",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actual_as_on_date",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Shortfall_Reasons",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_PROJECTION_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

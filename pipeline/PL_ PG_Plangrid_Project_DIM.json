@@ -1,0 +1,47 @@
+{
+	"name": "PL_ PG_Plangrid_Project_DIM",
+	"properties": {
+		"activities": [
+			{
+				"name": "PG_Plangrid_Project_DIM",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_PG_PROJECT_MASTER",
+						"type": "DataFlowReference",
+						"parameters": {
+							"MAX_ID": "0"
+						}
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "LS_AzureDataLakeStorage",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "sobhasyndatafs01/Staging_Folder"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "DWH/Dimensions"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-30T13:19:08Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

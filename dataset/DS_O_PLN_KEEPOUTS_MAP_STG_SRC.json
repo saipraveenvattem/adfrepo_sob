@@ -1,0 +1,86 @@
+{
+	"name": "DS_O_PLN_KEEPOUTS_MAP_STG_SRC",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_MySQL_DL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "id_",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ACTIVITY_ID",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SBU_ID",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ACTIVITY_SEQUENCE",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PREDECESSOR_DATA",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ENGINEER_RESPONSIBLE",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ACTIVITY_SEQUENCE_Actual",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PREDECESSOR_DATA_Actual",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ACTIVITY_SEQUENCE_Plan",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PREDECESSOR_DATA_Plan",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Predecessor_Activity_allowed_lag",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"tableName": "o_pln_keepouts_map"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

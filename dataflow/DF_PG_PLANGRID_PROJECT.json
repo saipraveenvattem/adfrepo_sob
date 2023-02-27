@@ -1,0 +1,81 @@
+{
+	"name": "DF_PG_PLANGRID_PROJECT",
+	"properties": {
+		"folder": {
+			"name": "DWH/Dimensions"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_PG_PLANGRID_PROJECT_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PG_Plangrid_Project_DIM_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          Project_Short_Code as string,",
+				"          Project_Name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Id as integer,",
+				"          Project_Short_Code as string,",
+				"          Project_Name as string,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['Truncate table [DWH].[PG_PLANGRID_PROJECT_DIM]'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Id = ID,",
+				"          Project_Short_Code,",
+				"          Project_Name,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

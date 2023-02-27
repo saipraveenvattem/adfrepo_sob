@@ -1,0 +1,216 @@
+{
+	"name": "DS_O_PLN_KEEPOUT_DETAILED_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "KEEPOUT_DETAILED_RAW_id_",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "varchar"
+			},
+			{
+				"name": "tower",
+				"type": "varchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "varchar"
+			},
+			{
+				"name": "Level",
+				"type": "varchar"
+			},
+			{
+				"name": "Flat_No",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Apartment_Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "WIR_Final_Coat_Paint_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "WIR_Final_Coat_Paint_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "F6_F7_Final_Coat_Paint_Stamp_Closure_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "F6_F7_Final_Coat_Paint_Stamp_Closure_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Deep_Cleaning_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Deep_Cleaning_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Stamp_Closing_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Stamp_Closing_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Final_Fixtures_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Final_Fixtures_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_T_and_C_Stamps_Closure_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_T_and_C_Stamps_Closure_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "F7_Stamp_Closure_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "F7_Stamp_Closure_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_NOC_in_Draft_Assign_to_MEP_QC_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_NOC_in_Draft_Assign_to_MEP_QC_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Civil_NOC_in_Draft_Assign_to_Civil_QC_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Civil_NOC_in_Draft_Assign_to_Civil_QC_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_NOC_Submission_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_NOC_Submission_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CIVIL_NOC_Submission_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CIVIL_NOC_Submission_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Field_report_1st_inspection_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Field_report_1st_inspection_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Field_Report_assign_to_MEP_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Field_Report_assign_to_MEP_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Stamp_Field_report_1st_inspection_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Stamp_Field_report_1st_inspection_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Field_report_submission_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Field_report_submission_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Civil_Field_report_1st_inspection_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Civil_Field_report_1st_inspection_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Civil_Field_Report_Submission_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Civil_Field_Report_Submission_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SCL_Keep_out_Stamp_N1_Into_Review_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SCL_Keep_out_Stamp_N1_Into_Review_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PNCA_Keep_out_N1_Into_Pending_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PNCA_Keep_out_N1_Into_Pending_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "QT_Inspection_Keep_out_Stamp_N1_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "QT_Inspection_Keep_out_Stamp_N1_Actual",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_KEEPOUT_DETAILED_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

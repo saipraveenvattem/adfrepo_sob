@@ -1,0 +1,236 @@
+{
+	"name": "DS_O_PLN_ELECTRICALROOM_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ELECTRICALROOM_RAW_id_",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "varchar"
+			},
+			{
+				"name": "tower",
+				"type": "varchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "varchar"
+			},
+			{
+				"name": "Level",
+				"type": "varchar"
+			},
+			{
+				"name": "Blockwork_Layout",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Blockwork",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Marking_for_Builders_Work",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cutting_and_Chasing_of_Blockwork",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Services_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_MEP_Services_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Core_Cutting_and_Chipping",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Sleeve_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bore_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_and_Ceiling_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Stucco_1st_and_2nd_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Stucco_1st_and_2nd_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_First_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_First_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Meter_Board_Fixing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Meter_Board_Painting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Installation_of_cable_tray_and_trunking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Installation_of_Panels",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cable_laying_and_glanding_works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dressing_and_termination_of_SMDB_and_Panels",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bus_bar_with_Tap_off_Box_completion",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Threshold",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Floor_Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Frame_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Architrave_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Shutter_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Ironmongery_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Grinding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Bug_Fill",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_First_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Final_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Skirting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "POP_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Electrical_Room_Top_Boarding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fire_Sealant_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Angle_Fixing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Shaft_Boarding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Grouting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Signage",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Final_Fixtures",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Electric_Meter_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Final_Coat_Paint",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_ELECTRICALROOM_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

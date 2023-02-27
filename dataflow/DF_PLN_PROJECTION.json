@@ -1,0 +1,129 @@
+{
+	"name": "DF_PLN_PROJECTION",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_F_PLN_PROJECTION_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"description": "Import data from DS_F_PLN_PROJECTION_STG_TRG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_PROJECTION_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "Export data to DS_PLN_PROJECTION_TRG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          Upload_Date as timestamp,",
+				"          PROJECT_IDENTIFIER as string,",
+				"          Project_ID as integer,",
+				"          SBU_Map_ID as integer,",
+				"          Area as string,",
+				"          Category as string,",
+				"          Activity_Description as string,",
+				"          Projection_for_the_month as decimal(15,2),",
+				"          Yesterday as timestamp,",
+				"          Plan_Yesterday as decimal(15,2),",
+				"          Plan_as_on_date as decimal(15,2),",
+				"          Actual_Yesterday as decimal(15,2),",
+				"          Actual_as_on_date as decimal(15,2),",
+				"          Shortfall_Reasons as string,",
+				"          SBU_Custom_Sort as integer,",
+				"          Achived as decimal(15,2),",
+				"          Achived_90 as decimal(15,2)",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select \\n     [Upload_Date]  ,\\n   P.PROJECT_IDENTIFIER  ,\\n     --, [SBU] \\n     Sort_ID as [Project_ID] ,\\n     SM.[SBU_Map_ID] \\n     , [Area] \\n     , [Category] \\n     , [Activity_Description] \\n     , [Projection_for_the_month]  \\n     , [Yesterday]  \\n     , [Plan_Yesterday]  \\n     , [Plan_as_on_date] \\n     , [Actual_Yesterday] \\n     , [Actual_as_on_date] \\n     , [Shortfall_Reasons]  \\n     , [SBU_Custom_Sort] \\n     , [Achived] \\n     , [Achived_90] \\n FROM [STG].[F_PLN_PROJECTION_STG] PP\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          PP.Project_Sclicer=P.PROJECT_IDENTIFIER \\n     LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          PP.SBU=SM.SBU_IDENTIFIER',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          Project_ID as integer,",
+				"          Project_Identifier as string,",
+				"          SBU_ID as integer,",
+				"          Area as string,",
+				"          Category as string,",
+				"          Activity_Description as string,",
+				"          Projection_for_the_month as decimal(15,2),",
+				"          Yesterday as timestamp,",
+				"          Plan_Yesterday as decimal(15,2),",
+				"          Plan_as_on_date as decimal(15,2),",
+				"          Actual_Yesterday as decimal(15,2),",
+				"          Actual_as_on_date as decimal(15,2),",
+				"          Shortfall_Reasons as string,",
+				"          SBU_Custom_Sort as integer,",
+				"          Achived as decimal(15,2),",
+				"          Achived_90 as decimal(15,2),",
+				"          Update_Date as timestamp,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_PROJECTION_FACT];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID,",
+				"          Project_ID,",
+				"          Project_Identifier = PROJECT_IDENTIFIER,",
+				"          SBU_ID = SBU_Map_ID,",
+				"          Area,",
+				"          Category,",
+				"          Activity_Description,",
+				"          Projection_for_the_month,",
+				"          Yesterday,",
+				"          Plan_Yesterday,",
+				"          Plan_as_on_date,",
+				"          Actual_Yesterday,",
+				"          Actual_as_on_date,",
+				"          Shortfall_Reasons,",
+				"          SBU_Custom_Sort,",
+				"          Achived,",
+				"          Achived_90,",
+				"          Update_Date = Upload_Date,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

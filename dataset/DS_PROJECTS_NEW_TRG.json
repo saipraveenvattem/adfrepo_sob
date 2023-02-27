@@ -1,0 +1,273 @@
+{
+	"name": "DS_PROJECTS_NEW_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Dimensions"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Sort_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FLAT_COUNT",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Short",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Total_Floors",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Total_Podiums",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Total_Typical_Floor",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Typical_Floor_Slab",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Podium_Slab",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ONE_BHK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TWO_BHK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ONE_FIVE_BHK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TWO_FIVE_BHK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "THEREE_BHK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FOUR_BHK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "FIVE_BHK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Actual_Start",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "BOQ_Value",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bathrooms",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Center_Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Built_Up_Area",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Chairman_Lift",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Delay",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Duplex",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fire_Lifts",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Forecast_Duration",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Forecast_Finish",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Lat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Long",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Office_Space",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Office_Use_Lift",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Parkings",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Pent_House",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Passenger_Lift",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Configuration",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Duration",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Finish",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Project_Start",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Residence_Use_Lift",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Retail",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Service_Lift",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Staircase_GF_L1",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Staircase_GF_Roof",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Total_Units",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Tower_A",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tower_B",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tower_C",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tower_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Towers",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Image_Link",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Render_Image",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PROJECTS_NEW_DIM"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

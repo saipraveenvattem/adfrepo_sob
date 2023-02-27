@@ -1,0 +1,100 @@
+{
+	"name": "DS_PLN_PROCUREMENT_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Classification",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Description",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Issuance_of_Drawings_Plan",
+				"type": "date"
+			},
+			{
+				"name": "Issuance_of_Drawings_Actual",
+				"type": "date"
+			},
+			{
+				"name": "PR_Plan",
+				"type": "date"
+			},
+			{
+				"name": "PR_Actual",
+				"type": "date"
+			},
+			{
+				"name": "Vendor_Finalization_Plan",
+				"type": "date"
+			},
+			{
+				"name": "Vendor_Finalization_Actual",
+				"type": "date"
+			},
+			{
+				"name": "Required_at_site_by",
+				"type": "date"
+			},
+			{
+				"name": "Actual_delivery_at_site",
+				"type": "date"
+			},
+			{
+				"name": "Upload_Date",
+				"type": "date"
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_PROCUREMENT_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,55 @@
+{
+	"name": "DS_DT_DEPARTMENT_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "DEPARTMENT_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Department_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Status",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Created_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Updated_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Created_by",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Updated_by",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "DT_DEPARTMENT_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

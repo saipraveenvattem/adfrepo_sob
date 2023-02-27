@@ -1,0 +1,132 @@
+{
+	"name": "DF_PLN_CRITICAL_ISSUE_TRACKER",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_O_PLN_CRITICAL_ISSUE_TRACKER_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"description": "Import data from DS_O_PLN_CRITICAL_ISSUE_TRACKER_RAW_STG_TRG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_CRITICAL_ISSUE_TRACKER_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "Export data to DS_PLN_CRITICAL_ISSUE_TRACKER_TRG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          PROJECT_ID as integer,",
+				"          SBU_ID as integer,",
+				"          Upload_Date as date,",
+				"          Reference_Number as string,",
+				"          PR_PO_Other_Ref_No as string,",
+				"          Pending_With as string,",
+				"          Issue_Description as string,",
+				"          Current_Status as string,",
+				"          Impact_On as string,",
+				"          Status as string,",
+				"          Project as string,",
+				"          Tower as string,",
+				"          Raised_On as string,",
+				"          Actual_Closure_Date as string,",
+				"          Target_Closure_Date as string,",
+				"          Ageing as integer,",
+				"          Agetub as string,",
+				"          Agetub_sort as integer",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT      \\n    P.PROJECT_ID,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n    A.Upload_Time AS Upload_Date,\\n    A.Reference_Number,\\n    A.PR_PO_Other_Ref_No, \\n    --A.SBU_SCLICER, --we need to Join and get sbu_ID from [DWH].[PLN_SBU_MAPPING_DIM] PowerBI\\n    A.Pending_With,\\n    A.Issue_Description,\\n    A.Current_Status,\\n    A.Impact_On,\\n    A.Status,\\n    A.Project,\\n    --A.citprojectid, --we need to Join and get sbu_ID from [DWH].[PLN_PROJECTS_DIM] PowerBI\\n    A.Tower,\\n    --A.Project_Identifier, --we need to Join and get sbu_ID from [DWH].[PLN_PROJECTS_DIM] PowerBI\\n    A.Raised_On,\\n    A.Actual_Closure_Date,\\n    A.Target_Closure_Date,\\n    A.Ageing,\\n    CASE \\n        WHEN A.Ageing <=7  THEN  \\'(0-7)\\'\\n        WHEN A.Ageing <= 14 THEN \\'(8-14)\\'\\n        WHEN A.Ageing <= 21 THEN \\'(15-21)\\'\\n        WHEN A.Ageing <= 30 THEN \\'(22-30)\\'\\n        WHEN A.Ageing IS NULL THEN NULL\\n        ELSE \\'>30\\' END AS Agetub,\\n    CASE \\n        WHEN A.Ageing <=7  THEN 1\\n        WHEN A.Ageing <=14 THEN 2\\n        WHEN A.Ageing <=21 THEN 3\\n        WHEN A.Ageing <=30 THEN 4\\n        WHEN A.Ageing IS NULL THEN NULL\\n        ELSE 5     END AS Agetub_sort\\nFROM(\\n        SELECT \\n                AC.*,\\n                CASE \\n                    WHEN TRIM(LOWER(AC.Status)) = \\'open\\' AND ISNULL(AC.Raised_On,\\'\\') <> \\'\\' THEN DATEDIFF(day,CAST(substring( AC.Raised_On,charindex(\\'/\\',AC.Raised_On)+1,2)+\\'/\\'+ left(AC.Raised_On,2)+\\'/\\'+right(AC.Raised_On,4) AS DATE ),GETDATE())\\n                    WHEN TRIM(LOWER(AC.Status)) = \\'closed\\' AND ISNULL(AC.Actual_Closure_Date,\\'\\') <> \\'\\' AND ISNULL(AC.Actual_Closure_Date,\\'\\') like (\\'%/%\\') AND ISNULL(AC.Raised_On,\\'\\') <> \\'\\' \\n                        THEN  DATEDIFF(day,cast(substring( AC.Raised_On,charindex(\\'/\\',AC.Raised_On)+1,2)+\\'/\\'+ left(AC.Raised_On,2)+\\'/\\'+right(AC.Raised_On,4) as date),cast(substring( AC.Actual_Closure_Date,charindex(\\'/\\',AC.Actual_Closure_Date)+1,2)+\\'/\\'+ left(AC.Actual_Closure_Date,2)+\\'/\\'+right(AC.Actual_Closure_Date,4) as date))\\n                ELSE NULL END AS Ageing        \\n        FROM(\\n            SELECT      \\n                CAST(upload_time as DATE)  Upload_Time,\\n                CI.Reference_Number,\\n                CI.PR_PO_Other_Ref_No,\\n                CASE\\n                    WHEN CI.SBU_Issue_Raised_by LIKE \\'%SBU 1%\\' THEN \\'SBU 1\\'\\n                    WHEN CI.SBU_Issue_Raised_by LIKE \\'%SBU 2%\\' THEN \\'SBU 2\\'\\n                    WHEN CI.SBU_Issue_Raised_by LIKE \\'%SBU 3%\\' THEN \\'SBU 3\\'\\n                    WHEN CI.SBU_Issue_Raised_by LIKE \\'%SBU 4%\\' THEN \\'SBU 4\\'\\n                    WHEN CI.SBU_Issue_Raised_by LIKE \\'%SBU 5%\\' THEN \\'SBU 5\\'\\n                    ELSE \\'UNKNOWN\\' END AS SBU_SCLICER,\\n                CASE\\n                    WHEN CI.Pending_With IS NULL OR TRIM(CI.Pending_With) = \\'\\' THEN \\'Not Available\\'\\n                    ELSE CI.Pending_With\\n                    END AS Pending_With,\\n                CI.Issue_Description,\\n                CI.Current_Status,\\n                CI.Impact_On,\\n                CI.Status,\\n                CI.Project,\\n                CI.Project_id as CITPROJECTID,\\n                PS.Project_id,\\n                PS.Project_Identifier,\\n                CI.Sbu_ID,\\n                CI.Tower,\\n                --CI.Raised_On,\\n                --CI.Target_Closure_Date,\\n                --CI.Actual_Closure_Date\\n                CASE \\n                    WHEN CI.Raised_On IS NOT NULL AND TRIM(CI.Raised_On) NOT IN (\\'\\',\\'-\\')  and CI.raised_on like \\'%-%\\' then format(cast(CI.raised_on as date),\\'dd/MM/yyyy\\')  \\n                    else CI.raised_on  end AS Raised_On,\\n                CASE \\n                    WHEN CI.Actual_Closure_Date IS NOT NULL AND TRIM(CI.Actual_Closure_Date) NOT IN (\\'\\',\\'-\\')  and CI.Actual_Closure_Date like \\'%-%\\' then format(cast(CI.Actual_Closure_Date as date),\\'dd/MM/yyyy\\')  \\n                    else CI.Actual_Closure_Date  end AS Actual_Closure_Date,\\n                CASE \\n                    WHEN CI.Target_Closure_Date IS NOT NULL AND TRIM( CI.Target_Closure_Date) NOT IN (\\'\\',\\'-\\')  and CI.Target_Closure_Date like \\'%-%\\' then format(cast(CI.Target_Closure_Date as date),\\'dd/MM/yyyy\\')  \\n                    else CI.Target_Closure_Date  end AS Target_Closure_Date\\n            FROM\\n                        STG.O_PLN_CRITICAL_ISSUE_TRACKER_STG CI\\n            LEFT JOIN    STG.PROJECTS_STG AS PS \\n                ON        CI.Project_id = PS.Project_identifier\\n                    --need to understand from where this project_short came.\\n            WHERE        TRIM(CI.Issue_Description) NOT IN (\\'\\')) AC\\n        )A\\nLEFT JOIN    [DWH].[PLN_PROJECTS_DIM] P\\n    ON      A.PROJECT_IDENTIFIER=P.PROJECT_IDENTIFIER \\nLEFT JOIN    [DWH].[PLN_SBU_MAPPING_DIM] SM\\n    ON      A.SBU_ID=SM.SBU_IDENTIFIER',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          Project_ID as integer,",
+				"          SBU_ID as integer,",
+				"          Tower as string,",
+				"          Reference_Number as string,",
+				"          PR_PO_Other_Ref_No as string,",
+				"          Pending_With as string,",
+				"          Issue_Description as string,",
+				"          Current_Status as string,",
+				"          Impact_On as string,",
+				"          Status as string,",
+				"          Project as string,",
+				"          Raised_On as string,",
+				"          Actual_Closure_Date as string,",
+				"          Target_Closure_Date as string,",
+				"          Ageing as string,",
+				"          Agetub as string,",
+				"          Agetub_sort as string,",
+				"          Update_Date as date,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_CRITICAL_ISSUE_TRACKER_FACT];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID,",
+				"          Project_ID = PROJECT_ID,",
+				"          SBU_ID,",
+				"          Tower,",
+				"          Reference_Number,",
+				"          PR_PO_Other_Ref_No,",
+				"          Pending_With,",
+				"          Issue_Description,",
+				"          Current_Status,",
+				"          Impact_On,",
+				"          Status,",
+				"          Project,",
+				"          Raised_On,",
+				"          Actual_Closure_Date,",
+				"          Target_Closure_Date,",
+				"          Ageing,",
+				"          Agetub,",
+				"          Agetub_sort = Agetub,",
+				"          Update_Date = Upload_Date,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

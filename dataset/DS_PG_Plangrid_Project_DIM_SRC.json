@@ -1,0 +1,29 @@
+{
+	"name": "DS_PG_Plangrid_Project_DIM_SRC",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Sobha_PG_DB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Dimensions"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Project_Short_Code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Name",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Plangrid_Project"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

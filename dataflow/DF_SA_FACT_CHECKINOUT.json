@@ -1,0 +1,107 @@
+{
+	"name": "DF_SA_FACT_CHECKINOUT",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_SA_FACT_CHECKINOUT_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"description": "Import data from DS_SA_FACT_CHECKINOUT_STG_TRG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_SA_FACT_CHECKINOUT_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "Export data to DS_SA_FACT_CHECKINOUT_TRG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          Fact_CheckinoutID as integer,",
+				"          Userid as integer,",
+				"          Checktime as timestamp,",
+				"          Checktype as string,",
+				"          Verifycode as integer,",
+				"          SN as string,",
+				"          SensorID as string,",
+				"          WorkCode as string,",
+				"          Reserved as string,",
+				"          Last_Refresh_Date as timestamp",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          Fact_CheckinoutID as integer,",
+				"          Userid as integer,",
+				"          Checktime as timestamp,",
+				"          Checktype as string,",
+				"          Verifycode as integer,",
+				"          SN as string,",
+				"          SensorID as string,",
+				"          WorkCode as string,",
+				"          Reserved as string,",
+				"          Last_Refresh_Date as timestamp,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[SA_FACT_CHECKINOUT_FACT];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID,",
+				"          Fact_CheckinoutID,",
+				"          Userid,",
+				"          Checktime,",
+				"          Checktype,",
+				"          Verifycode,",
+				"          SN,",
+				"          SensorID,",
+				"          WorkCode,",
+				"          Reserved,",
+				"          Last_Refresh_Date,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

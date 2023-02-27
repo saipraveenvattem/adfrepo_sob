@@ -1,0 +1,129 @@
+{
+	"name": "DS_PLN_PROJECT_PROGRESS_SUMMARY_FACT",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_Date",
+				"type": "date"
+			},
+			{
+				"name": "Project",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SBU_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Area",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Progress_Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_Sequence",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flats",
+				"type": "char"
+			},
+			{
+				"name": "Total_Floors",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Scheduled_Activities",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Sum_Achived",
+				"type": "decimal",
+				"precision": 36,
+				"scale": 4
+			},
+			{
+				"name": "Count_Achived",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Average_Achived",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 3
+			},
+			{
+				"name": "Completed",
+				"type": "decimal",
+				"precision": 23,
+				"scale": 0
+			},
+			{
+				"name": "In_Progress",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 3
+			},
+			{
+				"name": "Yet_To_Start",
+				"type": "decimal",
+				"precision": 38,
+				"scale": 3
+			},
+			{
+				"name": "Yet_To_Start_Manual",
+				"type": "decimal",
+				"precision": 25,
+				"scale": 0
+			},
+			{
+				"name": "Sort_Main",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_PROJECT_PROGRESS_SUMMARY_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

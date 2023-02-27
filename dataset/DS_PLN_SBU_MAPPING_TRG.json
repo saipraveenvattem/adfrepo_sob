@@ -1,0 +1,49 @@
+{
+	"name": "DS_PLN_SBU_MAPPING_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Dimensions"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SBU_Map_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SBU_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_Shorts",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_Description",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_SBU_MAPPING_DIM"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,65 @@
+{
+	"name": "PL_Pln_Monthly",
+	"properties": {
+		"activities": [
+			{
+				"name": "Business Plan Template 2022",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "TRUNCATE TABLE f_pln_business_plan_1;\r\nINSERT IGNORE INTO f_pln_business_plan_1 (Upload_date,project_id,`Type`,SBU,`Month`,`value`,`DENSE_RANK`,sbu_sort,month_sort,year_sort,Cummulative)\r\nWITH DATA_FORMATTER AS (\r\n    SELECT\r\n        DATE(upload_time) AS Upload_date,\r\n        project_id,\r\n        tower,\r\n        sbu_id,\r\n        `Type`,\r\n        SBU,\r\n        Column_Name.`Month`,\r\n        CASE \r\n            WHEN TRIM(Column_Name.VALUE) IN ('',' ','-')  AND `Type` = 'Plan'  THEN '0'\r\n            ELSE Column_Name.VALUE\r\n        END AS Value\r\n        FROM o_pln_business_plan_raw\r\n        cross join lateral (\r\n                        SELECT `Jan-22` ,  'Jan-22'\r\n                    UNION ALL SELECT `Feb-22` ,  'Feb-22'\r\n                    UNION ALL SELECT `Mar-22` ,  'Mar-22'\r\n                    UNION ALL SELECT `Apr-22` ,  'Apr-22'\r\n                    UNION ALL SELECT `May-22` ,  'May-22'\r\n                    UNION ALL SELECT `Jun-22` ,  'Jun-22'\r\n                    UNION ALL SELECT `Jul-22` ,  'Jul-22'\r\n                    UNION ALL SELECT `Aug-22` ,  'Aug-22'\r\n                    UNION ALL SELECT `Sep-22` ,  'Sep-22'\r\n                    UNION ALL SELECT `Oct-22` ,  'Oct-22'\r\n                    UNION ALL SELECT `Nov-22` ,  'Nov-22'\r\n                    UNION ALL SELECT `Dec-22` ,  'Dec-22'\r\n        )as Column_Name(value,`Month`)\r\n        WHERE\r\n    --     TRIM(SBU) NOT IN ('',' ', 'Overall','Cumulative','%') AND\r\n--         TRIM(value) NOT IN ('',' ', '-','Jan-22','Feb-22','Mar-22','Apr-22','May-22','Jun-22','Jul-22','Aug-22','Sep-22','Oct-22','Nov-22','Dec-22')\r\n        TRIM(value) NOT IN ('Jan-22','Feb-22','Mar-22','Apr-22','May-22','Jun-22','Jul-22','Aug-22','Sep-22','Oct-22','Nov-22','Dec-22')\r\n        AND TRIM(SBU) NOT IN ('',' ','Cumulative','%','Total Revenue (BOQ)','Achieved Revenue (Till 2021)','Overall')\r\n    ),\r\nSTAGGING AS (\r\n        SELECT\r\n            Upload_Date,\r\n            project_id,\r\n            `Type`,\r\n            SBU,\r\n            `Month`,\r\n            IFNULL(REPLACE(value,',',''),0.00) AS value,    \r\n            DENSE_RANK() OVER(PARTITION BY project_id ORDER BY DATE(Upload_Date) DESC) AS `DENSE_RANK`\r\n        FROM DATA_FORMATTER opbp\r\n        /*WHERE TRIM(value) NOT IN ('','-',' ')*/\r\n        GROUP BY 1,2,3,4,5,6 ORDER BY 1,2,3,4,5 DESC),\r\n    PRILIM_OUTPUT AS (\r\n            SELECT\r\n                Upload_Date,\r\n                project_id,\r\n                `Type`,\r\n                SBU,\r\n                CASE\r\n                    WHEN SBU = 'SBU 1' THEN 1\r\n                    WHEN SBU = 'SBU 2' THEN 2\r\n                    WHEN SBU = 'SBU 3' THEN 3\r\n                    WHEN SBU = 'SBU 4' THEN 4\r\n                    WHEN SBU = 'SBU 5' THEN 5\r\n                    ELSE 6\r\n                END AS SBU_Custom_Sort,\r\n                `Month`,\r\n                value                \r\n            FROM STAGGING WHERE `DENSE_RANK` = 1 AND TRIM(SBU) NOT IN ('',' ','Cumulative','%','Total Revenue (BOQ)','Achieved Revenue (Till 2021)','Overall')),\r\nPRE_FINAL AS (\r\nSELECT\r\n    FPBP.Upload_Date,\r\n    FPBP.project_id,\r\n    FPBP.`Type`,\r\n    FPBP.SBU,\r\n    FPBP.SBU_Custom_Sort,\r\n    FPBP.`Month`,\r\n        CASE\r\n        WHEN TRIM(FPBP.`Month`) IN ('Total Revenue (BOQ)','Achieved Revenue (Till 2021)') THEN null\r\n        ELSE replace(date_format(str_to_date(concat('01-',FPBP.`Month`),'%d-%b-%y'),'%Y-%m'),'-','')\r\nEND AS ORDER_Month,\r\n        /*concat(\r\n        substring(date_format(str_to_date(concat('01-',FPBP.`Month`,'01-01-1900'),'%d-%b-%y'),'%d-%m-%Y'), 7,4),\r\n        substring(date_format(str_to_date(concat('01-',FPBP.`Month`,'01-01-1900'),'%d-%b-%y'),'%d-%m-%Y'), 4,2)\r\n        ) A,*/\r\n    \r\n    FPBP.value\r\nFROM PRILIM_OUTPUT FPBP ORDER BY 2,3,5,7),\r\nCummulative_Sum AS (\r\n    SELECT\r\n        *,\r\n        SUM(CAST(value AS DECIMAL) ) OVER(PARTITION BY project_id,`Type`,SBU_Custom_Sort ORDER BY ORDER_Month) AS Cummulative\r\n    FROM PRE_FINAL\r\n        )\r\nSelect Upload_date\r\n\t\t,project_id\r\n        ,`Type`\r\n        ,SBU\r\n        ,`Month`\r\n        ,Case when TRIM(`value`) = '0' Then '' else TRIM(`value`) end `value`\r\n        ,DENSE_RANK() OVER(PARTITION BY project_id ORDER BY DATE(Upload_Date) DESC) AS `DENSE_RANK`\r\n        ,SBU_Custom_Sort `sbu_sort`\r\n        ,ROW_NUMBER() OVER(PARTITION BY project_id, SBU, `Type` ORDER BY ORDER_month ASC) AS `month_sort`\r\n        ,DENSE_RANK() OVER(PARTITION BY project_id ORDER BY YEAR(DATE(ORDER_month)) DESC) AS `year_sort`\r\n        ,Cummulative\r\n\t\t\t\r\nFrom (         \r\nSELECT     PF.*,\r\n        CUM.Cummulative        \r\n  \r\nFROM PRE_FINAL PF LEFT JOIN Cummulative_Sum CUM\r\n    on PF.project_id = CUM.project_id\r\n    and PF.`Type` = CUM.`Type`\r\n    and PF.SBU = CUM.SBU\r\n    and PF.SBU_Custom_Sort = CUM.SBU_Custom_Sort\r\n    and PF.ORDER_Month = CUM.ORDER_Month\r\n    and PF.value = CUM.value  \r\n) A;\r\n\r\n    /**/\r\n\r\n    SELECT 1;",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "DS_MySQL_Data_Loads_DB",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Business Plan Template 2023",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Business Plan Template 2022",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"query": "INSERT IGNORE INTO f_pln_business_plan_1\r\nWITH DATA_FORMATTER AS (\r\n SELECT\r\n        DATE(upload_time) AS Upload_date,\r\n        project_id,\r\n        tower,\r\n        sbu_id,\r\n        `Type`,\r\n        SBU,\r\n        Column_Name.`Month`,\r\n        CASE \r\n            WHEN TRIM(Column_Name.VALUE) IN ('',' ','-')  AND `Type` = 'Plan'  THEN '0'\r\n            ELSE Column_Name.VALUE\r\n        END AS Value\r\n        FROM o_pln_business_plan_1\r\n        cross join lateral (\r\n                        SELECT `Jan-23` ,  'Jan-23'\r\n                    UNION ALL SELECT `Feb-23` ,  'Feb-23'\r\n                    UNION ALL SELECT `Mar-23` ,  'Mar-23'\r\n                    UNION ALL SELECT `Apr-23` ,  'Apr-23'\r\n                    UNION ALL SELECT `May-23` ,  'May-23'\r\n                    UNION ALL SELECT `Jun-23` ,  'Jun-23'\r\n                    UNION ALL SELECT `Jul-23` ,  'Jul-23'\r\n                    UNION ALL SELECT `Aug-23` ,  'Aug-23'\r\n                    UNION ALL SELECT `Sep-23` ,  'Sep-23'\r\n                    UNION ALL SELECT `Oct-23` ,  'Oct-23'\r\n                    UNION ALL SELECT `Nov-23` ,  'Nov-23'\r\n                    UNION ALL SELECT `Dec-23` ,  'Dec-23'\r\n        )as Column_Name(value,`Month`)\r\n        WHERE\r\n    --     TRIM(SBU) NOT IN ('',' ', 'Overall','Cumulative','%') AND\r\n--         TRIM(value) NOT IN ('',' ', '-','Jan-23','Feb-23','Mar-23','Apr-23','May-23','Jun-23','Jul-23','Aug-23','Sep-23','Oct-23','Nov-23','Dec-23')\r\n        TRIM(value) NOT IN ('Jan-23','Feb-23','Mar-23','Apr-23','May-23','Jun-23','Jul-23','Aug-23','Sep-23','Oct-23','Nov-23','Dec-23')\r\n        AND TRIM(SBU) NOT IN ('',' ','Cumulative','%','Total Revenue (BOQ)','Achieved Revenue (Till 2021)','Overall')\r\n    ),\r\nSTAGGING AS (\r\n        SELECT\r\n            Upload_Date,\r\n            project_id,\r\n            `Type`,\r\n            SBU,\r\n            `Month`,\r\n            IFNULL(REPLACE(value,',',''),0.00) AS value,    \r\n            DENSE_RANK() OVER(PARTITION BY project_id ORDER BY DATE(Upload_Date) DESC) AS `DENSE_RANK`\r\n        FROM DATA_FORMATTER opbp\r\n        /*WHERE TRIM(value) NOT IN ('','-',' ')*/\r\n        GROUP BY 1,2,3,4,5,6 ORDER BY 1,2,3,4,5 DESC),\r\n    PRILIM_OUTPUT AS (\r\n            SELECT\r\n                Upload_Date,\r\n                project_id,\r\n                `Type`,\r\n                SBU,\r\n                CASE\r\n                    WHEN SBU = 'SBU 1' THEN 1\r\n                    WHEN SBU = 'SBU 2' THEN 2\r\n                    WHEN SBU = 'SBU 3' THEN 3\r\n                    WHEN SBU = 'SBU 4' THEN 4\r\n                    WHEN SBU = 'SBU 5' THEN 5\r\n                    ELSE 6\r\n                END AS SBU_Custom_Sort,\r\n                `Month`,\r\n                value                \r\n            FROM STAGGING WHERE `DENSE_RANK` = 1 AND TRIM(SBU) NOT IN ('',' ','Cumulative','%','Total Revenue (BOQ)','Achieved Revenue (Till 2021)','Overall')),\r\nPRE_FINAL AS (\r\nSELECT\r\n    FPBP.Upload_Date,\r\n    FPBP.project_id,\r\n    FPBP.`Type`,\r\n    FPBP.SBU,\r\n    FPBP.SBU_Custom_Sort,\r\n    FPBP.`Month`,\r\n        CASE\r\n        WHEN TRIM(FPBP.`Month`) IN ('Total Revenue (BOQ)','Achieved Revenue (Till 2021)') THEN null\r\n        ELSE replace(date_format(str_to_date(concat('01-',FPBP.`Month`),'%d-%b-%y'),'%Y-%m'),'-','')\r\nEND AS ORDER_Month,\r\n        /*concat(\r\n        substring(date_format(str_to_date(concat('01-',FPBP.`Month`,'01-01-1900'),'%d-%b-%y'),'%d-%m-%Y'), 7,4),\r\n        substring(date_format(str_to_date(concat('01-',FPBP.`Month`,'01-01-1900'),'%d-%b-%y'),'%d-%m-%Y'), 4,2)\r\n        ) A,*/\r\n    \r\n    FPBP.value\r\nFROM PRILIM_OUTPUT FPBP ORDER BY 2,3,5,7),\r\nCummulative_Sum AS (\r\n    SELECT\r\n        *,\r\n        SUM(CAST(value AS DECIMAL) ) OVER(PARTITION BY project_id,`Type`,SBU_Custom_Sort ORDER BY ORDER_Month) AS Cummulative\r\n    FROM PRE_FINAL\r\n        )\r\nSelect Upload_date\r\n\t\t,project_id\r\n        ,`Type`\r\n        ,SBU\r\n        ,`Month`\r\n        ,Case when TRIM(`value`) = '0' Then '' else TRIM(`value`) end `value`\r\n        ,DENSE_RANK() OVER(PARTITION BY project_id ORDER BY DATE(Upload_Date) DESC) AS `DENSE_RANK`\r\n        ,SBU_Custom_Sort `sbu_sort`\r\n        ,ROW_NUMBER() OVER(PARTITION BY project_id, SBU, `Type` ORDER BY ORDER_month ASC) AS `month_sort`\r\n        ,DENSE_RANK() OVER(PARTITION BY project_id ORDER BY YEAR(DATE(ORDER_month)) DESC)+1 AS `year_sort`\r\n        ,Cummulative\r\nFrom (         \r\nSELECT     PF.*,\r\n        CUM.Cummulative\r\n  \r\nFROM PRE_FINAL PF LEFT JOIN Cummulative_Sum CUM\r\n    on PF.project_id = CUM.project_id\r\n    and PF.`Type` = CUM.`Type`\r\n    and PF.SBU = CUM.SBU\r\n    and PF.SBU_Custom_Sort = CUM.SBU_Custom_Sort\r\n    and PF.ORDER_Month = CUM.ORDER_Month\r\n    and PF.value = CUM.value  \r\n) A;\r\n\r\n    /**/\r\n\r\n    SELECT 1;",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "DS_MySQL_Data_Loads_DB",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-02-24T10:44:56Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

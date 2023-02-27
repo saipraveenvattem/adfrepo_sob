@@ -1,0 +1,46 @@
+{
+	"name": "Taskreport_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "TASKREPORT_STG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PG_Task_Report_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "TASKREPORT_FACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "TASKREPORT_STG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PG_TASK_REPORT",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Master"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-15T04:22:34Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

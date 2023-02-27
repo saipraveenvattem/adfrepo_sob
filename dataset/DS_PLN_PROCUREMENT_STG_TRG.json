@@ -1,0 +1,132 @@
+{
+	"name": "DS_PLN_PROCUREMENT_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Procurement_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_Time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Project_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "Tower",
+				"type": "varchar"
+			},
+			{
+				"name": "SBU_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "SBU",
+				"type": "varchar"
+			},
+			{
+				"name": "Classification",
+				"type": "varchar"
+			},
+			{
+				"name": "Description",
+				"type": "varchar"
+			},
+			{
+				"name": "Category",
+				"type": "varchar"
+			},
+			{
+				"name": "Issuance_of_Drawings_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Issuance_of_Drawings_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PR_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PR_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Vendor_Finalization_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Vendor_Finalization_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Prequalification_Submission_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Prequalification_Submission_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Prequalification_Approval_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Prequalification_Approval_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Release_of_Contract_documents_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Release_of_Contract_documents_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Drawing_Technical_Submission_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Drawing_Technical_Submission_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Drawing_Technical_Submission_Approval_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Drawing_Technical_Submission_Approval_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Required_at_site_by",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actual_Delivery_at_site",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_PROCUREMENT_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

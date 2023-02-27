@@ -1,0 +1,36 @@
+{
+	"name": "TRG_ADHOC_WeeklyTwice",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PL_Pln_WeeklyTwice",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Week",
+				"interval": 1,
+				"startTime": "2023-01-16T21:56:00",
+				"timeZone": "Arabian Standard Time",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						22
+					],
+					"weekDays": [
+						"Sunday",
+						"Wednesday"
+					]
+				}
+			}
+		}
+	}
+}

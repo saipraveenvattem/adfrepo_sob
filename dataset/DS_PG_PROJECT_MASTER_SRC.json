@@ -1,0 +1,39 @@
+{
+	"name": "DS_PG_PROJECT_MASTER_SRC",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Sobha_PG_DB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Dimensions"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Created_ON",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Project_Status",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Project_Master"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,116 @@
+{
+	"name": "DS_F_PLN_PROJECTION_STG_SRC",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_MySQL_DL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "Upload_Date",
+				"type": "date",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Project Sclicer",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SBU",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Area",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Category",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Activity Description",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Projection for the month",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "Yesterday",
+				"type": "date",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Plan_Yesterday",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "Plan as on date",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "Actual_Yesterday",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "Actual as on date",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "Shortfall Reasons",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SBU_Custom_Sort",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Achived",
+				"type": "decimal",
+				"precision": 14,
+				"scale": 4
+			},
+			{
+				"name": "Achived_90",
+				"type": "decimal",
+				"precision": 14,
+				"scale": 4
+			}
+		],
+		"typeProperties": {
+			"tableName": "f_pln_projection"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

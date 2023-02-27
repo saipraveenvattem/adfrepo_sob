@@ -1,0 +1,138 @@
+{
+	"name": "AZuserinfo",
+	"properties": {
+		"description": "Connect to your data destination store.",
+		"linkedServiceName": {
+			"referenceName": "Sobha_Azure_Attendance",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"structure": [
+			{
+				"name": "userid",
+				"type": "Int32"
+			},
+			{
+				"name": "badgenumber",
+				"type": "String"
+			},
+			{
+				"name": "defaultdeptid",
+				"type": "Int32"
+			},
+			{
+				"name": "name",
+				"type": "String"
+			},
+			{
+				"name": "Password",
+				"type": "String"
+			},
+			{
+				"name": "Card",
+				"type": "String"
+			},
+			{
+				"name": "Privilege",
+				"type": "String"
+			},
+			{
+				"name": "AccGroup",
+				"type": "String"
+			},
+			{
+				"name": "TimeZones",
+				"type": "String"
+			},
+			{
+				"name": "Gender",
+				"type": "String"
+			},
+			{
+				"name": "Birthday",
+				"type": "DateTime"
+			},
+			{
+				"name": "street",
+				"type": "String"
+			},
+			{
+				"name": "zip",
+				"type": "String"
+			},
+			{
+				"name": "ophone",
+				"type": "String"
+			},
+			{
+				"name": "FPHONE",
+				"type": "String"
+			},
+			{
+				"name": "pager",
+				"type": "String"
+			},
+			{
+				"name": "minzu",
+				"type": "String"
+			},
+			{
+				"name": "title",
+				"type": "String"
+			},
+			{
+				"name": "SN",
+				"type": "String"
+			},
+			{
+				"name": "SSN",
+				"type": "String"
+			},
+			{
+				"name": "UTime",
+				"type": "DateTime"
+			},
+			{
+				"name": "State",
+				"type": "String"
+			},
+			{
+				"name": "City",
+				"type": "String"
+			},
+			{
+				"name": "SECURITYFLAGS",
+				"type": "Int16"
+			},
+			{
+				"name": "DelTag",
+				"type": "Int16"
+			},
+			{
+				"name": "RegisterOT",
+				"type": "Int32"
+			},
+			{
+				"name": "AutoSchPlan",
+				"type": "String"
+			},
+			{
+				"name": "MinAutoSchInterval",
+				"type": "String"
+			},
+			{
+				"name": "Image_id",
+				"type": "Int32"
+			},
+			{
+				"name": "Last_Refresh_Date",
+				"type": "DateTime"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[dim_userinfo]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

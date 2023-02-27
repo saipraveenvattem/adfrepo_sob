@@ -1,0 +1,115 @@
+{
+	"name": "DF_PLN_WETAREA",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_O_PLN_WETAREA_RAW_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_WETAREA_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          PROJECT_ID as integer,",
+				"          LEVEL_ID as integer,",
+				"          PROJECT_IDENTIFIER as string,",
+				"          SBU_ID as integer,",
+				"          TOWER as string,",
+				"          LEVEL as string,",
+				"          FLAT as string,",
+				"          Sclicer as string,",
+				"          ACTIVITY_ID as integer,",
+				"          VALUE as string,",
+				"          TYPE_OF_WORK as string,",
+				"          CATEGORY as string,",
+				"          UPLOAD_DATE as timestamp",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT\\n     P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n    P.PROJECT_IDENTIFIER ,\\n     SM.SBU_MAP_ID AS SBU_ID,\\n    WT.TOWER,\\n    WT.[LEVEL],\\n    WT.FLAT,\\n    \\'Wet Area\\' as Sclicer,\\n     WT.ACTIVITY_ID,\\n    CASE \\n        WHEN WT.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE WT.VALUE\\n    END AS VALUE,\\n    WT.TYPE_OF_WORK,\\n    WT.CATEGORY,\\n     WT.UPLOAD_DATE\\nFROM\\n     (SELECT\\n          WR.UPLOAD_TIME AS UPLOAD_DATE,\\n          WR.PROJECT_ID,\\n          WR.TOWER,\\n          WR.[LEVEL],\\n          WR.FLAT,\\n          COLUMN_NAME.*,\\n          WM.ACTIVITY_ID,\\n          WM.SBU_ID,\\n          WM.CATEGORY,\\n          DENSE_RANK () OVER (PARTITION BY  PROJECT_ID ORDER BY UPLOAD_TIME DESC)   AS  DRANK\\n     FROM [STG].[O_PLN_WETAREA_RAW_STG] WR\\n     CROSS APPLY (\\n                                SELECT  [Plastering_Clearance_with_1_Mtr_Marking],\\'PLASTERING CLEARANCE WITH 1 MTR MARKING\\'\\n                    UNION ALL SELECT  [Wet_Area_Tile_Marking],\\'WET AREA TILE MARKING\\'\\n                    UNION ALL SELECT  [MEP_Marking],\\'MEP MARKING\\'\\n                    UNION ALL SELECT  [Wet_Area_Cutting_And_Chasing],\\'WET AREA CUTTING & CHASING\\'\\n                    UNION ALL SELECT  [Pex_pipe_installation],\\'PEX PIPE INSTALLATION\\'\\n                    UNION ALL SELECT  [Re_packing_of_MEP_Services],\\'RE PACKING OF MEP SERVICES\\'\\n                    UNION ALL SELECT  [MEP_Pipe_installation_Borepacking],\\'MEP PIPE INSTALLATION - BOREPACKING\\'\\n                    UNION ALL SELECT  [Wet_Area_Bore_Packing],\\'WET AREA BORE PACKING\\'\\n                    UNION ALL SELECT  [Cistern_installation],\\'CISTERN INSTALLATION\\'\\n                    UNION ALL SELECT  [Drywall_framing],\\'DRYWALL FRAMING\\'\\n                    UNION ALL SELECT  [Pex_Elbow_Connections],\\'PEX ELBOW & CONNECTIONS\\'\\n                    UNION ALL SELECT  [Bottom_Boarding_Clearance],\\'BOTTOM BOARDING CLEARANCE\\'\\n                    UNION ALL SELECT  [Bottom_boarding] ,\\'BOTTOM BOARDING\\'\\n                    UNION ALL SELECT  [Under_Screed_Waterproofing],\\'UNDER SCREED WATERPROOFING\\'\\n                    UNION ALL SELECT  [Wet_Area_Screed],\\'WET AREA SCREED\\'\\n                    UNION ALL SELECT  [Ledge_Wall_Full_Board_Closure_Clearance],\\'LEDGE WALL FULL BOARD CLOSURE CLEARANCE\\'\\n                    UNION ALL SELECT  [MEP_HL_Water_Supply_Drainage],\\'MEP HL WATER SUPPLY & DRAINAGE \\'\\n                    UNION ALL SELECT  [MEP_HL_Ducting_FCU_Works],\\'MEP HL DUCTING & FCU WORKS \\'\\n                    UNION ALL SELECT  [MEP_HL_Electrical_Services_Installation],\\'MEP HL ELECTRICAL SERVICES INSTALLATION\\'\\n                    UNION ALL SELECT  [MEP_HL_Works_Testing],\\'MEP HL WORKS & TESTING\\'\\n                    UNION ALL SELECT  [MEP_HL_Packing_Clearance],\\'MEP HL PACKING CLEARANCE\\'\\n                    UNION ALL SELECT  [Packing_for_all_builders_work_opening],\\'PACKING FOR ALL BUILDERS WORK OPENING \\'\\n                    UNION ALL SELECT  [Wet_Area_MEP_H_L_Fire_Sealent_Framing_Clearance],\\'WET AREA MEP H/L FIRE SEALENT & FRAMING CLEARANCE \\'\\n                    UNION ALL SELECT  [Wet_area_Wall_Tile],\\'WET AREA WALL TILE\\'\\n                    UNION ALL SELECT  [Wet_Area_FC_Framing],\\'WET AREA FC FRAMING\\'\\n                    UNION ALL SELECT  [Wet_Area_MEP_H_L_Boarding_Clearance],\\'WET AREA MEP H/L BOARDING CLEARANCE\\'\\n                    UNION ALL SELECT  [FC_Boarding_Joint_Taping],\\'FC BOARDING & JOINT TAPING\\'\\n                    UNION ALL SELECT  [Ceiling_Paint_Primer],\\'CEILING PAINT PRIMER\\'\\n                    UNION ALL SELECT  [Ceiling_Paint_Stucco_1st_Coat_2nd_Coat],\\'CEILING PAINT STUCCO 1ST COAT & 2ND COAT\\'\\n                    UNION ALL SELECT  [Wet_Area_Ceiling_First_Coat_Paint],\\'WET AREA CEILING FIRST COAT PAINT\\'\\n                    UNION ALL SELECT  [MEP_Grill_Diffuser_Installtion],\\'MEP GRILL & DIFFUSER INSTALLTION \\'\\n                    UNION ALL SELECT  [Shower_Threshold],\\'SHOWER THRESHOLD\\'\\n                    UNION ALL SELECT  [Linear_Drain_Supply],\\'LINEAR DRAIN SUPPLY\\'\\n                    UNION ALL SELECT  [Linear_Drain_Fixing],\\'LINEAR DRAIN FIXING \\'\\n                    UNION ALL SELECT  [Under_Tile_Waterproofing],\\'UNDER TILE WATERPROOFING\\'\\n                    UNION ALL SELECT  [Bathroom_Door_Threshold],\\'BATHROOM DOOR THRESHOLD\\'\\n                    UNION ALL SELECT  [Wet_Area_Floor_Tile],\\'WET AREA FLOOR TILE\\'\\n                    UNION ALL SELECT  [Wall_tile_bottom_Tile],\\'WALL TILE BOTTOM TILE\\'\\n                    UNION ALL SELECT  [Grouting_Wall_Floor],\\'GROUTING - WALL & FLOOR\\'\\n                    UNION ALL SELECT  [Silicone_Wall_Floor_Corners],\\'SILICONE - WALL & FLOOR CORNERS\\'\\n                    UNION ALL SELECT  [Shower_Partition_U_channel],\\'SHOWER PARTITION - U CHANNEL\\'\\n                    UNION ALL SELECT  [Shower_Partition_Glass],\\'SHOWER PARTITION - GLASS\\'\\n                    UNION ALL SELECT  [Accessories_Silicon],\\'ACCESSORIES & SILICON\\'\\n                    UNION ALL SELECT  [Bathroom_Door_Frame_Installation],\\'BATHROOM DOOR - FRAME INSTALLATION\\'\\n                    UNION ALL SELECT  [Bathroom_Door_Architrave_Installation],\\'BATHROOM DOOR - ARCHITRAVE INSTALLATION\\'\\n                    UNION ALL SELECT  [Bathroom_Door_Shutter_Installation],\\'BATHROOM DOOR - SHUTTER INSTALLATION\\'\\n                    UNION ALL SELECT  [Bathroom_Door_Ironmongery_Installation],\\'BATHROOM DOOR - IRONMONGERY INSTALLATION\\'\\n                    UNION ALL SELECT  [Vanity_Cabinet],\\'VANITY CABINET\\'\\n                    UNION ALL SELECT  [Vanity_Cabinet_Counter_top],\\'VANITY CABINET COUNTER TOP\\'\\n                    UNION ALL SELECT  [MEP_Final_Fixtures_Sanitary_CP_fittings_Lights_WB],\\'MEP FINAL FIXTURES (SANITARY ,CP FITTINGS & LIGHTS,WB)\\'\\n                    UNION ALL SELECT  [MEP_Ledge_Wall_Clearance],\\'MEP LEDGE WALL CLEARANCE \\'\\n                    UNION ALL SELECT  [Ledge_Wall_Closing],\\'LEDGE WALL CLOSING\\'\\n                    UNION ALL SELECT  [Silicone_around_MEP_Fixtures],\\'SILICONE AROUND MEP FIXTURES\\'\\n                    UNION ALL SELECT  [Wet_Area_Final_Coat_paint],\\'WET AREA FINAL COAT PAINT\\'\\n               )AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n     INNER JOIN     [STG].[O_PLN_WETAREA_MAP_STG] WM\\n          ON          COLUMN_NAME.TYPE_OF_WORK = WM.ACTIVITY_SEQUENCE\\n     WHERE          VALUE IS NOT NULL) WT\\nINNER JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          WT.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN  [DWH].[PROJECTS_NEW_DIM] P\\n      ON          WT.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          WT.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          WT.DRANK = 1',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          Project_ID as integer,",
+				"          Project_Identifier as string,",
+				"          SBU_ID as integer,",
+				"          Level_ID as integer,",
+				"          Tower as string,",
+				"          Level as string,",
+				"          Flat as integer,",
+				"          Sclicer as string,",
+				"          Activity_ID as integer,",
+				"          Value as string,",
+				"          Type_of_work as string,",
+				"          Category as string,",
+				"          Update_Date as date,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_WETAREA_FACT];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID,",
+				"          Project_ID = PROJECT_ID,",
+				"          Project_Identifier = PROJECT_IDENTIFIER,",
+				"          SBU_ID,",
+				"          Level_ID = LEVEL_ID,",
+				"          Tower = TOWER,",
+				"          Level = LEVEL,",
+				"          Flat = FLAT,",
+				"          Sclicer,",
+				"          Activity_ID = ACTIVITY_ID,",
+				"          Value = VALUE,",
+				"          Type_of_work = TYPE_OF_WORK,",
+				"          Category = CATEGORY,",
+				"          Update_Date = UPLOAD_DATE,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

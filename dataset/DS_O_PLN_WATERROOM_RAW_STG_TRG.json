@@ -1,0 +1,224 @@
+{
+	"name": "DS_O_PLN_WATERROOM_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "WATERROOM_RAW_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Blockwork_Layout",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Blockwork",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Marking_for_Builders_Work",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cutting_and_Chasing_of_Blockwork",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Services_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_MEP_Services_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Core_Cutting_and_Chipping",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Sleeve_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bore_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Stucco_1st_and_2nd_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_First_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Installation_of_PPR_pipes",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Manifold_and_Valve_installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRV_installation_and_connections",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Testing_of_Pipes",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fire_Sealant_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Framing_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "False_Ceiling_Framing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Boarding_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "False_Ceiling_Boarding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Stucco_1st_and_2nd_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "First_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Threshold",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Frame_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Architrave_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Shutter_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Ironmongery_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Grinding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Bug_Fill",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_First_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Final_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Skirting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "POP_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Grouting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Final_Fixtures",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PSV_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Water_Meter_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Final_Coat_Paint",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_WATERROOM_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

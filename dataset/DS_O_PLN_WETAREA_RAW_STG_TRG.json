@@ -1,0 +1,268 @@
+{
+	"name": "DS_O_PLN_WETAREA_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "WetArea_Raw_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plastering_Clearance_with_1_Mtr_Marking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wet_Area_Tile_Marking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Marking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wet_Area_Cutting_And_Chasing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Pex_pipe_installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Re_packing_of_MEP_Services",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Pipe_installation_Borepacking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wet_Area_Bore_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cistern_installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Drywall_framing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Pex_Elbow_Connections",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bottom_Boarding_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bottom_boarding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Under_Screed_Waterproofing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wet_Area_Screed",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ledge_Wall_Full_Board_Closure_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_HL_Water_Supply_Drainage",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_HL_Ducting_FCU_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_HL_Electrical_Services_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_HL_Works_Testing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_HL_Packing_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Packing_for_all_builders_work_opening",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wet_Area_MEP_H_L_Fire_Sealent_Framing_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wet_area_Wall_Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wet_Area_FC_Framing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wet_Area_MEP_H_L_Boarding_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FC_Boarding_Joint_Taping",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Paint_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Paint_Stucco_1st_Coat_2nd_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wet_Area_Ceiling_First_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Grill_Diffuser_Installtion",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Shower_Threshold",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Linear_Drain_Supply",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Linear_Drain_Fixing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Under_Tile_Waterproofing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bathroom_Door_Threshold",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wet_Area_Floor_Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_tile_bottom_Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Grouting_Wall_Floor",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Silicone_Wall_Floor_Corners",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Shower_Partition_U_channel",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Shower_Partition_Glass",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Accessories_Silicon",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bathroom_Door_Frame_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bathroom_Door_Architrave_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bathroom_Door_Shutter_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bathroom_Door_Ironmongery_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Vanity_Cabinet",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Vanity_Cabinet_Counter_top",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Final_Fixtures_Sanitary_CP_fittings_Lights_WB",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Ledge_Wall_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ledge_Wall_Closing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Silicone_around_MEP_Fixtures",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wet_Area_Final_Coat_paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Upload_Time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_WETAREA_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

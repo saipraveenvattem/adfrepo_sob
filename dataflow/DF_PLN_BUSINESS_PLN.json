@@ -1,0 +1,111 @@
+{
+	"name": "DF_PLN_BUSINESS_PLN",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_BUSINESS_PLAN_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"description": "Import data from DS_O_PLN_BUSINESS_PLAN_RAW_STG_TRG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_BUSINESS_PLAN_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "Export data to DS_PLN_BUSINESS_PLAN_TRG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          PROJECT_ID as integer,",
+				"          SBU_ID as integer,",
+				"          Upload_Date as date,",
+				"          tower as string,",
+				"          Type as string,",
+				"          SBU as string,",
+				"          SBU_Custom_Sort as integer,",
+				"          Month as string,",
+				"          ORDER_Month as string,",
+				"          value as decimal(25,2),",
+				"          Cummulative as integer",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT \\n     P.Sort_ID as PROJECT_ID,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n     PF.Upload_Date,\\n     --PF.project_id,\\n     PF.tower,\\n     --PF.sbu_id,\\n     PF.[Type],\\n     PF.SBU,\\n     PF.SBU_Custom_Sort,\\n     PF.[Month],\\n     \\n     PF.ORDER_Month,\\n     PF.[value],\\n     SUM(convert(int ,value)) OVER(PARTITION BY PF.project_id,PF.[Type],PF.SBU_Custom_Sort ORDER BY PF.ORDER_Month ROWS UNBOUNDED PRECEDING) AS Cummulative \\nFROM (\\nSELECT\\n                Upload_Date,\\n                project_id,tower,sbu_id,\\n                [Type],\\n                SBU,\\n                    SBU_Custom_Sort,\\n                    [Month],\\n                CASE\\n                WHEN TRIM([Month]) IN (\\'Total Revenue (BOQ)\\',\\'Achieved Revenue (Till 2021)\\') THEN null\\n                ELSE REPLACE(FORMAT(CAST(concat(\\'01-\\',TRIM([Month])) AS DATE),\\'yyyy-MM\\'),\\'-\\',\\'\\')\\n                 END AS ORDER_Month,\\n                CAST(value AS DECIMAL(25,2)) AS [value]\\n                    \\nFROM (\\nSELECT\\n        CAST(upload_time AS DATE) AS Upload_date,\\n        project_id,\\n        tower,\\n        sbu_id,\\n        [Type],\\n        SBU,\\n          CASE\\n                    WHEN SBU = \\'SBU 1\\' THEN 1\\n                    WHEN SBU = \\'SBU 2\\' THEN 2\\n                    WHEN SBU = \\'SBU 3\\' THEN 3\\n                    WHEN SBU = \\'SBU 4\\' THEN 4\\n                    WHEN SBU = \\'SBU 5\\' THEN 5\\n                    ELSE 6\\n                END AS SBU_Custom_Sort,\\n        Column_Name.[Month],\\n        CASE \\n            WHEN CAST(ISNULL(TRIM(Column_Name.VALUE ),\\'\\') AS VARCHAR(100))  IN (\\'\\',\\' \\',\\'-\\')  AND [Type] = \\'Plan\\'  THEN ISNULL(REPLACE(\\'0\\',\\',\\',\\'\\'),\\'0.00\\')\\n            ELSE ISNULL(REPLACE(CAST(Column_Name.VALUE AS VARCHAR(100)),\\',\\',\\'\\'),\\'0.00\\') \\n        END  AS Value\\n          ,DENSE_RANK() OVER(PARTITION BY project_id ORDER BY CAST(upload_time AS DATE) DESC) AS [DENSE_RANK]\\n        FROM STG.O_PLN_BUSINESS_PLAN_RAW_STG\\n        cross apply (\\n                                     SELECT Jan_22 ,  \\'Jan-22\\'\\n                    UNION ALL SELECT Feb_22 ,  \\'Feb-22\\'\\n                    UNION ALL SELECT Mar_22 ,  \\'Mar-22\\'\\n                    UNION ALL SELECT Apr_22 ,  \\'Apr-22\\'\\n                    UNION ALL SELECT May_22 ,  \\'May-22\\'\\n                    UNION ALL SELECT Jun_22 ,  \\'Jun-22\\'\\n                    UNION ALL SELECT Jul_22 ,  \\'Jul-22\\'\\n                    UNION ALL SELECT Aug_22 ,  \\'Aug-22\\'\\n                    UNION ALL SELECT Sep_22 ,  \\'Sep-22\\'\\n                    UNION ALL SELECT Oct_22 ,  \\'Oct-22\\'\\n                    UNION ALL SELECT Nov_22 ,  \\'Nov-22\\'\\n                    UNION ALL SELECT Dec_22 ,  \\'Dec-22\\'\\n        )as Column_Name(value,[Month])\\n        WHERE\\n         TRIM(value) NOT IN (\\'Jan-22\\',\\'Feb-22\\',\\'Mar-22\\',\\'Apr-22\\',\\'May-22\\',\\'Jun-22\\',\\'Jul-22\\',\\'Aug-22\\',\\'Sep-22\\',\\'Oct-22\\',\\'Nov-22\\',\\'Dec-22\\') AND\\n         TRIM(SBU) NOT IN (\\'\\',\\' \\',\\'Cumulative\\',\\'%\\',\\'Total Revenue (BOQ)\\',\\'Achieved Revenue (Till 2021)\\',\\'Overall\\')\\n    ) PF1\\n     WHERE TRIM(value) NOT IN (\\'\\',\\'-\\',\\' \\')\\n   AND TRIM(SBU) NOT IN (\\'\\',\\' \\',\\'Cumulative\\',\\'%\\',\\'Total Revenue (BOQ)\\',\\'Achieved Revenue (Till 2021)\\',\\'Overall\\')\\n   AND  [DENSE_RANK] = 1 \\n       ) PF \\n     LEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          PF.PROJECT_ID=P.PROJECT_IDENTIFIER \\n     LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          PF.SBU_ID=SM.SBU_IDENTIFIER\\n      \\n     ',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as integer,",
+				"          Upload_Date as date,",
+				"          project_id as string,",
+				"          Sbu_Id as integer,",
+				"          Tower as string,",
+				"          Type as string,",
+				"          SBU as string,",
+				"          SBU_Custom_Sort as integer,",
+				"          Month as string,",
+				"          ORDER_Month as integer,",
+				"          value as decimal(10,0),",
+				"          Cummulative as decimal(32,0),",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_BUSINESS_PLAN_FACT];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          id = ID,",
+				"          Upload_Date,",
+				"          project_id = PROJECT_ID,",
+				"          Sbu_Id = SBU_ID,",
+				"          Tower = tower,",
+				"          Type,",
+				"          SBU,",
+				"          SBU_Custom_Sort,",
+				"          Month,",
+				"          ORDER_Month,",
+				"          value,",
+				"          Cummulative,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

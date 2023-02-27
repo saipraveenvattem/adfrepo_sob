@@ -1,0 +1,47 @@
+{
+	"name": "DS_O_PLN_FIRELIFTLOBBY_MAP_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "FIRELIFTLOBBY_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ACTIVITY_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SBU_SHORT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CATEGORY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ACTIVITY_SEQUENCE",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_FIRELIFTLOBBY_MAP_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

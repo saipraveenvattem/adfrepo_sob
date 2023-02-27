@@ -1,0 +1,96 @@
+{
+	"name": "DS_GAANT_HURRY_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_Date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Group",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sort_Grp",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Activity_New",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_Description",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sort_Activity",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actual_Start_Date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Actual_Finish_Date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Original_Actuals",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actual_Achived",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Legend",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PLN_ACT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_GAANT_HURRY_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

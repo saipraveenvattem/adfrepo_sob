@@ -1,0 +1,88 @@
+{
+	"name": "DS_PLN_SUBCONTRACT_MANPOWER_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_Time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Project_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sbu_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SBU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sub_Contractor",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SCL_Engineer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Trade",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Shift",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Count",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LoadDate_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_SUBCONTRACTOR_MANPOWER_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

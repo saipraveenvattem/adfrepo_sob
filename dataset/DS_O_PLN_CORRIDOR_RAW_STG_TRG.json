@@ -1,0 +1,212 @@
+{
+	"name": "DS_O_PLN_CORRIDOR_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "CORRIDOR_RAW_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Marking_for_Builders_Work",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cutting_and_Chasing_of_Blockwork",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Services_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_MEP_Services_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Grinding_Clearance_for_Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tile_Marking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bull_Marking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Main_Door_Threshold",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Electrical_Conduits",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cold_water_supply",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fire_Fighting_Pipe_Support",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Modular_Instalation_Future_Projects",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Framing_Clearance_by_MEP",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Curtain_Wall_Box_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Curtain_Wall_Frame_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Curtain_Wall_Glass_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Curtain_Wall_Flashing_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Floor_Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fire_Hose_Reel_Cabinet_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Grouting_for_Framing_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FC_Framing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sprinkler_Dropper_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plenum_Box_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Boarding_Clearance_by_MEP",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Framing_Levelling",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FC_Boarding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Joint_Taping_and_Sanding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Stucco_1st_and_2nd_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_First_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Grouting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Left_over_Screed",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Left_Over_Area_Floor_Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Left_Over_Area_Wall_Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Remaining_Grout_and_Silicone_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Final_Fixtures",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Final_Coat_Paint",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_CORRIDOR_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

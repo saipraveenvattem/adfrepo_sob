@@ -1,0 +1,115 @@
+{
+	"name": "DF_PLN_SERVICEROOM",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_O_PLN_ELECTRICALROOM_MAP_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_SERVICEROOMS",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          Update_Date as date,",
+				"          project_id as integer,",
+				"          Project_Identifier as string,",
+				"          Level_Id as integer,",
+				"          Sbu_Id as integer,",
+				"          tower as string,",
+				"          Type_of_work as string,",
+				"          value as decimal(19,8),",
+				"          Activity_Id as integer,",
+				"          Category as string,",
+				"          Level as string,",
+				"          Sclicer as string,",
+				"          Category_Map as integer",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT  \\n        UNION_ALL.Update_Date,    \\n        P.Sort_ID as project_id,\\n          p.Project_Identifier,\\n        LM.Level_Map_ID as Level_Id,\\n          SM.Sbu_Map_id as Sbu_Id,\\n            \\n        UNION_ALL.tower,\\n          \\n        CASE\\n            WHEN Type_of_work = \\'Blockwork\\' THEN \\'Blockwork ER\\'\\n            WHEN Type_of_work = \\'Blockwork Layout\\' THEN \\'Blockwork Layout ER\\'\\n            WHEN Type_of_work = \\'Bore Packing\\' THEN \\'Bore Packing ER\\'\\n            WHEN Type_of_work = \\'Bus bar with Tap off Box completion\\' THEN \\'Bus bar with Tap off Box completion ER\\'\\n            WHEN Type_of_work = \\'Cable laying and glanding works\\' THEN \\'Cable laying and glanding works ER\\'\\n            WHEN Type_of_work = \\'Ceiling First Coat Paint\\' THEN \\'Ceiling First Coat Paint ER\\'\\n            WHEN Type_of_work = \\'Ceiling Stucco (1st and 2nd Coat)\\' THEN \\'Ceiling Stucco (1st and 2nd Coat) ER\\'\\n            WHEN Type_of_work = \\'Core Cutting _and_ Chipping\\' THEN \\'Core Cutting _and_ Chipping ER\\'\\n            WHEN Type_of_work = \\'Cutting _and_ Chasing of Blockwork\\' THEN \\'Cutting _and_ Chasing of Blockwork ER\\'\\n            WHEN Type_of_work = \\'Door_Architrave Installation\\' THEN \\'Door_Architrave Installation ER\\'\\n            WHEN Type_of_work = \\'Door_Frame Installation\\' THEN \\'Door_Frame Installation ER\\'\\n            WHEN Type_of_work = \\'Door_Ironmongery Installation\\' THEN \\'Door_Ironmongery Installation ER\\'\\n            WHEN Type_of_work = \\'Door_Shutter Installation\\' THEN \\'Door_Shutter Installation ER\\'\\n            WHEN Type_of_work = \\'Door_Silicone\\' THEN \\'Door_Silicone ER\\'\\n            WHEN Type_of_work = \\'Epoxy Bug Fill\\' THEN \\'Epoxy Bug Fill ER\\'\\n            WHEN Type_of_work = \\'Epoxy Final Coat\\' THEN \\'Epoxy Final Coat ER\\'\\n            WHEN Type_of_work = \\'Epoxy First Coat\\' THEN \\'Epoxy First Coat ER\\'\\n            WHEN Type_of_work = \\'Epoxy Grinding\\' THEN \\'Epoxy Grinding ER\\'\\n            WHEN Type_of_work = \\'Epoxy Primer\\' THEN \\'Epoxy Primer ER\\'\\n            WHEN Type_of_work = \\'Final Coat Paint\\' THEN \\'Final Coat Paint ER\\'\\n            WHEN Type_of_work = \\'Fire Sealant Works\\' THEN \\'Fire Sealant Works ER\\'\\n            WHEN Type_of_work = \\'Floor Tile\\' THEN \\'Floor Tile ER\\'\\n            WHEN Type_of_work = \\'Grouting\\' THEN \\'Grouting ER\\'\\n            WHEN Type_of_work = \\'Installation of cable tray and trunking\\' THEN \\'Installation of cable tray and trunking ER\\'\\n            WHEN Type_of_work = \\'Installation of Panels\\' THEN \\'Installation of Panels ER\\'\\n            WHEN Type_of_work = \\'MEP Final Fixtures\\' THEN \\'MEP Final Fixtures ER\\'\\n            WHEN Type_of_work = \\'MEP Marking for Builders Work\\' THEN \\'MEP Marking for Builders Work ER\\'\\n            WHEN Type_of_work = \\'MEP Services Installation\\' THEN \\'MEP Services Installation ER\\'\\n            WHEN Type_of_work = \\'MEP Sleeve Installation\\' THEN \\'MEP Sleeve Installation ER\\'\\n            WHEN Type_of_work = \\'Plaster\\' THEN \\'Plaster ER\\'\\n            WHEN Type_of_work = \\'POP Works\\' THEN \\'POP Works ER\\'\\n            WHEN Type_of_work = \\'Screed\\' THEN \\'Screed ER\\'\\n            WHEN Type_of_work = \\'Signage\\' THEN \\'Signage ER\\'\\n            WHEN Type_of_work = \\'Silicone\\' THEN \\'Silicone ER\\'\\n            WHEN Type_of_work = \\'Skirting\\' THEN \\'Skirting ER\\'\\n            WHEN Type_of_work = \\'Threshold\\' THEN \\'Threshold ER\\'\\n            WHEN Type_of_work = \\'Wall First Coat Paint\\' THEN \\'Wall First Coat Paint ER\\'\\n            WHEN Type_of_work = \\'Wall MEP Services Packing\\' THEN \\'Wall MEP Services Packing ER\\'\\n            WHEN Type_of_work = \\'Wall Stucco (1st and 2nd Coat)\\' THEN \\'Wall Stucco (1st and 2nd Coat) ER\\'\\n            WHEN Type_of_work = \\'Ceiling First Coat Paint\\'  THEN \\'Ceiling First Coat Paint FLL\\'\\n            WHEN Type_of_work = \\'Ceiling Primer\\'  THEN \\'Ceiling Primer FLL\\'\\n            WHEN Type_of_work = \\'Cutting _and_ Chasing of Blockwork\\'  THEN \\'Cutting _and_ Chasing of Blockwork FLL\\'\\n            WHEN Type_of_work = \\'Door_Shutter Installation\\'THEN \\'Door_Shutter Installation TR\\'\\n            WHEN Type_of_work = \\'Epoxy Bug Fill\\'THEN \\'Epoxy Bug Fill TR\\'\\n            WHEN Type_of_work = \\'Epoxy Final Coat\\'THEN \\'Epoxy Final Coat TR\\'\\n            WHEN Type_of_work = \\'Epoxy First Coat\\'THEN \\'Epoxy First Coat TR\\'\\n            WHEN Type_of_work = \\'Epoxy Grinding\\'THEN \\'Epoxy Grinding TR\\'\\n            WHEN Type_of_work = \\'Epoxy Primer\\'THEN \\'Epoxy Primer TR\\'\\n            WHEN Type_of_work = \\'Final Coat Paint\\'THEN \\'Final Coat Paint TR\\'\\n            WHEN Type_of_work = \\'Floor Tile\\'THEN \\'Floor Tile TR\\'\\n            WHEN Type_of_work = \\'Grout\\'THEN \\'Grout TR\\'\\n            WHEN Type_of_work = \\'Installation of cable tray and trunking\\'THEN \\'Installation of cable tray and trunking TR\\'\\n            WHEN Type_of_work = \\'Installation of Panels\\'THEN \\'Installation of Panels TR\\'\\n            WHEN Type_of_work = \\'MEP Final Fixtures\\'THEN \\'MEP Final Fixtures TR\\'\\n            WHEN Type_of_work = \\'MEP Marking for Builders Work\\'THEN \\'MEP Marking for Builders Work TR\\'\\n            WHEN Type_of_work = \\'MEP Services Installation\\'THEN \\'MEP Services Installation TR\\'\\n            WHEN Type_of_work = \\'Plaster\\'THEN \\'Plaster TR\\'\\n            WHEN Type_of_work = \\'Screed\\'THEN \\'Screed TR\\'\\n            WHEN Type_of_work = \\'Signage\\'THEN \\'Signage TR\\'\\n            WHEN Type_of_work = \\'Skirting\\'THEN \\'Skirting TR\\'\\n            WHEN Type_of_work = \\'Threshold\\'THEN \\'Threshold TR\\'\\n            WHEN Type_of_work = \\'Wall First Coat Paint\\'THEN \\'Wall First Coat Paint TR\\'\\n            WHEN Type_of_work = \\'Wall MEP Services Packing\\'THEN \\'Wall MEP Services Packing TR\\'\\n            WHEN Type_of_work = \\'Wall Stucco (1st and 2nd Coat)\\'THEN \\'Wall Stucco (1st and 2nd Coat) TR\\'\\n            WHEN Type_of_work = \\'Blockwork\\'  THEN \\'Blockwork WMR\\'\\n            WHEN Type_of_work = \\'Blockwork Layout\\'  THEN \\'Blockwork Layout WMR\\'\\n            WHEN Type_of_work = \\'Bore Packing\\'  THEN \\'Bore Packing WMR\\'\\n            WHEN Type_of_work = \\'Ceiling Primer\\'  THEN \\'Ceiling Primer WMR\\'\\n            WHEN Type_of_work = \\'Ceiling Stucco (1st and 2nd Coat)\\'  THEN \\'Ceiling Stucco (1st and 2nd Coat) WMR\\'\\n            WHEN Type_of_work = \\'Core Cutting _and_ Chipping\\'  THEN \\'Core Cutting _and_ Chipping WMR\\'\\n            WHEN Type_of_work = \\'Cutting _and_ Chasing of Blockwork\\'  THEN \\'Cutting _and_ Chasing of Blockwork WMR\\'\\n            WHEN Type_of_work = \\'Door_Architrave Installation\\'  THEN \\'Door_Architrave Installation WMR\\'\\n            WHEN Type_of_work = \\'Door_Frame Installation\\'  THEN \\'Door_Frame Installation WMR\\'\\n            WHEN Type_of_work = \\'Door_Ironmongery Installation\\'  THEN \\'Door_Ironmongery Installation WMR\\'\\n            WHEN Type_of_work = \\'Door_Shutter Installation\\'  THEN \\'Door_Shutter Installation WMR\\'\\n            WHEN Type_of_work = \\'Door_Silicone\\'  THEN \\'Door_Silicone WMR\\'\\n            WHEN Type_of_work = \\'Epoxy Bug Fill\\'  THEN \\'Epoxy Bug Fill WMR\\'\\n            WHEN Type_of_work = \\'Epoxy Final Coat\\'  THEN \\'Epoxy Final Coat WMR\\'\\n            WHEN Type_of_work = \\'Epoxy First Coat\\'  THEN \\'Epoxy First Coat WMR\\'\\n            WHEN Type_of_work = \\'Epoxy Grinding\\'  THEN \\'Epoxy Grinding WMR\\'\\n            WHEN Type_of_work = \\'Epoxy Primer\\'  THEN \\'Epoxy Primer WMR\\'\\n            WHEN Type_of_work = \\'False Ceiling Boarding\\'  THEN \\'False Ceiling Boarding WMR\\'\\n            WHEN Type_of_work = \\'False Ceiling Framing\\'  THEN \\'False Ceiling Framing WMR\\'\\n            WHEN Type_of_work = \\'Fire Sealant Works\\'  THEN \\'Fire Sealant Works WMR\\'\\n            WHEN Type_of_work = \\'Floor Tile\\'  THEN \\'Floor Tile WMR\\'\\n            WHEN Type_of_work = \\'Grouting\\'  THEN \\'Grouting WMR\\'\\n            WHEN Type_of_work = \\'MEP Boarding Clearance\\'  THEN \\'MEP Boarding Clearance WMR\\'\\n            WHEN Type_of_work = \\'MEP Framing Clearance\\'  THEN \\'MEP Framing Clearance WMR\\'\\n            WHEN Type_of_work = \\'MEP Marking for Builders Work\\'  THEN \\'MEP Marking for Builders Work WMR\\'\\n            WHEN Type_of_work = \\'MEP Services Installation\\'  THEN \\'MEP Services Installation WMR\\'\\n            WHEN Type_of_work = \\'MEP Sleeve Installation\\'  THEN \\'MEP Sleeve Installation WMR\\'\\n            WHEN Type_of_work = \\'Plaster\\'  THEN \\'Plaster WMR\\'\\n            WHEN Type_of_work = \\'POP Works\\'  THEN \\'POP Works WMR\\'\\n            WHEN Type_of_work = \\'Screed\\'  THEN \\'Screed WMR\\'\\n            WHEN Type_of_work = \\'Skirting\\'  THEN \\'Skirting WMR\\'\\n            WHEN Type_of_work = \\'Threshold\\'  THEN \\'Threshold WMR\\'\\n            WHEN Type_of_work = \\'Wall First Coat Paint\\'  THEN \\'Wall First Coat Paint WMR\\'\\n            WHEN Type_of_work = \\'Wall MEP Services Packing\\'  THEN \\'Wall MEP Services Packing WMR\\'\\n            WHEN Type_of_work = \\'Wall Primer\\'  THEN \\'Wall Primer WMR\\'\\n            WHEN Type_of_work = \\'Wall Stucco (1st and 2nd Coat)\\'  THEN \\'Wall Stucco (1st and 2nd Coat) WMR\\'\\n             ELSE Type_of_work END AS Type_of_work,\\n          CAST(REPLACE(UNION_ALL.[value],\\'%\\',\\'\\') AS DECIMAL(15,4))/100 AS value,\\n        UNION_ALL.Activity_Id,\\n        UNION_ALL.Category,\\n          UNION_ALL.Level,\\n          UNION_ALL.Sclicer,\\n        CASE        \\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Blockwork\\') THEN  1\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Builders Work\\') THEN  2\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'MEP\\') THEN  16\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Plaster\\') THEN  3\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Screed\\') THEN  5\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Paint\\') THEN  8\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Gypsum\\') THEN  6\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Marble\\') THEN  10\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Tile\\') THEN  9\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Joinery\\') THEN  12\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Signage\\') THEN  7\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'SFD\\') THEN  15\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Epoxy\\') THEN  11\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Specialist Services\\') THEN  13\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Waterproofing\\')THEN  4\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Specialist System\\')THEN  14\\n            ELSE 20\\n        END AS Category_Map\\n    FROM (SELECT  * FROM [DWH].[PLN_WATERROOM_FACT]\\n            UNION ALL\\n        SELECT  * FROM [DWH].[PLN_ELECTRICROOM_FACT]\\n            UNION ALL\\n        SELECT  * FROM [DWH].[PLN_GARBAGEROOM_FACT]\\n            UNION ALL\\n        SELECT  * FROM [DWH].[PLN_TELEPHONEROOM_FACT]\\n            UNION ALL\\n        SELECT  * FROM [DWH].[PLN_FIRELIFTLOBBY_FACT])UNION_ALL\\n     \\n        LEFT JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] LM\\n          ON UNION_ALL.Level = LM.level\\n\\n          LEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON         UNION_ALL.PROJECT_ID=P.Sort_ID\\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          UNION_ALL.SBU_ID=SM.SBU_MAP_ID\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Id as integer,",
+				"          Update_Date as date,",
+				"          Project_Identifier as string,",
+				"          Project_Id as integer,",
+				"          Level_Id as integer,",
+				"          Sbu_ID as integer,",
+				"          Tower as string,",
+				"          Type_of_work as string,",
+				"          Level as string,",
+				"          Sclicer as string,",
+				"          Value as decimal(14,4),",
+				"          Activity_Id as integer,",
+				"          Category as string,",
+				"          Category_Map as integer,",
+				"          Load_Date_Time as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_SERVICEROOMS_FACT]'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Id = ID,",
+				"          Update_Date,",
+				"          Project_Identifier,",
+				"          Project_Id = project_id,",
+				"          Level_Id,",
+				"          Sbu_ID = Sbu_Id,",
+				"          Tower = tower,",
+				"          Type_of_work,",
+				"          Level,",
+				"          Sclicer,",
+				"          Value = value,",
+				"          Activity_Id,",
+				"          Category,",
+				"          Category_Map,",
+				"          Load_Date_Time = LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

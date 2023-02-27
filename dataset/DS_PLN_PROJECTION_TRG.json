@@ -1,0 +1,121 @@
+{
+	"name": "DS_PLN_PROJECTION_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Area",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_Description",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Projection_for_the_month",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Yesterday",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Plan_Yesterday",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Plan_as_on_date",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Actual_Yesterday",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Actual_as_on_date",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Shortfall_Reasons",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_Custom_Sort",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Achived",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Achived_90",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Update_Date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_PROJECTION_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

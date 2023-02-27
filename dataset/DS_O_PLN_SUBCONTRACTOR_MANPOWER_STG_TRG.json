@@ -1,0 +1,456 @@
+{
+	"name": "DS_O_PLN_SUBCONTRACTOR_MANPOWER_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "id_",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sub_Contractor",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SCL_Engineer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PM_And_Engineers_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PM_And_Engineers_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PM_And_Engineers_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Supervisor_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Supervisor_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Supervisor_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Foreman_Staff_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Foreman_Staff_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Foreman_Staff_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Chargehand_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Chargehand_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Chargehand_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Carpenter_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Carpenter_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Carpenter_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Mason_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Mason_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Mason_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Steel_Fitter_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Steel_Fitter_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Steel_Fitter_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Scaffolder_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Scaffolder_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Scaffolder_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Operator_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Operator_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Operator_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Security_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Security_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Security_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Helper_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Helper_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Helper_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Steel_Fixers_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Steel_Fixers_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Steel_Fixers_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Masons_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Masons_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Masons_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Welder_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Welder_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Welder_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Rigger_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Rigger_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Rigger_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Painter_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Painter_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Painter_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tile_Mason_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tile_Mason_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tile_Mason_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Gypsum_Carpenter_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Gypsum_Carpenter_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Gypsum_Carpenter_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Joinery_Carpenter_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Joinery_Carpenter_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Joinery_Carpenter_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed_Mason_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed_Mason_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed_Mason_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Marble_Stone_Mason_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Marble_Stone_Mason_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Marble_Stone_Mason_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Electrician_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Electrician_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Electrician_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plumber_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plumber_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plumber_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "HVAC_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "HVAC_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "HVAC_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sub_Contractor_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sub_Contractor_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sub_Contractor_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Technicians_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Technicians_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Technicians_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "POP_Mason_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "POP_Mason_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "POP_Mason_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Joinery_Polisher_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Joinery_Polisher_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Joinery_Polisher_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fitter_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fitter_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fitter_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Deep_Cleaning_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Deep_Cleaning_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Deep_Cleaning_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OTHERS_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OTHERS_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OTHERS_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sub_Total_D",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sub_Total_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sub_Total_D_N",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sub_Total",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_SUBCONTRACTOR_MANPOWER_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

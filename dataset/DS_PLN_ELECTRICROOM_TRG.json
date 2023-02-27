@@ -1,0 +1,84 @@
+{
+	"name": "DS_PLN_ELECTRICROOM_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Indentifer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Level_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sclicer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Value",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type_of_work",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Update_date",
+				"type": "date"
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_ELECTRICROOM_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,196 @@
+{
+	"name": "DS_O_PLN_FIRELIFTLOBBY_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "FIRELIFTLOBBY_RAW_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "varchar"
+			},
+			{
+				"name": "tower",
+				"type": "varchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "varchar"
+			},
+			{
+				"name": "Level",
+				"type": "varchar"
+			},
+			{
+				"name": "MEP_Marking_for_Builders_Work",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cutting_and_Chasing_of_Blockwork",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Services_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_MEP_Services_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Lift_Door_Installation_and_Jamb_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Beside_Lift_Door_Blockwork",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Beside_Lift_Door_Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_High_Level_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FC_Framing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Boarding_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FC_Boarding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Joint_Taping_and_Sanding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Stucco_1st_and_2nd_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_First_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Stucco_1st_and_2nd_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_First_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Floor Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door-Frame Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door-Architrave Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door-Shutter Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door-Ironmongery Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door-Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Grinding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Bug_Fill",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_First_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Final_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Skirting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Grout",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Signage",
+				"type": "nvarchar"
+			},
+			{
+				"name": "silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Final_Fixtures",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Final_Coat",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_FIRELIFTLOBBY_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,86 @@
+{
+	"name": "Corridor_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "Corridore_Map_Stg",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_CORRIDOR_MAP_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Corridore_Raw_STG",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Corridore_Map_Stg",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_CORRIDOR_RAW_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Corridore_Fact",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Corridore_Raw_STG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_CORRIDOR",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Project_Progress_summary",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Corridore_Fact",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_PROJECT_PROGRESS_SUMMARY_FACT",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Master"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-13T10:05:52Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

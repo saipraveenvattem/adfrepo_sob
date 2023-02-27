@@ -1,0 +1,132 @@
+{
+	"name": "DS_O_PLN_KEEPOUT_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Keepout_Raw_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_Time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Project_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Final_Coat_Paint_Dry_Area",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Final_Coat_Paint_Wet_Area",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Stamp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bathroom_Stamp_MEP_L8",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bathroom_Stamp_Civil_L9",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Kitchen_Stamp_MEP_I8",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Kitchen_Stamp_Civil_I9",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dry_Area_Stamp_Civil_F7",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dry_Area_Stamp_MEP_F8",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_NOC",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Civil_NOC",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Field_Report_1ST_Insp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Field_Report_2nd_Insp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Field_Report_1st_Insp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Facade_Field_Report_2nd_Insp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Civil_Field_Report_1st_Insp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Civil_Field_Report_2nd_Insp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SCL_Signoff",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PNCA_Signoff",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Keep_Out_QT",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_KEEPOUT_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

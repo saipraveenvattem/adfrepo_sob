@@ -1,0 +1,104 @@
+{
+	"name": "DS_F_PLN_PROJECTION_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Upload_Date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Project_Sclicer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Area",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_Description",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Projection_for_the_month",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Yesterday",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Plan_Yesterday",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Plan_as_on_date",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Actual_Yesterday",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Actual_as_on_date",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Shortfall_Reasons",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_Custom_Sort",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Achived",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			},
+			{
+				"name": "Achived_90",
+				"type": "decimal",
+				"precision": 15,
+				"scale": 2
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "F_PLN_PROJECTION_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

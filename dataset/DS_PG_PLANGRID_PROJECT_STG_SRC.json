@@ -1,0 +1,29 @@
+{
+	"name": "DS_PG_PLANGRID_PROJECT_STG_SRC",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Sobha_PG_DB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Project_Short_Code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Name",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Plangrid_Project"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

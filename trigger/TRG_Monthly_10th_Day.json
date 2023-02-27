@@ -1,0 +1,36 @@
+{
+	"name": "TRG_Monthly_10th_Day",
+	"properties": {
+		"description": "Runs every 10th of the month. Refreshes Business Plan tables. ",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "BusinessPlan_Master",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Month",
+				"interval": 1,
+				"startTime": "2023-02-22T10:44:00",
+				"timeZone": "Arabian Standard Time",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						22
+					],
+					"monthDays": [
+						10
+					]
+				}
+			}
+		}
+	}
+}

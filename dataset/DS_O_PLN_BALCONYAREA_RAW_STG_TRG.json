@@ -1,0 +1,172 @@
+{
+	"name": "DS_O_PLN_BALCONYAREA_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "BALCONYAREA_RAW_id_",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Marking_for_Rain_Water_Pipe",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Rain_water_pipe",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Rain_Water_Pipe_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balcony_Blockwork",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balcony_Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "F_channel_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Non_Shrink_Grout",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Top_Rail_Bracket_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EIFS_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balcony_EIFS_Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Grinding_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Skim_Coat_and_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balcony_Screed",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Drain_Fixing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Balcony_Box_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Left_Over_Screed_If_any",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EIFS_Wall_Texture",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balustrade_Glass_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balustrade_Top_Rail",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balcony_Under_Tile_Water_Proofing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balcony_Floor_Tiling",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balcony_Skirting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Metal_Ceiling",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Texture",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Complete_Wall_Texture",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balcony_Grouting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balcony_Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Final_Fixtures",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balcony_Final_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cover_plate_BW_ACP_and_EIFS",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_BALCONYAREA_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

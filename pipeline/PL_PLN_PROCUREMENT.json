@@ -1,0 +1,47 @@
+{
+	"name": "PL_PLN_PROCUREMENT",
+	"properties": {
+		"activities": [
+			{
+				"name": "Procurement",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_PLN_PROCUREMENT",
+						"type": "DataFlowReference",
+						"parameters": {
+							"MAXID": "0"
+						}
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "LS_AzureDataLakeStorage",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "sobhasyndatafs01/Staging_Folder"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-08T22:55:06Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,96 @@
+{
+	"name": "DS_O_PLN_CRITICAL_ISSUE_TRACKER_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "CRITICAL_ISSUE_TRACKER_id_",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "varchar"
+			},
+			{
+				"name": "tower",
+				"type": "varchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "varchar"
+			},
+			{
+				"name": "Sl_No",
+				"type": "varchar"
+			},
+			{
+				"name": "Reference_Number",
+				"type": "varchar"
+			},
+			{
+				"name": "PR_PO_Other_Ref_No",
+				"type": "varchar"
+			},
+			{
+				"name": "Raised_On",
+				"type": "varchar"
+			},
+			{
+				"name": "SBU_Issue_Raised_by",
+				"type": "varchar"
+			},
+			{
+				"name": "Project",
+				"type": "varchar"
+			},
+			{
+				"name": "Issue_Description",
+				"type": "varchar"
+			},
+			{
+				"name": "Pending_With",
+				"type": "varchar"
+			},
+			{
+				"name": "Current_Status",
+				"type": "varchar"
+			},
+			{
+				"name": "Impact_On",
+				"type": "varchar"
+			},
+			{
+				"name": "Target_Closure_Date",
+				"type": "varchar"
+			},
+			{
+				"name": "Status",
+				"type": "varchar"
+			},
+			{
+				"name": "Actual_Closure_Date",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_CRITICAL_ISSUE_TRACKER_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

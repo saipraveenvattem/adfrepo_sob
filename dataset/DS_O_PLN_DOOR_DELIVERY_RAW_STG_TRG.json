@@ -1,0 +1,92 @@
+{
+	"name": "DS_O_PLN_DOOR_DELIVERY_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "door_delivery_raw_id_",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sr_No",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Building",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Delivery_Order_No",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Delivery_Date",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Element",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fire_Rating",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Orientation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Quantity_Sets",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Quantity_Nos",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Remarks",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Vendor",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "o_pln_door_delivery_raw_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,145 @@
+{
+	"name": "DS_DT_RFIS_SUBMITTALS_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "RFIS_SUBMITTALS_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Department_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Submittion_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Submittal_ref_no",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Submittal_desc",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Submitted_on",
+				"type": "date"
+			},
+			{
+				"name": "Pnca_commitment_date",
+				"type": "date"
+			},
+			{
+				"name": "Pnca_commitment",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Response_required_date",
+				"type": "date"
+			},
+			{
+				"name": "Delays",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actual_received_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Plangrid_link",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Pending_with",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Pending_status",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Reassigned_to",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Reassigned_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Reassigned_by",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Closed_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Closed_by",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Status",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Remarks",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Created_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Updated_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Created_by",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Updated_by",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "DT_RFIS_SUBMITTALS_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,56 @@
+{
+	"name": "DS_O_PLN_DOORMANPOWER_MAP_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "O_PLN_DOORMANPOWER_MAP_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC_NAME",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC_Short",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_DOORMANPOWER_MAP_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

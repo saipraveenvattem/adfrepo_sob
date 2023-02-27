@@ -1,0 +1,322 @@
+{
+	"name": "ServiceRoom_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "OPLNWATERROOMRAWSTG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_WATERROOM_RAW_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "OPLNWATERROOMMAPSTG",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "OPLNWATERROOMRAWSTG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_WATERROOM_MAP_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PLNWATERROOMFACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "OPLNWATERROOMMAPSTG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_WATERROOM",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "OPLNELECTRICALROOMRAWSTG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_ELECTRICALROOM_RAW_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "OPLNELECTRICALROOMMAPSTG",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "OPLNELECTRICALROOMRAWSTG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_ELECTRICALROOM_MAP_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PLNELECTRICROOMFACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "OPLNELECTRICALROOMMAPSTG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_ELECTRICROOM",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "OPLNGARBAGEROOMRAWSTG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_GARBAGEROOM_RAW_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "OPLNGARBAGEROOMMAPSTG",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "OPLNGARBAGEROOMRAWSTG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_GARBAGEROOM_MAP_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PLNGARBAGEROOMFACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "OPLNGARBAGEROOMMAPSTG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_GARBAGEROOM",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "OPLNTELEPHONEROOMRAWSTG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_TELEPHONEROOM_RAW_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "OPLNTELEPHONEROOMMAPSTG",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "OPLNTELEPHONEROOMRAWSTG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_TELEPHONEROOM_MAP_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PLNTELEPHONEROOMFACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "OPLNTELEPHONEROOMMAPSTG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_TELEPHONEROOM",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "OPLNFIRELIFTLOBBYRAWSTG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_FIRELIFTLOBBY_RAW_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "OPLNFIRELIFTLOBBYMAPSTG",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "OPLNFIRELIFTLOBBYRAWSTG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_FIRELIFTLOBBY_MAP_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PLNFIRELIFTLOBBYFACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "OPLNFIRELIFTLOBBYMAPSTG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_FIRELIFTLOBBY",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PLNSERVICEROOMSFACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "PLNWATERROOMFACT",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PLNELECTRICROOMFACT",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PLNGARBAGEROOMFACT",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PLNTELEPHONEROOMFACT",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PLNFIRELIFTLOBBYFACT",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_SERVICEROOM_FACT",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Master"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-10T12:49:47Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

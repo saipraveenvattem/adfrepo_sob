@@ -1,0 +1,484 @@
+{
+	"name": "DS_O_PLN_DRYAREA_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "DryArea_Raw_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "HSE_Clearance_for_Deshuttering",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Riser_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LPG_Pipe",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Blockwork_Layout_Marking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Blockwork_First_Layer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Blockwork_with_1mtr_marking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "GI_Lintel",
+				"type": "nvarchar"
+			},
+			{
+				"name": "RCC_Lintel_Stiffener",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Above_Lintel_Block_Work",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Head_Restraints_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fire_Sealant_Works_and_PU_Foam_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Marking_for_HL_Builders_Work",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Blockwork_Cutting_for_MEP_Services",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Wall_Marking_for_Cutting_and_Chasing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bull_Marking_for_Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sub_Frame",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Corner_Bead_Fixing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cutting_And_Chasing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Plastering_Clearance_Box_fixing_and_Pipe_setting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ONU_DB_And_All_MEP_works_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ONU_DB_And_All_MEP_works_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dry_Area_Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plastering_Clearance_with_1_Meter_Marking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Center_line_marking_for_Facade_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UCW_Starter_Gutter",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UCW_Brackets",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UCW_Panels",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UCW_Alignment",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dry_Area_Tile_Marking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dry_Area_Bore_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dry_Area_Screed",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed_Curing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Primer_Stucco_banding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bulk_Head",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_H_L_Wiring",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_H_L_Framing_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fire_Sealant_works_around_ducts",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dry_Area_FC_Framing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wardrobe_Nib_wall",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_H_L_Boarding_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FC_Boarding_with_Joint_Taping",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Primer_Ceiling",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Stucco_1st_Coat_Ceiling",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Stucco_2nd_Coat_Ceiling",
+				"type": "nvarchar"
+			},
+			{
+				"name": "First_Coat_Paint_Ceiling",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Main_Door_Threshold",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dry_Area_Floor_Tiling",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dry_Area_Skirting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "POP_Above_Skirting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Hinge_Door_Box_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed_near_Hinge_Door",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Hinge_Door_Frame_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Curtain_Wall_Box_Section",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Curtain_Wall_Frame_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Curtain_Wall_Glass_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UCW_GI_Sheet_Installation_Wall",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UCW_GI_Sheet_Installation_Floor",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed_near_Curtain_Wall",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sliding_Door_Box_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sliding_Door_Frame_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed_near_Sliding_Door",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Left_Over_Tile_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Left_Over_Skirting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tile_Grouting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tile_Silicone_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Curtain_Wall_Mullion",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Curtain_Wall_Flashing_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Curtain_Wall_Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UCW_Firestop_and_Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UCW_GI_Flashing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Hinge_Door_Glass_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Hinge_Door_Internal_Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Hinge_Door_Alignment",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Hinge_Door_External_Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sliding_Door_Glass_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sliding_Door_Internal_Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sliding_Door_Alignment",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sliding_Door_External_Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Window_Jamb_Corner_Pelmet_Area_Shadow_Angle_POP_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Stucco_1st_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_stucco_2nd_coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Paint_1st_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Frame_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Architrave_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Shutter_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Ironmongery_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Silicone_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cut_piece_Skirting_near_Door",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Gas_Meter_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Kitchen_Appliances",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wardrobe_Carcass_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wardrobe_Shutter_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wardrobe_Silicone_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cut_piece_Skirting_near_Wardrobe",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Air_Balancing_for_FCU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FCU_Closure_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "VCD_Closure_FCU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Air_Balancing_for_FAHU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FAHU_Closure_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "VCD_Closure_FAHU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Final_Fixtures_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Access_Panel_Final_Coat_and_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dry_Area_Final_Coat_Preparation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dry_Area_Final_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Thermostat_Cover_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Intercom_Cover_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ONU_And_DB_Panel_Door",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Switch_socket_Cover_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Upload_Time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_DRYAREA_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

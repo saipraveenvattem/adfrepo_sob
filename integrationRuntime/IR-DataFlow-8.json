@@ -1,0 +1,17 @@
+{
+	"name": "IR-DataFlow-8",
+	"properties": {
+		"type": "Managed",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "UAE North",
+				"dataFlowProperties": {
+					"computeType": "MemoryOptimized",
+					"coreCount": 16,
+					"timeToLive": 10,
+					"cleanup": false
+				}
+			}
+		}
+	}
+}

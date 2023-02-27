@@ -1,0 +1,65 @@
+{
+	"name": "KeepOut_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "Keepout_Map_Stg",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_KEEPOUTS_MAP_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "KeepOut_Raw",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_KEEPOUT_RAW_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Keepout_Fact",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "KeepOut_Raw",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Keepout_Map_Stg",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_KEEPOUT",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Master"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-24T07:52:38Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

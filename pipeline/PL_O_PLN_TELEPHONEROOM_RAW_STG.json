@@ -1,0 +1,518 @@
+{
+	"name": "PL_O_PLN_TELEPHONEROOM_RAW_STG",
+	"properties": {
+		"activities": [
+			{
+				"name": "O_PLN_TELEPHONEROOM_RAW",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"preCopyScript": "TRUNCATE TABLE [STG].[O_PLN_TELEPHONEROOM_RAW_STG];",
+						"writeBehavior": "Insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id_",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Telephoneroom_Raw_id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Level",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Level",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Blockwork Layout",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Blockwork_Layout",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Blockwork",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Blockwork",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP Marking for Builders Work",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_Marking_for_Builders_Work",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Cutting & Chasing of Blockwork",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Cutting_&_Chasing_of_Blockwork",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP Services Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_Services_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Wall MEP Services Packing",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Wall_MEP_Services_Packing",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Plaster",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Plaster",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Screed",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Screed",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Ceiling Stucco (1st and 2nd Coat)",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Ceiling_Stucco_(1st_and_2nd_Coat)",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Wall Stucco (1st and 2nd Coat)",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Wall_Stucco_(1st_and_2nd_Coat)",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Ceiling First Coat Paint",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Ceiling_First_Coat_Paint",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Wall First Coat Paint",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Wall_First_Coat_Paint",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Installation of cable tray and trunking",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Installation_of_cable_tray_and_trunking",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Installation of Panels",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Installation_of_Panels",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Cable laying and glanding works",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Cable_laying_and_glanding_works",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Fire Sealant",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Fire_Sealant",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Epoxy Grinding",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Epoxy_Grinding",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Epoxy Bug Fill",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Epoxy_Bug_Fill",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Epoxy Primer",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Epoxy_Primer",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Epoxy First Coat",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Epoxy_First_Coat",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Epoxy Final Coat",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Epoxy_Final_Coat",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Floor Tile",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Floor_Tile",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Skirting",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Skirting",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "POP",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "POP",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Grout",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Grout",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Threshold",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Threshold",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Door-Frame Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Door_Frame_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Door-Architrave Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Door_Architrave_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Door-Shutter Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Door_Shutter_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Door-Ironmongery Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Door_Ironmongery_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP Final Fixtures",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_Final_Fixtures",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Final Coat Paint",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Final_Coat_Paint",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_O_PLN_TELEPHONEROOM_RAW_STG_SRC",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_O_PLN_TELEPHONEROOM_RAW_STG_TRG",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-09T14:55:44Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

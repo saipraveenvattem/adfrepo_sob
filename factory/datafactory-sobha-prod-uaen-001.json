@@ -1,0 +1,9 @@
+{
+	"name": "datafactory-sobha-prod-uaen-001",
+	"location": "uaenorth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2763c7ef-5f23-4e9b-b5d1-2e28f66d09ac",
+		"tenantId": "48affa70-828c-4a3a-8c85-381663b7463b"
+	}
+}

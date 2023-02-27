@@ -1,0 +1,43 @@
+{
+	"name": "DS_O_SBU_MAPPING_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "SBU_MAPPING_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Mapping_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Sbu_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sbu_Shorts",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sbu_Description",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_SBU_MAPPING_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

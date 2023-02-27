@@ -1,0 +1,86 @@
+{
+	"name": "DS_O_PLN_BUSINESS_PLAN_1_STG_SRC",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_MySQL_DL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "Upload_date",
+				"type": "date",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "project_id",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Type",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SBU",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Month",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "value",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DENSE_RANK",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "sbu_sort",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "month_sort",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "year_sort",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Cummulative",
+				"type": "double",
+				"precision": 0,
+				"scale": 31
+			}
+		],
+		"typeProperties": {
+			"tableName": "f_pln_business_plan_1"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

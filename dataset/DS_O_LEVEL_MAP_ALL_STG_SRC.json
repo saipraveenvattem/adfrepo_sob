@@ -1,0 +1,32 @@
+{
+	"name": "DS_O_LEVEL_MAP_ALL_STG_SRC",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_MySQL_DL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [
+			{
+				"name": "level_map",
+				"type": "int",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "level",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"tableName": "o_level_map_all"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

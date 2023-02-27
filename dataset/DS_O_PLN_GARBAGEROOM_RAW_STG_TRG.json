@@ -1,0 +1,200 @@
+{
+	"name": "DS_O_PLN_GARBAGEROOM_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "GARBAGEROOM_RAW_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "varchar"
+			},
+			{
+				"name": "tower",
+				"type": "varchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "varchar"
+			},
+			{
+				"name": "Level",
+				"type": "varchar"
+			},
+			{
+				"name": "Outer_Wall_Blockwork",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Garbage_chute_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Piping_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Pressure_test_and_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Inner_wall_Blockwork",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Marking_for_Builders_Work",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cutting_and_Chasing_of_Blockwork",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Services_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_MEP_Services_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Core_Cutting_and_Chipping",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Sleeve_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Bore_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Under_Screed_Water_Proofing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Screed",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Framing_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "False_Ceiling_Framing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Boarding_Clearance",
+				"type": "nvarchar"
+			},
+			{
+				"name": "False_Ceiling_Boarding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Stucco_1st_and_2nd_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_First_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Under_Tile_Water_Proofing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Threshold",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Floor_Tile",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Skirting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Grouting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Hopper_Door",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Frame_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Architrave_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Shutter_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Ironmongery_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Silicone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Signage",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Final_Fixtures",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Final_Coat_Paint",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_GARBAGEROOM_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,638 @@
+{
+	"name": "PL_O_PLN_KEEPOUT_DETAILED_RAW_STG",
+	"properties": {
+		"activities": [
+			{
+				"name": "O_PLN_KEEPOUT_DETAILED_RAW",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"preCopyScript": "TRUNCATE TABLE [STG].[O_PLN_KEEPOUT_DETAILED_RAW_STG];",
+						"writeBehavior": "Insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id_",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Keepout_Detailed_Raw_Id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "Upload_Time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Project_ID",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Tower",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sbu_Id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Level",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Level",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Flat No.",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Flat_No",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Apartment Type",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Apartment_Type",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "WIR - Final Coat Paint Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "WIR_Final_Coat_Paint_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "WIR - Final Coat Paint Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "WIR_Final_Coat_Paint_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "F6 / F7 Final Coat Paint - Stamp Closure Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "F6_F7_Final_Coat_Paint_Stamp_Closure_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "F6 / F7 Final Coat Paint - Stamp Closure Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "F6_F7_Final_Coat_Paint_Stamp_Closure_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Deep Cleaning Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Deep_Cleaning_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Deep Cleaning Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Deep_Cleaning_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Facade Stamp Closing Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Facade_Stamp_Closing_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Facade Stamp Closing Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Facade_Stamp_Closing_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP Final Fixtures Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_Final_Fixtures_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP Final Fixtures Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_Final_Fixtures_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP T&C Stamps Closure Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_T_AND_C_Stamps_Closure_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP T&C Stamps Closure Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_T_AND_C_Stamps_Closure_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "F7 Stamp Closure Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "F7_Stamp_Closure_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "F7 Stamp Closure Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "F7_Stamp_Closure_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP NOC in Draft / Assign to MEP QC Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_NOC_in_Draft_Assign_to_MEP_QC_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP NOC in Draft / Assign to MEP QC Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_NOC_in_Draft_Assign_to_MEP_QC_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Civil NOC in Draft / Assign to Civil QC Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Civil_NOC_in_Draft_Assign_to_Civil_QC_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Civil NOC in Draft / Assign to Civil QC Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Civil_NOC_in_Draft_Assign_to_Civil_QC_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP NOC Submission Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_NOC_Submission_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP NOC Submission Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_NOC_Submission_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CIVIL NOC Submission Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CIVIL_NOC_Submission_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CIVIL NOC Submission Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "CIVIL_NOC_Submission_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Facade Field report 1st inspection Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Facade_Field_report_1st_inspection_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Facade Field report 1st inspection Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Facade_Field_report_1st_inspection_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Facade Field Report assign to MEP Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Facade_Field_Report_assign_to_MEP_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Facade Field Report assign to MEP Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Facade_Field_Report_assign_to_MEP_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP Stamp Field report 1st inspection Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_Stamp_Field_report_1st_inspection_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP Stamp Field report 1st inspection Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_Stamp_Field_report_1st_inspection_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP Field report submission Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_Field_report_submission_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP Field report submission Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_Field_report_submission_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Civil Field report 1st inspection Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Civil_Field_report_1st_inspection_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Civil Field report 1st inspection Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Civil_Field_report_1st_inspection_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Civil Field Report Submission Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Civil_Field_Report_Submission_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Civil Field Report Submission Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Civil_Field_Report_Submission_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SCL Keep-out Stamp (N1) -Into Review Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SCL_Keep_out_Stamp_N1_Into_Review_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SCL Keep-out Stamp (N1) -Into Review Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SCL_Keep_out_Stamp_N1_Into_Review_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PNCA Keep-out (N1) Into Pending Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PNCA_Keep_out_N1_Into_Pending_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PNCA Keep-out (N1) Into Pending Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PNCA_Keep_out_N1_Into_Pending_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "QT Inspection Keep-out Stamp (N1) Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "QT_Inspection_Keep_out_Stamp_N1_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "QT Inspection Keep-out Stamp (N1) Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "QT_Inspection_Keep_out_Stamp_N1_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_O_PLN_KEEPOUT_DETAILED_RAW_STG_SRC",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_O_PLN_KEEPOUT_DETAILED_RAW_STG_TRG",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-12T15:29:08Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

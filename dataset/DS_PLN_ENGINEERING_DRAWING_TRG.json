@@ -1,0 +1,290 @@
+{
+	"name": "DS_PLN_ENGINEERING_DRAWING_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Villa_Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Drawing_Number",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Drawing_Title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Scheduled_Date",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PNCA_commitment",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R0",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R0_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R1",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R1_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R2",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R2_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R3",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R3_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R4",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R4_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R5",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R5_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R6",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R6_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R7",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R7_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R8",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R8_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R9",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R9_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R10",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R10_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R11",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R11_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R12",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R12_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R13",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R13_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R14",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R14_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R15",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R15_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R16",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R16_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R17",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R17_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R18",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R18_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R19",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R19_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R20",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R20_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R21",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R21_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R22",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R22_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R23_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R24",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R24_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R25",
+				"type": "nvarchar"
+			},
+			{
+				"name": "R25_Trans_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Update_Date",
+				"type": "date"
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_ENGINEERING_DRAWING_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

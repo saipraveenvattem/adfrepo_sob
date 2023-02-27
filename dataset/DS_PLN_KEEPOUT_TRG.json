@@ -1,0 +1,95 @@
+{
+	"name": "DS_PLN_KEEPOUT_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_Date",
+				"type": "date"
+			},
+			{
+				"name": "Project_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sbu_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Level_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type_of_work",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Real_Value",
+				"type": "date"
+			},
+			{
+				"name": "Value",
+				"type": "decimal",
+				"precision": 14,
+				"scale": 4
+			},
+			{
+				"name": "CATEGORY_SORT",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_KEEPOUT_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

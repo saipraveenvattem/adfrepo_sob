@@ -1,0 +1,47 @@
+{
+	"name": "PL_PLN_BALCONYAREA",
+	"properties": {
+		"activities": [
+			{
+				"name": "Balcony Area",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_PLN_BALCONYAREA",
+						"type": "DataFlowReference",
+						"parameters": {
+							"MAX_ID": "0"
+						}
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "LS_AzureDataLakeStorage",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "sobhasyndatafs01/Staging_Folder"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-08T12:58:43Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

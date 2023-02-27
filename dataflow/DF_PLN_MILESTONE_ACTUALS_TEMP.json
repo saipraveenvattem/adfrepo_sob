@@ -1,0 +1,102 @@
+{
+	"name": "DF_PLN_MILESTONE_ACTUALS_TEMP",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_O_PLN_MILESTONE_ACTUALS_TEMP_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"description": "Import data from DS_O_PLN_MILESTONE_ACTUALS_TEMP_STG_TRG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_MILESTONE_ACTUALS_TEMP_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "Export data to DS_PLN_MILESTONE_ACTUALS_TEMP_TRG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          Project_ID as integer,",
+				"          SBU_Map_ID as integer,",
+				"          Milestone_Actuals_Temp_Id as integer,",
+				"          Upload_time as timestamp,",
+				"          Tower as string,",
+				"          Group as string,",
+				"          Activity as string,",
+				"          Actual_Percentage as string",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select \\n     \\n     p. Sort_ID as [Project_ID] ,\\n     sm.[SBU_Map_ID] ,\\n     [Milestone_Actuals_Temp_Id] ,\\n     [Upload_time] ,\\n     --[Project_ID] [nvarchar](1000)  NULL,\\n     [Tower] ,\\n     --[Sbu_ID] [nvarchar](1000)  NULL,\\n     [Group] ,\\n     [Activity] ,\\n     [Actual_Percentage] \\n\\nFROM [STG].[O_PLN_MILESTONE_ACTUALS_TEMP_STG] PP\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          PP.[Project_ID]=P.PROJECT_IDENTIFIER \\n     LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          PP.SBU_id=SM.SBU_IDENTIFIER\\n\\n\\n',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          Project_ID as integer,",
+				"          SBU_ID as integer,",
+				"          Milestone_Actuals_Temp_Id as integer,",
+				"          Upload_time as timestamp,",
+				"          Tower as string,",
+				"          Group as string,",
+				"          Activity as string,",
+				"          Actual_Percentage as string,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_MILESTONE_ACTUALS_TEMP_FACT];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID,",
+				"          Project_ID,",
+				"          SBU_ID = SBU_Map_ID,",
+				"          Milestone_Actuals_Temp_Id,",
+				"          Upload_time,",
+				"          Tower,",
+				"          Group,",
+				"          Activity,",
+				"          Actual_Percentage,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

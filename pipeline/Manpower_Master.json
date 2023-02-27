@@ -1,0 +1,79 @@
+{
+	"name": "Manpower_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "MANPOWER_MERGE_STG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_MANPOWER_MERGE_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "O_PLN_SUBCONTRACTOR_MANPOWER_STG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_SUBCONTRACTOR_MANPOWER_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PLN_MANPOWER_MERGE_FACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "MANPOWER_MERGE_STG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_MANPOWER_MERGE",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PLN_SUBCONTRACTOR_MANPOWER_FACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "O_PLN_SUBCONTRACTOR_MANPOWER_STG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_SUBCONTRACTOR_MANPOWER",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Master"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-14T09:41:27Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

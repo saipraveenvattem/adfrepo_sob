@@ -1,0 +1,54 @@
+{
+	"name": "Nexgen_Local_Checkinout",
+	"properties": {
+		"description": "Connect to your data source store.",
+		"linkedServiceName": {
+			"referenceName": "NexgenLocalUserinfo",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"structure": [
+			{
+				"name": "id",
+				"type": "Int32"
+			},
+			{
+				"name": "userid",
+				"type": "Int32"
+			},
+			{
+				"name": "checktime",
+				"type": "DateTime"
+			},
+			{
+				"name": "checktype",
+				"type": "String"
+			},
+			{
+				"name": "verifycode",
+				"type": "Int32"
+			},
+			{
+				"name": "SN",
+				"type": "String"
+			},
+			{
+				"name": "sensorid",
+				"type": "String"
+			},
+			{
+				"name": "WorkCode",
+				"type": "String"
+			},
+			{
+				"name": "Reserved",
+				"type": "String"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[checkinout]"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,141 @@
+{
+	"name": "DS_PLN_KEEPOUT2_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Date",
+				"type": "date"
+			},
+			{
+				"name": "project_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flat_No",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Apartment_Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ACTIVITY_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Engineer_Responsible",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity",
+				"type": "nvarchar"
+			},
+			{
+				"name": "delay_pln",
+				"type": "date"
+			},
+			{
+				"name": "Plan",
+				"type": "date"
+			},
+			{
+				"name": "Count_Pln",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Predecessor_Plan",
+				"type": "date"
+			},
+			{
+				"name": "Predecessor_Plan_Work_Front",
+				"type": "date"
+			},
+			{
+				"name": "Predecessor",
+				"type": "nvarchar"
+			},
+			{
+				"name": "delay_act",
+				"type": "date"
+			},
+			{
+				"name": "Actual",
+				"type": "date"
+			},
+			{
+				"name": "Count_Act",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Predecessor_Actual",
+				"type": "date"
+			},
+			{
+				"name": "Predecessor_Actual_Work_Front",
+				"type": "date"
+			},
+			{
+				"name": "SLA_Planned",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SLA_Actual",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SLA",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actual_SLA_Title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_KEEPOUT_2_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

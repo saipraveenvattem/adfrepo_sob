@@ -1,0 +1,53 @@
+{
+	"name": "DS_PG_Plangrid_Cluster_Mapping_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Stamp_First",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Stamp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cluster_Short",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cluster_Full",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Approval",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Clearance",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "PG_Plangrid_Cluster_Mapping_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

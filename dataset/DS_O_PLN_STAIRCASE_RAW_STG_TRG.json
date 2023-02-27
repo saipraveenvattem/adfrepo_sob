@@ -1,0 +1,204 @@
+{
+	"name": "DS_O_PLN_STAIRCASE_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "STAIRCASE_RAW_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Stair_Case_No",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Conduit_Marking",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cutting_and_Chasing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Conduit_Fixtures",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Packing",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Grinding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "POP",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Medium_Coat_Ceiling_Spray_Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Two_Coat_Fine_Ceiling_Spray_Plaster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_Texture",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Stucco_banding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_Stucco_(1st_and_2nd_Coat)",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Pressurization_Equipment",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sanding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Wall_First_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ceiling_First_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Handrail_Floor_Mounted",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Handrail_Wall_Mounted",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Grinding",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Bug_Fill",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Primer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Base_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Epoxy_Final_Coat",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Threshold_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Frame_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Architrave_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Shutter_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Ironmongery_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Silicone_Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Signage",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Nosing_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Handrail_Painting",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Preparation_for_Final_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MEP_Final_Fixtures_Installation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Final_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Staircase_Pressurization",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_STAIRCASE_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

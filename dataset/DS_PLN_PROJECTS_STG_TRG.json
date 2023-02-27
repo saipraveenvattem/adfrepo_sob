@@ -1,0 +1,64 @@
+{
+	"name": "DS_PLN_PROJECTS_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Project_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Short",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flat_Count",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Total_Floors",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Total_Podiums",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Total_Typical_Floor",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Typical_Floor_Slab",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Podium_Slab",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "PROJECTS_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

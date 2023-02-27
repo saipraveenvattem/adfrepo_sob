@@ -1,0 +1,66 @@
+{
+	"name": "Struncture_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "O_PLN_STRUCTURES_POUR_MAP_STG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_STRUCTURES_POUR_MAP_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "O_PLN_STRUCTURE_POURING_STG",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "O_PLN_STRUCTURES_POUR_MAP_STG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_STRUCTURE_POURING_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PLN_STRUCTURE_FACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "O_PLN_STRUCTURE_POURING_STG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_STRUCTURE",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Master"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-13T08:33:06Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

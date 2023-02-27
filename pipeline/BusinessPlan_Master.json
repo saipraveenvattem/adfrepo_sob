@@ -1,0 +1,46 @@
+{
+	"name": "BusinessPlan_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "O_PLN_BUSSINESS_PLAN_1_STG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_BUSSINESS_PLAN_1_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "BusinessPlan_Fact",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "O_PLN_BUSSINESS_PLAN_1_STG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_PLN_BUSINESS_PLN_1",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Master"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-22T10:47:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

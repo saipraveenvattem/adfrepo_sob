@@ -1,0 +1,115 @@
+{
+	"name": "DF_PLN_CORRIDOR",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_O_PLN_CORRIDOR_RAW_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_CORRIDOR_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          PROJECT_ID as integer,",
+				"          LEVEL_ID as integer,",
+				"          SBU_ID as integer,",
+				"          TOWER as string,",
+				"          Activity_Id as integer,",
+				"          PROJECT_IDENTIFIER as string,",
+				"          LEVEL as string,",
+				"          Scilicer as string,",
+				"          value as integer,",
+				"          TYPE_OF_WORK as string,",
+				"          CATEGORY as string,",
+				"          CATEGORY_SORT as integer,",
+				"          UPLOAD_DATE as date",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT \\n    P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n    A.TOWER    ,\\n     A.Activity_Id,\\n     P.PROJECT_IDENTIFIER,\\n     A.LEVEL,\\n     \\'Corridor\\' as Scilicer,\\n  CASE\\n            WHEN TRIM(A.value) IN (\\'\\',\\'-\\',\\'0%\\',\\'00%\\') THEN 0\\n            WHEN A.value IS NOT NULL AND TRIM(A.value) NOT IN (\\'\\',\\'-\\',\\'0%\\',\\'00%\\') THEN 1\\n            ELSE 0\\n        END AS value,\\n    A.TYPE_OF_WORK    ,\\n    A.CATEGORY   ,\\n\\n          CASE \\n            WHEN TRIM(A.CATEGORY) IN(\\'BUILDERS WORK\\') THEN  2\\n            WHEN TRIM(A.CATEGORY) IN(\\'MEP\\') THEN  12\\n            WHEN TRIM(A.CATEGORY) IN(\\'PLASTER\\') THEN  3\\n            WHEN TRIM(A.CATEGORY) IN(\\'SCREED\\') THEN  5\\n            WHEN TRIM(A.CATEGORY) IN(\\'TILE\\') THEN  9\\n            WHEN TRIM(A.CATEGORY) IN(\\'MARBLE\\') THEN  10\\n            WHEN TRIM(A.CATEGORY) IN(\\'FACADE\\') THEN  11\\n            WHEN TRIM(A.CATEGORY) IN(\\'GYAUM\\') THEN  6\\n            WHEN TRIM(A.CATEGORY) IN(\\'PAINT\\') THEN  8\\n            ELSE 20\\n        END AS CATEGORY_SORT,\\n    A.UPLOAD_DATE  \\n         \\nFROM\\n(\\n        SELECT CAST(O_PLN_CORRIDOR_RAW.UPLOAD_TIME AS DATE) AS UPLOAD_DATE,\\n        O_PLN_CORRIDOR_RAW.PROJECT_ID,\\n        O_PLN_CORRIDOR_RAW.TOWER,\\n        O_PLN_CORRIDOR_RAW.LEVEL,\\n     COLUMN_NAME.* ,\\n        \\'CORRIDOR\\' AS SCLICER,\\n       \\n        O_PLN_CORRIDOR_MAP.ACTIVITY_ID,\\n        O_PLN_CORRIDOR_MAP.SBU_ID,\\n        O_PLN_CORRIDOR_MAP.CATEGORY,\\n\\n        DENSE_RANK () OVER     (PARTITION BY  PROJECT_ID\\n                            ORDER BY  CAST(UPLOAD_TIME AS DATE) DESC\\n                            )     PROJECT_UDATE_DRANK\\n FROM [STG].[O_PLN_CORRIDOR_RAW_STG]  O_PLN_CORRIDOR_RAW\\nCROSS APPLY (\\n\\nSELECT     CORRIDOR_MEP_MARKING_FOR_BUILDERS_WORK     ,     \\'CORRIDOR MEP MARKING FORBUILDERS WORK\\'\\nUNION ALL SELECT CORRIDOR_CUTTING_AND_CHASING_OF_BLOCKWORK     ,     \\'CORRIDOR CUTTING AND CHASING OF BLOCKWORK\\'\\nUNION ALL SELECT CORRIDOR_MEP_SERVICES_INSTALLATION     ,     \\'CORRIDOR MEP SERVICES INSTALLATION\\'\\nUNION ALL SELECT CORRIDOR_WALL_MEP_SERVICES_PACKING     ,     \\'CORRIDOR WALL MEP SERVICES PACKING\\'\\nUNION ALL SELECT CORRIDOR_PLASTER     ,     \\'CORRIDOR PLASTER\\'\\nUNION ALL SELECT CORRIDOR_SCREED     ,     \\'CORRIDOR SCREED\\'\\nUNION ALL SELECT GRINDING_CLEARANCE_FOR_TILE     ,     \\'GRINDING CLEARANCE FOR TILE\\'\\nUNION ALL SELECT TILE_MARKING     ,     \\'TILE MARKING\\'\\nUNION ALL SELECT BULL_MARKING     ,     \\'BULL MARKING\\'\\nUNION ALL SELECT ELECTRICAL_CONDUITS     ,     \\'ELECTRICAL CONDUITS\\'\\nUNION ALL SELECT COLD_WATER_SUPPLY     ,     \\'COLD WATER SUPPLY\\'\\nUNION ALL SELECT FIRE_FIGHTING_PIPE_SUPPORT     ,     \\'FIRE FIGHTING PIPE SUPPORT\\'\\nUNION ALL SELECT MODULAR_INSTALATION     ,     \\'MODULAR INSTALATION\\'\\nUNION ALL SELECT FRAMING_CLEARANCE_BY_MEP     ,     \\'FRAMING CLEARANCE BY MEP\\'\\nUNION ALL SELECT CENTER_LINE_MARKING_FOR_FACADE_INSTALLATION     ,     \\'CENTER LINE MARKING FOR FACADE INSTALLATION\\'\\nUNION ALL SELECT CORRIDOR_CURTAIN_WALL_BOX_INSTALLATION     ,     \\'CORRIDOR CURTAIN WALL BOX INSTALLATION\\'\\nUNION ALL SELECT CORRIDOR_CURTAIN_WALL_FRAME_INSTALLATION     ,     \\'CORRIDOR CURTAIN WALL FRAME INSTALLATION\\'\\nUNION ALL SELECT CORRIDOR_CURTAIN_WALL_GLASS_INSTALLATION     ,     \\'CORRIDOR CURTAIN WALL GLASS INSTALLATION\\'\\nUNION ALL SELECT CORRIDOR_CURTAIN_WALL_FLASHING_INSTALLATION     ,     \\'CORRIDOR CURTAIN WALL FLASHING INSTALLATION\\'\\nUNION ALL SELECT CORRIDOR_FLOOR_TILE     ,     \\'CORRIDOR FLOOR TILE\\'\\nUNION ALL SELECT CORRIDOR_WALL_TILE     ,     \\'CORRIDOR WALL TILE\\'\\nUNION ALL SELECT FIRE_HOSE_REEL_CABINET_INSTALLATION     ,     \\'FIRE HOSE REEL CABINET INSTALLATION\\'\\nUNION ALL SELECT GROUTING_FOR_FRAMING_CLEARANCE     ,     \\'GROUTING FOR FRAMING CLEARANCE\\'\\nUNION ALL SELECT CORRIDOR_FC_FRAMING     ,     \\'CORRIDOR FC FRAMING\\'\\nUNION ALL SELECT MEP_ACCESS_PANEL_MARKINGS_AND_INSPECTION     ,     \\'MEP ACCESS PANEL MARKINGS AND INSPECTION\\'\\nUNION ALL SELECT MEP_WORKS_FOR_BOARDING_CLEARANCE     ,     \\'MEPWORKSFOR BOARDINGCLEARANCE\\'\\nUNION ALL SELECT FRAMING_LEVELLING     ,     \\'FRAMING LEVELLING\\'\\nUNION ALL SELECT CORRIDOR_FC_BOARDING     ,     \\'CORRIDOR FC BOARDING\\'\\nUNION ALL SELECT JOINT_TAPING_AND_SANDING     ,     \\'JOINT TAPING AND SANDING\\'\\nUNION ALL SELECT CORRIDOR_CEILING_PRIMER     ,     \\'CORRIDOR CEILING PRIMER\\'\\nUNION ALL SELECT CORRIDOR_CEILING_STUCCO_1ST_AND_2ND_COAT     ,     \\'CORRIDOR CEILING STUCCO (1ST AND 2ND COAT)\\'\\nUNION ALL SELECT CORRIDOR_CEILING_FIRST_COAT_PAINT     ,     \\'CORRIDOR CEILING FIRST COAT PAINT\\'\\nUNION ALL SELECT CORRIDOR_GROUTING     ,     \\'CORRIDOR GROUTING\\'\\nUNION ALL SELECT CORRIDOR_SILICONE     ,     \\'CORRIDOR SILICONE\\'\\nUNION ALL SELECT LEFT_OVER_SCREED     ,     \\'LEFT OVER SCREED\\'\\nUNION ALL SELECT LEFT_OVER_AREA_FLOOR_TILE     ,     \\'LEFT OVER AREA FLOOR TILE\\'\\nUNION ALL SELECT LEFT_OVER_AREA_WALL_TILE     ,     \\'LEFT OVER AREA WALL TILE\\'\\nUNION ALL SELECT REMAINING_GROUT_AND_SILICONE_WORKS     ,     \\'REMAINING GROUT AND SILICONE WORKS\\'\\nUNION ALL SELECT CORRIDOR_MEP_FINAL_FIXTURES     ,     \\'CORRIDOR MEP FINAL FIXTURES\\'\\nUNION ALL SELECT CORRIDOR_FINAL_COAT_PAINT     ,     \\'CORRIDOR FINAL COAT PAINT\\'                       \\n)AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n   JOIN [STG].[O_PLN_CORRIDOR_MAP_STG]  O_PLN_CORRIDOR_MAP\\n    ON COLUMN_NAME.TYPE_OF_WORK = O_PLN_CORRIDOR_MAP.ACTIVITY_SEQUENCE\\n    WHERE VALUE IS NOT NULL) A\\n   \\n   INNER JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM]  LM\\n     ON          A.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          A.PROJECT_ID=P.PROJECT_IDENTIFIER\\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          A.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          A.PROJECT_UDATE_DRANK = 1',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          Project_ID as integer,",
+				"          Project_Identifier as string,",
+				"          SBU_ID as integer,",
+				"          Level_ID as integer,",
+				"          Tower as string,",
+				"          Level as string,",
+				"          Scilicer as string,",
+				"          Activity_ID as integer,",
+				"          Value as decimal(14,4),",
+				"          Type_of_work as string,",
+				"          Category as string,",
+				"          Category_Sort as string,",
+				"          Update_Date as date,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE DWH.PLN_CORRIDOR_FACT;'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID,",
+				"          Project_ID = PROJECT_ID,",
+				"          Project_Identifier = PROJECT_IDENTIFIER,",
+				"          SBU_ID,",
+				"          Level_ID = LEVEL_ID,",
+				"          Tower = TOWER,",
+				"          Level = LEVEL,",
+				"          Scilicer,",
+				"          Activity_ID = Activity_Id,",
+				"          Value = value,",
+				"          Type_of_work = TYPE_OF_WORK,",
+				"          Category = CATEGORY,",
+				"          Category_Sort = CATEGORY_SORT,",
+				"          Update_Date = UPLOAD_DATE,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

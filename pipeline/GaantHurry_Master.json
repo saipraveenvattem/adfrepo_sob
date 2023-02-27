@@ -1,0 +1,46 @@
+{
+	"name": "GaantHurry_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "O_PLN_TOWER_PODIUM_MAP_STG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_TOWER_PODIUM_MAP_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "PLN_GAANT_HURRY_FACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "O_PLN_TOWER_PODIUM_MAP_STG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_GAANT_HURRY",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Master"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-14T09:02:32Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

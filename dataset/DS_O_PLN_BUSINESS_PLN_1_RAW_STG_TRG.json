@@ -1,0 +1,120 @@
+{
+	"name": "DS_O_PLN_BUSINESS_PLN_1_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "id_",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tower",
+				"type": "varchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "varchar"
+			},
+			{
+				"name": "Sl_No",
+				"type": "varchar"
+			},
+			{
+				"name": "Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Total_Revenue_BOQ",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Achieved_Revenue_Till_2022",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balance_Revenue_to_Execute_From_2023",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Jan_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Feb_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Mar_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Apr_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "May_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Jun_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Jul_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Aug_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sep_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Oct_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Nov_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Dec_23",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Total",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_BUSINESS_PLAN_1_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

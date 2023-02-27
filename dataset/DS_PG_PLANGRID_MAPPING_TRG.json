@@ -1,0 +1,48 @@
+{
+	"name": "DS_PG_PLANGRID_MAPPING_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Dimensions"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Act_Project_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Cluster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Status",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PG_PLANGRID_MAPPING_DIM"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

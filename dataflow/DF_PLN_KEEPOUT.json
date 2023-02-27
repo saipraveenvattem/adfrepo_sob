@@ -1,0 +1,118 @@
+{
+	"name": "DF_PLN_KEEPOUT",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_O_PLN_KEEPOUT_RAW_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_KEEPOUT_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          Upload_Date as date,",
+				"          Project_ID as integer,",
+				"          Sbu_ID as integer,",
+				"          Level_ID as integer,",
+				"          Tower as string,",
+				"          PROJECT_IDENTIFIER as string,",
+				"          Flat as string,",
+				"          Level as string,",
+				"          Type_of_work as string,",
+				"          Category as string,",
+				"          Activity_ID as integer,",
+				"          Real_Value as string,",
+				"          value as integer,",
+				"          Category_Sort as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select\\n        Upload_Date,\\n        P.Sort_ID AS Project_ID,\\n        SM.SBU_Map_ID AS Sbu_ID,\\n        LM.LEVEL_MAP_ID AS Level_ID,\\n        KO.Tower,\\n        P.PROJECT_IDENTIFIER ,\\n        KO.Flat,\\n        KO.Level,\\n        KO.Type_of_work,\\n        KO.Category,\\n        KO.Activity_ID,\\n       Format(cast(NULLIF(KO.Value,\\'\\') AS DATE ),\\'dd-MM-yyy\\')AS Real_Value,\\n        CASE\\n            WHEN TRIM(KO.value) IN (\\'\\',\\'-\\',\\'0%\\',\\'00%\\') THEN 0\\n            WHEN KO.value IS NOT NULL AND TRIM(KO.value) NOT IN (\\'\\',\\'-\\',\\'0%\\',\\'00%\\') THEN 1\\n            ELSE 0\\n        END AS value,\\n        \\n        CASE \\n            WHEN TRIM(KO.Category) IN(\\'Paint\\') THEN  1\\n            WHEN TRIM(KO.Category) IN(\\'Facade\\') THEN  2\\n            WHEN TRIM(KO.Category) IN(\\'MEP\\') THEN  3\\n            WHEN TRIM(KO.Category) IN(\\'PMT\\') THEN  4\\n            WHEN TRIM(KO.Category) IN(\\'Consultant\\') THEN  5\\n            WHEN TRIM(KO.Category) IN(\\'Client\\') THEN  6\\n            ELSE 20\\n        END AS Category_Sort\\n    FROM (\\n    SELECT\\n        cast(OPKOR.upload_time AS DATE) AS Upload_Date,\\n        OPKOR.project_id,\\n        OPKOR.tower,\\n        OPKOR.sbu_id ,\\n        OPKOR.Level,\\n        OPKOR.Flat,\\n        Column_Name.*,\\n        OPKOM.ACTIVITY_ID,\\n        OPKOM.SBU_ID AS SBU_Filter,\\n        OPKOM.Category,\\n        DENSE_RANK() OVER(PARTITION BY OPKOR.project_id ORDER BY CAST(OPKOR.upload_time AS DATE) DESC) AS DRanker\\n    FROM STG.O_PLN_KEEPOUT_RAW_STG OPKOR\\n    CROSS Apply (\\n                        SELECT Final_Coat_Paint_Dry_Area , \\'Final Coat Paint - Dry Area\\'\\n                    UNION ALL SELECT Final_Coat_Paint_Wet_Area , \\'Final Coat Paint - Wet Area\\'\\n                    UNION ALL SELECT Facade_Stamp , \\'Facade Stamp\\'\\n                    UNION ALL SELECT Bathroom_Stamp_MEP_L8 , \\'Bathroom Stamp - MEP (L8)\\'\\n                    UNION ALL SELECT Bathroom_Stamp_Civil_L9 , \\'Bathroom Stamp - Civil (L9)\\'\\n                    UNION ALL SELECT Kitchen_Stamp_MEP_I8 , \\'Kitchen Stamp - MEP (I8)\\'\\n                    UNION ALL SELECT Kitchen_Stamp_Civil_I9 , \\'Kitchen Stamp - Civil (I9)\\'\\n                    UNION ALL SELECT Dry_Area_Stamp_Civil_F7 , \\'Dry Area Stamp - Civil (F7)\\'\\n                    UNION ALL SELECT Dry_Area_Stamp_MEP_F8 , \\'Dry Area Stamp - MEP (F8)\\'\\n                    UNION ALL SELECT MEP_NOC , \\'MEP NOC\\'\\n                    UNION ALL SELECT Civil_NOC , \\'Civil NOC\\'\\n                    UNION ALL SELECT MEP_Field_Report_1ST_Insp , \\'MEP Field Report 1ST Insp\\'\\n                    UNION ALL SELECT MEP_Field_Report_2nd_Insp , \\'MEP Field Report 2nd Insp\\'\\n                    UNION ALL SELECT Facade_Field_Report_1st_Insp , \\'Facade Field Report 1st Insp\\'\\n                    UNION ALL SELECT Facade_Field_Report_2nd_Insp , \\'Facade Field Report 2nd Insp\\'\\n                    UNION ALL SELECT Civil_Field_Report_1st_Insp , \\'Civil Field Report 1st Insp\\'\\n                    UNION ALL SELECT Civil_Field_Report_2nd_Insp , \\'Civil Field Report 2nd Insp\\'\\n                    UNION ALL SELECT SCL_Signoff , \\'SCL Signoff\\'\\n                    UNION ALL SELECT PNCA_Signoff , \\'PNCA Signoff\\'\\n                    UNION ALL SELECT Keep_Out_QT , \\'Keep Out (QT)\\'\\n                        ) AS Column_Name(value,Type_of_work)\\n    JOIN STG.O_PLN_KEEPOUT_MAP_STG OPKOM\\n    ON Column_Name.Type_of_work = OPKOM.ACTIVITY_SEQUENCE\\n        WHERE value IS NOT NULL) KO   \\nINNER JOIN    DWH.PLN_LEVEL_MAP_ALL_DIM LM \\n    ON        KO.LEVEL = LM.LEVEL \\nLEFT JOIN    [DWH].[PROJECTS_NEW_DIM] P\\n    ON        KO.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN    [DWH].[PLN_SBU_MAPPING_DIM] SM\\n    ON      KO.SBU_ID=SM.SBU_IDENTIFIER\\n     WHERE       KO.DRANKER = 1\\n   \\n\\n  ',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          Upload_Date as date,",
+				"          Project_ID as integer,",
+				"          Project_Identifier as string,",
+				"          Sbu_ID as integer,",
+				"          Level_Id as integer,",
+				"          Tower as string,",
+				"          Flat as string,",
+				"          Level as string,",
+				"          Category as string,",
+				"          Type_of_work as string,",
+				"          Activity_ID as integer,",
+				"          Real_Value as date,",
+				"          Value as decimal(14,4),",
+				"          CATEGORY_SORT as integer,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['Truncate table [DWH].[PLN_KEEPOUT_FACT]'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID,",
+				"          Upload_Date,",
+				"          Project_ID,",
+				"          Project_Identifier = PROJECT_IDENTIFIER,",
+				"          Sbu_ID,",
+				"          Level_Id = Level_ID,",
+				"          Tower,",
+				"          Flat,",
+				"          Level,",
+				"          Category,",
+				"          Type_of_work,",
+				"          Activity_ID,",
+				"          Real_Value,",
+				"          Value = value,",
+				"          CATEGORY_SORT = Category_Sort,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

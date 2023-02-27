@@ -1,0 +1,79 @@
+{
+	"name": "DS_SA_FACT_CHECKINOUT_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Fact_CheckinoutID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Userid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Checktime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Checktype",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Verifycode",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SN",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SensorID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "WorkCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Reserved",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Last_Refresh_Date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "SA_FACT_CHECKINOUT_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

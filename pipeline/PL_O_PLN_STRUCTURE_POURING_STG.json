@@ -1,0 +1,1202 @@
+{
+	"name": "PL_O_PLN_STRUCTURE_POURING_STG",
+	"properties": {
+		"activities": [
+			{
+				"name": "O_PLN_STRUCTURE_POURING",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"preCopyScript": "TRUNCATE TABLE [STG].[O_PLN_STRUCTURE_POURING_STG];",
+						"writeBehavior": "Insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id_",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "STRUCTURE_POURING_id_",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Level",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Level",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 1",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_1",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 1",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_1",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 1",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_1",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 2",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_2",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 2",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_2",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 2",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_2",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 3",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_3",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 3",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_3",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 3",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_3",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 4",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_4",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 4",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_4",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 4",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_4",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 5",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_5",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 5",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_5",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 5",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_5",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 6",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_6",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 6",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_6",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 6",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_6",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 7",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_7",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 7",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_7",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 7",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_7",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 8",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_8",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 8",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_8",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 8",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_8",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 9",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_9",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 9",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_9",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 9",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_9",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 10",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_10",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 10",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_10",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 10",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_10",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 11",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_11",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 11",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_11",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 11",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_11",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 12",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_12",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 12",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_12",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 13",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_13",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 13",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_13",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 13",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_13",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 14",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_14",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 14",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_14",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 14",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_14",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 15",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_15",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 15",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_15",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 15",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_15",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 16",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_16",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 16",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_16",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 16",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_16",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 17",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_17",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 17",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_17",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 17",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_17",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 18",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_18",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 18",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_18",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 18",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_18",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 19",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_19",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 19",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_19",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 19",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_19",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 20",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_20",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 20",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_20",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 20",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_20",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 21",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_21",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 21",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_21",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 21",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_21",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 22",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 22",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 22",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 23",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_23",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 23",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_23",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 23",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_23",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 24",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_24",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 24",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_24",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 24",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_24",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 25",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_25",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 25",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_25",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 25",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_25",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 26",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_26",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 26",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_26",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 26",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_26",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 27",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_27",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 27",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_27",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 27",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_27",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 28",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_28",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 28",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_28",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 28",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_28",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 29",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_29",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 29",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_29",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 29",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_29",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Core Wall 30",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Core_Wall_30",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Slab 30",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Slab_30",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase 12",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Staircase_12",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_O_PLN_STRUCTURE_POURING_STG_SRC",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_O_PLN_STRUCTURE_POURING_STG_TRG",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-12-29T09:39:47Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

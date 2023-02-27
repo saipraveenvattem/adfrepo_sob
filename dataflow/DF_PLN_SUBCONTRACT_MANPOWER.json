@@ -1,0 +1,117 @@
+{
+	"name": "DF_PLN_SUBCONTRACT_MANPOWER",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_O_PLN_SUBCONTRACTOR_MANPOWER_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"description": "Import data from DS_O_PLN_DOOR_DELIVERY_RAW_STG_TRG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_SUBCONTRACT_MANPOWER_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "Export data to DS_DOOR_DELIVERY_M_TRG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          Id_ as integer,",
+				"          upload_time as timestamp,",
+				"          tower as string,",
+				"          project_id as integer,",
+				"          sbu_id as integer,",
+				"          SBU as string,",
+				"          Project as string,",
+				"          type as string,",
+				"          Sub_Contractor as string,",
+				"          Activity as string,",
+				"          SCL_Engineer as string,",
+				"          Shift as string,",
+				"          Count as string,",
+				"          Trade as string",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select \\n        GAR.Id_,\\n          GAR.upload_time,  \\n          GAR.tower, \\n          p.Sort_ID as project_id,\\n          sm.Sbu_Map_Id as sbu_id,\\n          RTRIM(GAR.SBU) as SBU,\\n          RTRIM(GAR.Project) as Project, \\n          RTRIM(GAR.type) as type,\\n          GAR.Sub_Contractor,\\n          GAR.Activity,\\n          GAR.SCL_Engineer,\\n          GAR.Shift, \\n          GAR.Count,\\n          GAR. Trade\\nfrom(\\nselect\\n          s.Id_,\\n          s.upload_time,  \\n          s.tower, \\n          RTRIM(s.SBU) as SBU,\\n          RTRIM(s.Project) as Project, \\n          RTRIM(s.type) as type,\\n          s.Sub_Contractor,\\n          s.Activity,\\n          s.SCL_Engineer,\\n          column_name.Trade_uncleaned as Trade,\\n          case when column_name.Trade_uncleaned like \\'%D\\' then \\'Day\\'\\n                when column_name.Trade_uncleaned like \\'%N\\' then \\'Night\\'\\n                when column_name.Trade_uncleaned like \\'%D/N\\' then \\'Day_Night\\'\\n                else \\'Error\\'\\n                end as Shift, \\n          column_name.Count\\nfrom STG.O_PLN_SUBCONTRACTOR_MANPOWER_STG s\\ncross Apply (\\n                         SELECT     PM_And_Engineers_D     ,     \\'PM & Engineers_D\\'\\n                         UNION ALL SELECT     PM_And_Engineers_N     ,     \\'PM & Engineers_N\\'\\n                         UNION ALL SELECT     PM_And_Engineers_D_N     ,     \\'PM_And_Engineers_D/N\\'\\n                         UNION ALL SELECT     Supervisor_D     ,     \\'Supervisor_D\\'\\n                         UNION ALL SELECT     Supervisor_N     ,     \\'Supervisor_N\\'\\n                         UNION ALL SELECT     Supervisor_D_N     ,     \\'Supervisor_D/N\\'\\n                         UNION ALL SELECT     Foreman_Staff_D     ,     \\'Foreman / Staff_D\\'\\n                         UNION ALL SELECT     Foreman_Staff_N     ,     \\'Foreman / Staff_N\\'\\n                         UNION ALL SELECT     Foreman_Staff_D_N     ,     \\'Foreman / Staff_D/N\\'\\n                         UNION ALL SELECT     Chargehand_D     ,     \\'Chargehand_D\\'\\n                         UNION ALL SELECT     Chargehand_N     ,     \\'Chargehand_N\\'\\n                         UNION ALL SELECT     Chargehand_D_N     ,     \\'Chargehand_D/N\\'\\n                         UNION ALL SELECT     Carpenter_D     ,     \\'Carpenter_D\\'\\n                         UNION ALL SELECT     Carpenter_N     ,     \\'Carpenter_N\\'\\n                         UNION ALL SELECT     Carpenter_D_N     ,     \\'Carpenter_D/N\\'\\n                         UNION ALL SELECT     Mason_D     ,     \\'Mason_D\\'\\n                         UNION ALL SELECT     Mason_N     ,     \\'Mason_N\\'\\n                         UNION ALL SELECT     Mason_D_N     ,     \\'Mason_D/N\\'\\n                         UNION ALL SELECT     Steel_Fitter_D     ,     \\'Steel Fitter_D\\'\\n                         UNION ALL SELECT     Steel_Fitter_N     ,     \\'Steel Fitter_N\\'\\n                         UNION ALL SELECT     Steel_Fitter_D_N     ,     \\'Steel Fitter_D/N\\'\\n                         UNION ALL SELECT     Scaffolder_D     ,     \\'Scaffolder_D\\'\\n                         UNION ALL SELECT     Scaffolder_N     ,     \\'Scaffolder_N\\'\\n                         UNION ALL SELECT     Scaffolder_D_N     ,     \\'Scaffolder_D/N\\'\\n                         UNION ALL SELECT     Operator_D     ,     \\'Operator_D\\'\\n                         UNION ALL SELECT     Operator_N     ,     \\'Operator_N\\'\\n                         UNION ALL SELECT     Operator_D_N     ,     \\'Operator_D/N\\'\\n                         UNION ALL SELECT     Security_D     ,     \\'Security_D\\'\\n                         UNION ALL SELECT     Security_N     ,     \\'Security_N\\'\\n                         UNION ALL SELECT     Security_D_N     ,     \\'Security_D/N\\'\\n                         UNION ALL SELECT     Helper_D     ,     \\'Helper_D\\'\\n                         UNION ALL SELECT     Helper_N     ,     \\'Helper_N\\'\\n                         UNION ALL SELECT     Helper_D_N     ,     \\'Helper_D/N\\'\\n                         UNION ALL SELECT     Steel_Fixers_D     ,     \\'Steel Fixers_D\\'\\n                         UNION ALL SELECT     Steel_Fixers_N     ,     \\'Steel Fixers_N\\'\\n                         UNION ALL SELECT     Steel_Fixers_D_N     ,     \\'Steel Fixers_D/N\\'\\n                         UNION ALL SELECT     Masons_D     ,     \\'Masons_D\\'\\n                         UNION ALL SELECT     Masons_N     ,     \\'Masons_N\\'\\n                         UNION ALL SELECT     Masons_D_N     ,     \\'Masons_D/N\\'\\n                         UNION ALL SELECT     Welder_D     ,     \\'Welder_D\\'\\n                         UNION ALL SELECT     Welder_N     ,     \\'Welder_N\\'\\n                         UNION ALL SELECT     Welder_D_N     ,     \\'Welder_D/N\\'\\n                         UNION ALL SELECT     Rigger_D     ,     \\'Rigger_D\\'\\n                         UNION ALL SELECT     Rigger_N     ,     \\'Rigger_N\\'\\n                         UNION ALL SELECT     Rigger_D_N     ,     \\'Rigger_D/N\\'\\n                         UNION ALL SELECT     Painter_D     ,     \\'Painter_D\\'\\n                         UNION ALL SELECT     Painter_N     ,     \\'Painter_N\\'\\n                         UNION ALL SELECT     Painter_D_N     ,     \\'Painter_D/N\\'\\n                         UNION ALL SELECT     Tile_Mason_D     ,     \\'Tile Mason_D\\'\\n                         UNION ALL SELECT     Tile_Mason_N     ,     \\'Tile Mason_N\\'\\n                         UNION ALL SELECT     Tile_Mason_D_N     ,     \\'Tile Mason_D/N\\'\\n                         UNION ALL SELECT     Gypsum_Carpenter_D     ,     \\'Gypsum Carpenter_D\\'\\n                         UNION ALL SELECT     Gypsum_Carpenter_N     ,     \\'Gypsum Carpenter_N\\'\\n                         UNION ALL SELECT     Gypsum_Carpenter_D_N     ,     \\'Gypsum Carpenter_D/N\\'\\n                         UNION ALL SELECT     Joinery_Carpenter_D     ,     \\'Joinery Carpenter_D\\'\\n                         UNION ALL SELECT     Joinery_Carpenter_N     ,     \\'Joinery Carpenter_N\\'\\n                         UNION ALL SELECT     Joinery_Carpenter_D_N     ,     \\'Joinery Carpenter_D/N\\'\\n                         UNION ALL SELECT     Screed_Mason_D     ,     \\'Screed Mason_D\\'\\n                         UNION ALL SELECT     Screed_Mason_N     ,     \\'Screed Mason_N\\'\\n                         UNION ALL SELECT     Screed_Mason_D_N     ,     \\'Screed Mason_D/N\\'\\n                         UNION ALL SELECT     Marble_Stone_Mason_D     ,     \\'Marble / Stone Mason_D\\'\\n                         UNION ALL SELECT     Marble_Stone_Mason_N     ,     \\'Marble / Stone Mason_N\\'\\n                         UNION ALL SELECT     Marble_Stone_Mason_D_N     ,     \\'Marble / Stone Mason_D/N\\'\\n                         UNION ALL SELECT     Electrician_D     ,     \\'Electrician_D\\'\\n                         UNION ALL SELECT     Electrician_N     ,     \\'Electrician_N\\'\\n                         UNION ALL SELECT     Electrician_D_N     ,     \\'Electrician_D/N\\'\\n                         UNION ALL SELECT     Plumber_D     ,     \\'Plumber_D\\'\\n                         UNION ALL SELECT     Plumber_N     ,     \\'Plumber_N\\'\\n                         UNION ALL SELECT     Plumber_D_N     ,     \\'Plumber_D/N\\'\\n                         UNION ALL SELECT     HVAC_D     ,     \\'HVAC_D\\'\\n                         UNION ALL SELECT     HVAC_N     ,     \\'HVAC_N\\'\\n                         UNION ALL SELECT     HVAC_D_N     ,     \\'HVAC_D/N\\'\\n                         UNION ALL SELECT     Sub_Contractor_D     ,     \\'Sub Contractor_D\\'\\n                         UNION ALL SELECT     Sub_Contractor_N     ,     \\'Sub Contractor_N\\'\\n                         UNION ALL SELECT     Sub_Contractor_D_N     ,     \\'Sub Contractor_D/N\\'\\n                         UNION ALL SELECT     Facade_Technicians_D     ,     \\'Facade Technicians_D\\'\\n                         UNION ALL SELECT     Facade_Technicians_N     ,     \\'Facade Technicians_N\\'\\n                         UNION ALL SELECT     Facade_Technicians_D_N     ,     \\'Facade Technicians_D/N\\'\\n                         UNION ALL SELECT     POP_Mason_D     ,     \\'POP Mason_D\\'\\n                         UNION ALL SELECT     POP_Mason_N     ,     \\'POP Mason_N\\'\\n                         UNION ALL SELECT     POP_Mason_D_N     ,     \\'POP Mason_D/N\\'\\n                         UNION ALL SELECT     Joinery_Polisher_D     ,     \\'Joinery Polisher_D\\'\\n                         UNION ALL SELECT     Joinery_Polisher_N     ,     \\'Joinery Polisher_N\\'\\n                         UNION ALL SELECT     Joinery_Polisher_D_N     ,     \\'Joinery Polisher_D/N\\'\\n                         UNION ALL SELECT     Fitter_D     ,     \\'Fitter_D\\'\\n                         UNION ALL SELECT     Fitter_N     ,     \\'Fitter_N\\'\\n                         UNION ALL SELECT     Fitter_D_N     ,     \\'Fitter_D/N\\'\\n                         UNION ALL SELECT     Deep_Cleaning_D     ,     \\'Deep Cleaning_D\\'\\n                         UNION ALL SELECT     Deep_Cleaning_N     ,     \\'Deep Cleaning_N\\'\\n                         UNION ALL SELECT     Deep_Cleaning_D_N     ,     \\'Deep Cleaning_D/N\\'\\n                         UNION ALL SELECT     Others_D     ,     \\'Others_D\\'\\n                         UNION ALL SELECT     Others_N     ,     \\'Others_N\\'\\n                         UNION ALL SELECT     Others_D_N     ,     \\'Others_D/N\\'\\n                         )as column_name(Count,Trade_uncleaned)\\n                         where \\n                         Count not in (\\'\\',\\' - \\',\\'D/N\\',\\'N\\',\\'D\\',\\'Total\\',\\'SCL Engineer\\',\\'Activity\\',\\'Sub Total\\',\\'Others\\',\\'Deep Cleaning\\',\\'Fitter\\',\\'Joinery Polisher\\',\\'POP Mason\\',\\'Facade Technicians\\',\\'Sub Contractor\\'\\n                         ,\\'HVAC\\',\\'Plumber\\',\\'Electrician\\',\\'Steel Fixer\\',\\'Marble / Stone Mason\\',\\'Screed Mason\\',\\'Joinery Carpenter\\',\\'Gypsum Carpenter\\',\\'Tile Mason\\',\\n                         \\'Painter\\',\\'Rigger\\',\\'Welder\\',\\'Masons\\',\\'Steel Fixers\\',\\'Carpenters\\',\\'Helper\\',\\'Security\\',\\'Operator\\',\\'Scaffolder\\',\\'Steel Fitter\\',\\'Mason\\',\\n                         \\'Carpenter\\',\\'Chargehand\\',\\'Foreman / Staff\\',\\'Supervisor\\',\\'PM_And_Engineers\\',\\'Supervisor\\')\\n                         and Project not in (\\'\\')\\n                         ) as GAR\\n                    LEFT JOIN  [DWH].[PROJECTS_NEW_DIM] P\\n                         ON  GAR.PROJECT=P.PROJECT_IDENTIFIER\\n              LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n                         ON   GAR.SBU=SM.SBU_IDENTIFIER\\n                    \\n\\n                    \\n\\n                    ',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Id as integer,",
+				"          Upload_Time as timestamp,",
+				"          Project_Id as integer,",
+				"          Tower as string,",
+				"          Sbu_Id as integer,",
+				"          SBU as string,",
+				"          Project as string,",
+				"          Type as string,",
+				"          Sub_Contractor as string,",
+				"          Activity as string,",
+				"          SCL_Engineer as string,",
+				"          Trade as string,",
+				"          Shift as string,",
+				"          Count as string,",
+				"          LoadDate_time as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_SUBCONTRACTOR_MANPOWER_FACT]'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Id = Id_,",
+				"          Upload_Time = upload_time,",
+				"          Project_Id = project_id,",
+				"          Tower = tower,",
+				"          Sbu_Id = sbu_id,",
+				"          SBU,",
+				"          Project,",
+				"          Type = type,",
+				"          Sub_Contractor,",
+				"          Activity,",
+				"          SCL_Engineer,",
+				"          Trade,",
+				"          Shift,",
+				"          Count,",
+				"          LoadDate_time = LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

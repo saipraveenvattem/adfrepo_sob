@@ -1,0 +1,386 @@
+{
+	"name": "PL_PROCUREMENT_STG",
+	"properties": {
+		"activities": [
+			{
+				"name": "PROCUREMENT",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"preCopyScript": "TRUNCATE TABLE [STG].[O_PLN_PROCUREMENT_STG];",
+						"writeBehavior": "Insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id_",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Procurement_ID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "Upload_Time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Project_ID",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Tower",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SBU_ID",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SBU",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SBU",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Classification",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Classification",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Description",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Description",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Category",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Category",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Issuance of Drawings_Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Issuance_of_Drawings_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Issuance of Drawings_Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Issuance_of_Drawings_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PR_Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PR_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PR_Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PR_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Vendor Finalization_Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Vendor_Finalization_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Vendor Finalization_Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Vendor_Finalization_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Prequalification Submission_Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Prequalification_Submission_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Prequalification Submission_Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Prequalification_Submission_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Prequalification Approval_Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Prequalification_Approval_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Prequalification Approval_Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Prequalification_Approval_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Release of contract documents_Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Release_of_Contract_documents_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Release of contract documents_Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Release_of_Contract_documents_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Drawing/Technical Submission_Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Drawing_Technical_Submission_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Drawing/Technical Submission_Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Drawing_Technical_Submission_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Drawing/Technical Submission Approval_Plan",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Drawing_Technical_Submission_Approval_Plan",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Drawing/Technical Submission Approval_Actual",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Drawing_Technical_Submission_Approval_Actual",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Required at site by",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Required_at_site_by",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Actual delivery at site",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Actual_Delivery_at_site",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_PLN_PROCUREMENT_STG_SRC",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_PLN_PROCUREMENT_STG_TRG",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-06T10:45:39Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

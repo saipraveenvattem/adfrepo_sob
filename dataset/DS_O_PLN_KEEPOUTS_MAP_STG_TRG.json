@@ -1,0 +1,67 @@
+{
+	"name": "DS_O_PLN_KEEPOUTS_MAP_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Keepouts_Map_Id_",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Activity_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Sbu_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_Sequence",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Predecessor_Data",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Engineer_Responsible",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_Sequence_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Predecessor_Data_Actual",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_Sequence_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Predecessor_Data_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Predecessor_Activity_Allowed_Lag",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_KEEPOUTS_MAP_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

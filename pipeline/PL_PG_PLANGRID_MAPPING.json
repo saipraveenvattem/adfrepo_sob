@@ -1,0 +1,47 @@
+{
+	"name": "PL_PG_PLANGRID_MAPPING",
+	"properties": {
+		"activities": [
+			{
+				"name": "PLANGRID_MAPPING",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_PG_PLANGRID_MAPPING",
+						"type": "DataFlowReference",
+						"parameters": {
+							"MAX_ID": "0"
+						}
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "LS_AzureDataLakeStorage",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "sobhasyndatafs01/Staging_Folder"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "DWH/Dimensions"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-10T11:13:47Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

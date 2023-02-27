@@ -1,0 +1,95 @@
+{
+	"name": "DS_MANPOWER_MERGE_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "SL_NO",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EMP_ID_NO",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TECHNICIAN_NAME",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ACTUAL_DOJ",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TRADE_AS_PER_ADMIN",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TRADE_GROUP",
+				"type": "nvarchar"
+			},
+			{
+				"name": "WORK_STATUS_COST_HEAD",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DIVISION",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UNIT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "WORK_STATUS",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SHIFT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "COMPANY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SOURCE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Emp_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Login_Time",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_MANPOWER_MERGE_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

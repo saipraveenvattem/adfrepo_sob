@@ -1,0 +1,138 @@
+{
+	"name": "DF_SA_MANPOWER_MASTER",
+	"properties": {
+		"folder": {
+			"name": "DWH/Dimensions"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_SA_MANPOWER_MASTER_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"description": "Import data from DS_SA_MANPOWER_MASTER_STG_TRG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_SA_MANPOWER_MASTER_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "Export data to DS_SA_MANPOWER_MASTER_TRG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          Manpower_Master_ID as integer,",
+				"          Upload_time as timestamp,",
+				"          Project_id as integer,",
+				"          Project as string,",
+				"          SBU as string,",
+				"          Sbu_map_id as integer,",
+				"          Tower as string,",
+				"          SL_NO as string,",
+				"          EMP_ID_NO as string,",
+				"          TECHNICIAN_NAME as string,",
+				"          ACTUAL_DOJ as string,",
+				"          TRADE_AS_PER_ADMIN as string,",
+				"          TRADE_GROUP as string,",
+				"          WORK_STATUS_COST_HEAD as string,",
+				"          DIVISION as string,",
+				"          UNIT as string,",
+				"          WORK_STATUS as string,",
+				"          SHIFT as string,",
+				"          COMPANY as string,",
+				"          SOURCE as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select \\n     --[Upload_Date]  \\n     --, [Project_Sclicer] \\n     --, [SBU] \\n     [Manpower_Master_ID] ,\\n     [Upload_time] ,\\n     p.[Project_id] ,\\n     pp.Project_id AS Project,\\n     pp.sbu_id AS SBU,\\n     sm.[Sbu_map_id] ,\\n     [Tower] ,\\n     [SL_NO] ,\\n     [EMP_ID_NO] ,\\n     [TECHNICIAN_NAME] ,\\n     [ACTUAL_DOJ] ,\\n     [TRADE_AS_PER_ADMIN] ,\\n     [TRADE_GROUP] ,\\n     [WORK_STATUS_COST_HEAD] ,\\n     [DIVISION] ,\\n     [UNIT] ,\\n     [WORK_STATUS] ,\\n     [SHIFT],\\n     [COMPANY] ,\\n     [SOURCE]\\nFROM STG.SA_MANPOWER_MASTER_STG PP\\nLEFT JOIN [DWH].[PLN_PROJECTS_DIM] P\\n      ON          PP.Project_id=P.PROJECT_IDENTIFIER \\n     LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          PP.SBU_id=SM.SBU_IDENTIFIER\\n\\n',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Id as integer,",
+				"          Manpower_Master_ID as integer,",
+				"          Upload_time as timestamp,",
+				"          Project_id as integer,",
+				"          Project as string,",
+				"          SBU as string,",
+				"          Tower as string,",
+				"          Sbu_id as integer,",
+				"          SL_NO as string,",
+				"          EMP_ID_NO as string,",
+				"          TECHNICIAN_NAME as string,",
+				"          ACTUAL_DOJ as string,",
+				"          TRADE_AS_PER_ADMIN as string,",
+				"          TRADE_GROUP as string,",
+				"          WORK_STATUS_COST_HEAD as string,",
+				"          DIVISION as string,",
+				"          UNIT as string,",
+				"          WORK_STATUS as string,",
+				"          SHIFT as string,",
+				"          COMPANY as string,",
+				"          SOURCE as string,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[SA_MANPOWER_MASTER_DIM];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Id = ID,",
+				"          Manpower_Master_ID,",
+				"          Upload_time,",
+				"          Project_id,",
+				"          Project,",
+				"          SBU,",
+				"          Tower,",
+				"          Sbu_id = Sbu_map_id,",
+				"          SL_NO,",
+				"          EMP_ID_NO,",
+				"          TECHNICIAN_NAME,",
+				"          ACTUAL_DOJ,",
+				"          TRADE_AS_PER_ADMIN,",
+				"          TRADE_GROUP,",
+				"          WORK_STATUS_COST_HEAD,",
+				"          DIVISION,",
+				"          UNIT,",
+				"          WORK_STATUS,",
+				"          SHIFT,",
+				"          COMPANY,",
+				"          SOURCE,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

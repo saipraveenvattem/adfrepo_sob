@@ -1,0 +1,83 @@
+{
+	"name": "DS_PLN_BUSINESS_PLAN_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_Date",
+				"type": "date"
+			},
+			{
+				"name": "project_id",
+				"type": "varchar"
+			},
+			{
+				"name": "Sbu_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type",
+				"type": "varchar"
+			},
+			{
+				"name": "SBU",
+				"type": "varchar"
+			},
+			{
+				"name": "SBU_Custom_Sort",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Month",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDER_Month",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "value",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "Cummulative",
+				"type": "decimal",
+				"precision": 32,
+				"scale": 0
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_BUSINESS_PLAN_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,132 @@
+{
+	"name": "DS_O_PLN_DOOR_MANPOWER_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "O_PLN_DOOR_MANPOWER_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Date",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC1",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC2",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC3",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC4",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC5",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC6",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC7",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC8",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC9",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC10",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC11",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC12",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC13",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC14",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC15",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC16",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC17",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC18",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC19",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC20",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Total",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_DOOR_MANPOWER_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

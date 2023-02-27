@@ -1,0 +1,43 @@
+{
+	"name": "DS_O_PLN_MILESTONE_MAP_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Sort_Group",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Sort_Activity",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Group",
+				"type": "varchar"
+			},
+			{
+				"name": "Activity",
+				"type": "varchar"
+			},
+			{
+				"name": "Activity_New",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_MILESTONE_MAP_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,115 @@
+{
+	"name": "DF_PLN_KITCHENAREA",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_O_PLN_KITCHENAREA_RAW_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_KITCHENAREA_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          PROJECT_ID as integer,",
+				"          LEVEL_ID as integer,",
+				"          SBU_ID as integer,",
+				"          TOWER as string,",
+				"          PROJECT_IDENTIFIER as string,",
+				"          Sclicer as string,",
+				"          FLAT as string,",
+				"          LEVEL as string,",
+				"          ACTIVITY_ID as integer,",
+				"          VALUE as string,",
+				"          TYPE_OF_WORK as string,",
+				"          CATEGORY as string,",
+				"          UPLOAD_DATE as timestamp",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT \\n    P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n     SM.SBU_MAP_ID AS SBU_ID,\\n    KA.TOWER,\\n    P.PROJECT_IDENTIFIER ,\\n    \\'Kitchen Area\\' as Sclicer,\\n    KA.FLAT,\\n    KA.[LEVEL],\\n     KA.ACTIVITY_ID,\\n    CASE \\n        WHEN KA.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE KA.VALUE\\n    END AS VALUE,\\n    KA.TYPE_OF_WORK,\\n    KA.CATEGORY,\\n     KA.UPLOAD_DATE\\nFROM (\\n          SELECT \\n               KR.UPLOAD_TIME AS UPLOAD_DATE,\\n               KR.PROJECT_ID,\\n               KR.TOWER,\\n               KR.[LEVEL],\\n               KR.FLAT,\\n               COLUMN_NAME.*,\\n               KM.ACTIVITY_ID,\\n               KM.SBU_ID,\\n               KM.CATEGORY,\\n               DENSE_RANK () OVER (PARTITION BY  PROJECT_ID ORDER BY  UPLOAD_TIME DESC )DRANK\\n           FROM [STG].[O_PLN_KITCHENAREA_RAW_STG] KR\\n           CROSS APPLY (\\n                          SELECT [KITCHEN_AREA_PLASTER] , \\'KITCHEN AREA PLASTER\\'\\n                              UNION ALL SELECT [KITCHEN_UTILITY_FRAMING] , \\'KITCHEN / UTILITY FRAMING\\'\\n                              UNION ALL SELECT [KITCHEN_UTILITY_BOARDING] , \\'KITCHEN / UTILITY BOARDING\\'\\n                              UNION ALL SELECT [KITCHEN_WALL_TILE] , \\'KITCHEN WALL TILE\\'\\n                              UNION ALL SELECT [MEP_BOX_FIXING] , \\'MEP BOX FIXING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET] , \\'KITCHEN CABINET\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_PLYWOOD] , \\'KITCHEN COUNTER PLYWOOD\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_TOP] , \\'KITCHEN COUNTER TOP\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_TOP_SKIRTING] , \\'KITCHEN COUNTER TOP SKIRTING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET_GROUTING] , \\'KITCHEN CABINET GROUTING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET_SILICONE] , \\'KITCHEN CABINET SILICONE\\'\\n                              UNION ALL SELECT [MEP_FIXTURES_FOR_KITCHEN_CABINET] , \\'MEP FIXTURES FOR KITCHEN CABINET\\'\\n                              UNION ALL SELECT [KITCHEN_APPLIANCES] , \\'KITCHEN APPLIANCES\\'\\n                         ) AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n               INNER JOIN  [STG].[O_PLN_KITCHENAREA_MAP_STG] KM\\n                    ON          COLUMN_NAME.TYPE_OF_WORK = KM.ACTIVITY_SEQUENCE\\n               WHERE          VALUE IS NOT NULL\\n     ) KA\\nINNER JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          KA.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          KA.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          KA.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          KA.DRANK = 1',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          Project_ID as integer,",
+				"          Project_Identifier as string,",
+				"          SBU_ID as integer,",
+				"          Level_ID as integer,",
+				"          Tower as string,",
+				"          Level as string,",
+				"          Flat as integer,",
+				"          Sclicer as string,",
+				"          Activity_ID as integer,",
+				"          Value as string,",
+				"          Type_of_work as string,",
+				"          Category as string,",
+				"          Update_Date as date,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_KITCHENAREA_FACT];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID,",
+				"          Project_ID = PROJECT_ID,",
+				"          Project_Identifier = PROJECT_IDENTIFIER,",
+				"          SBU_ID,",
+				"          Level_ID = LEVEL_ID,",
+				"          Tower = TOWER,",
+				"          Level = LEVEL,",
+				"          Flat = FLAT,",
+				"          Sclicer,",
+				"          Activity_ID = ACTIVITY_ID,",
+				"          Value = VALUE,",
+				"          Type_of_work = TYPE_OF_WORK,",
+				"          Category = CATEGORY,",
+				"          Update_Date = UPLOAD_DATE,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

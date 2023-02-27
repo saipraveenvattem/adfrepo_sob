@@ -1,0 +1,46 @@
+{
+	"name": "Checkinout_Master",
+	"properties": {
+		"activities": [
+			{
+				"name": "CHECKINOUT_STG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_SA_FACT_CHECKINOUT_STG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "CHECKINOUT_FACT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "CHECKINOUT_STG",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_SA_FACT_CHECKINOUT",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Master"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-15T04:19:48Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

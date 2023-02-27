@@ -1,0 +1,164 @@
+{
+	"name": "DS_SA_DIM_USERINFO_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Dimensions"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "UserID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Badgenumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DefaultdeptID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Password",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Card",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Privilege",
+				"type": "nvarchar"
+			},
+			{
+				"name": "AccGroup",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TimeZones",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Gender",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Birthday",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "street",
+				"type": "nvarchar"
+			},
+			{
+				"name": "zip",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ophone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FPHONE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "pager",
+				"type": "nvarchar"
+			},
+			{
+				"name": "minzu",
+				"type": "nvarchar"
+			},
+			{
+				"name": "title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SN",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SSN",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "State",
+				"type": "nvarchar"
+			},
+			{
+				"name": "City",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SECURITYFLAGS",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "DelTag",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "RegisterOT",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AutoSchPlan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MinAutoSchInterval",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Image_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Last_Refresh_Date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "SA_DIM_USERINFO_DIM"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,138 @@
+{
+	"name": "DF_PLN_PROJECT_PROGRESS_SUMMARY",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_DRYAREA_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"description": "Import data from DS_O_PLN_DOOR_DELIVERY_RAW_STG_TRG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_PROJECT_PROGRESS_SUMMARY_FACT",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "Export data to DS_DOOR_DELIVERY_M_TRG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          Upload_Date as date,",
+				"          Project as string,",
+				"          Tower as string,",
+				"          ACTIVITY_ID as integer,",
+				"          SBU_ID as string,",
+				"          Area as string,",
+				"          Progress_Type as string,",
+				"          CATEGORY as string,",
+				"          ACTIVITY_SEQUENCE as string,",
+				"          Flats as integer,",
+				"          Total_Floors as integer,",
+				"          Scheduled_Activities as integer,",
+				"          Yet_TO_Start as decimal(38,6),",
+				"          Completed as decimal(38,4),",
+				"          In_Progress as integer,",
+				"          Average_Achived as decimal(38,4),",
+				"          SUM_Achived as decimal(38,4),",
+				"          Count_Achived as decimal(38,4),",
+				"          SORT_MAIN as integer,",
+				"          Yet_To_Start_Manual as decimal(38,4)",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: ' SELECT \\n\\n      ff. Upload_Date,\\n        Unionall.Project,\\n        ff.Tower,\\n        ff.ACTIVITY_ID,\\n        unionall.SBU_ID,\\n        unionall.Area,\\n        \\'Flatwise Progress\\' AS Progress_Type,\\n        unionall.CATEGORY,\\n        unionall.ACTIVITY_SEQUENCE,\\n        unionall.Flats,\\n       unionall.Total_Floors,\\n        unionall.Scheduled_Activities,\\n           sum(case \\n               when ff.value=0 then 1 else null\\n          End) as Yet_TO_Start,\\n\\n           sum(CASE WHEN ff.value = 1 THEN 1 ELSE NULL\\n           END )AS Completed,\\n\\n           sum(CASE WHEN value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL \\n           END) AS In_Progress,\\n\\n            AVG(ff.value) AS Average_Achived,\\n         SUM(ff.value) AS SUM_Achived,\\n         COUNT(ff.value) AS Count_Achived,\\n           2 as SORT_MAIN, \\n       ABS((ISNULL( unionall.Scheduled_Activities,0)-(ISNULL(sum(CASE WHEN ff.value = 1 THEN 1 ELSE NULL\\n           END ),0)+ISNULL(sum(CASE WHEN value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL \\n           END) ,0)))) AS Yet_To_Start_Manual\\n           \\n           FROM(SELECT \\n            Flat_count.Project_Identifier AS Project,\\n            a.ACTIVITY_ID,\\n            a.SBU_ID,\\n            a.Area,\\n            a.CATEGORY,\\n            a.ACTIVITY_SEQUENCE,\\n            Flat_count.Flats,\\n            Flat_count.Total_Floors,\\n            Flat_count.Scheduled_Activities\\n        FROM (\\n          SELECT *, \\'Dry Area\\' AS Area FROM STG.O_PLN_DRYAREA_MAP_STG\\n        UNION ALL\\n        SELECT *, \\'Wet Area\\' AS Area FROM STG.O_PLN_WETAREA_MAP_STG\\n        UNION ALL\\n        SELECT *, \\'Kitchen Area\\' AS Area FROM STG.O_PLN_KITCHENAREA_MAP_STG\\n        UNION ALL\\n        SELECT *, \\'Balcony Area\\' AS Area FROM STG.O_PLN_BALCONYAREA_MAP_STG) a\\n          CROSS Apply (SELECT \\n                                           Project_Identifier,\\n                                           FLAT_COUNT AS Scheduled_Activities,\\n                                           FLAT_COUNT AS Flats,\\n                                           Total_Floors AS Total_Floors\\n                                       FROM [STG].[PROJECTS_NEW_STG]\\n                                                WHERE Project_Identifier !=\\'Creek Vista Grande\\') AS Flat_count) Unionall\\n\\n                                                Join DWH.PLN_FLATFINISHES_FACT ff \\n                                                on unionall.Activity_Id=ff.Activity_ID\\n                                      group by   ff. Upload_Date,\\n       Unionall.Project,\\n        ff.Tower,\\n        ff.ACTIVITY_ID,\\n        unionall.SBU_ID,\\n        unionall.Area,\\n        unionall.CATEGORY,\\n        unionall.ACTIVITY_SEQUENCE,\\n        unionall.Flats,\\n       unionall.Total_Floors,\\n        unionall.Scheduled_Activities\\n          \\n          --ff.Yet_To_Start_Manual,\\n\\n     UNION aLL\\n\\n     SELECT \\n        ff. Update_Date,\\n      Unionall.Project,\\n        ff.Tower,\\n        ff.ACTIVITY_ID,\\n        unionall.SBU_ID,\\n        unionall.Area,\\n       \\'Service Room Progress\\' AS Progress_Type,\\n        unionall.CATEGORY,\\n        unionall.ACTIVITY_SEQUENCE,\\n        unionall.Flats,\\n       unionall.Total_Floors,\\n        unionall.Scheduled_Activities,\\n           sum(case \\n               when ff.value=0 then 1 else null\\n          End) as Yet_TO_Start,\\n\\n           sum(CASE WHEN ff.value = 1 THEN 1 ELSE NULL\\n           END )AS Completed,\\n\\n           sum(CASE WHEN value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL \\n           END) AS In_Progress,\\n\\n            AVG(ff.value) AS Average_Achived,\\n         SUM(ff.value) AS SUM_Achived,\\n         COUNT(ff.value) AS Count_Achived,\\n           4 as SORT_MAIN ,\\n         ABS((ISNULL( unionall.Scheduled_Activities,0)-(ISNULL(sum(CASE WHEN ff.value = 1 THEN 1 ELSE NULL\\n           END ),0)+ISNULL(sum(CASE WHEN value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL \\n           END) ,0)))) AS Yet_To_Start_Manual\\n           FROM (\\n     SELECT \\n            Flat_count.Project_Identifier AS Project,\\n               a.ACTIVITY_ID,\\n            a.SBU_ID,\\n            a.Area,\\n            a.CATEGORY,\\n            a.ACTIVITY_SEQUENCE,\\n            Flat_count.*\\n           FROM \\n             (SELECT *, \\'Water Room\\' AS Area FROM [STG].[O_PLN_WATERROOM_MAP_STG]\\n    UNION ALL\\n    SELECT *, \\'Electrical Room\\' AS Area FROM [STG].[O_PLN_ELECTRICALROOM_MAP_STG]\\n    UNION ALL\\n    SELECT *, \\'Telephone Room\\' AS Area FROM [STG].[O_PLN_TELEPHONEROOM_MAP_STG]\\n    UNION ALL\\n    SELECT *, \\'Fire-Lift Lobby\\' AS Area FROM [STG].[O_PLN_FIRELIFTLOBBY_MAP_STG]\\n    UNION ALL\\n    SELECT *, \\'Garbage Room\\' AS Area FROM [STG].[O_PLN_GARBAGEROOM_MAP_STG])a\\nCROSS JOIN (SELECT \\n                                           Project_Identifier,\\n                                           Total_Floors AS Scheduled_Activities, \\n                                           FLAT_COUNT AS Flats,\\n                                           Total_Floors AS Total_Floors\\n                                       FROM [STG].[PROJECTS_NEW_STG]) AS Flat_count) Unionall\\n\\n                                                 Join [DWH].[PLN_SERVICEROOMS_FACT] ff \\n                                                on unionall.Activity_Id=ff.Activity_ID \\n                                                 group by   ff. Update_Date,\\n        Unionall.Project,\\n        ff.Tower,\\n        ff.ACTIVITY_ID,\\n        unionall.SBU_ID,\\n        unionall.Area,\\n        unionall.CATEGORY,\\n        unionall.ACTIVITY_SEQUENCE,\\n        unionall.Flats,\\n       unionall.Total_Floors,\\n        unionall.Scheduled_Activities\\n          --Yet_To_Start_Manual\\n     UNION ALL\\n\\n     \\nSELECT \\n        sf.Upload_Date,\\n        a.Project,\\n       \\'Overall\\' AS Tower,\\n        a.ACTIVITY_ID,\\n       \\'SBU 3\\' AS SBU_ID,\\n       \\'Slab\\' AS Area,\\n       \\'Structure Progress\\' AS Progress_Type,\\n        a.CATEGORY,\\n          ACTIVITY_SEQUENCE,\\n        COUNT(sf.Level) AS Completed,\\n        NULL AS In_Progress,\\n        NULL AS Yet_To_Start,\\n        a.Flats,\\n        a.Total_Floors,\\n        a.Scheduled_Activities,\\n          NULL AS Average_Achived,\\n        COUNT(Level) AS SUM_Achived,\\n         COUNT(Level) AS Count_Achived,\\n           1  as SORT_MAIN ,\\n       ABS((ISNULL(A.Scheduled_Activities,0)-(ISNULL( COUNT(sf.Level),0)+ISNULL( NULL,0)))) AS Yet_To_Start_Manual\\n    FROM (\\n     SELECT \\n    OPD.project_id AS Project,\\n    OPD.Sequence_of_Appearance AS ACTIVITY_ID,\\n      OPD.Sequence_of_Appearance,\\n    OPD.area AS CATEGORY,\\n    OPD.Pour_count AS ACTIVITY_SEQUENCE,\\n    Flat_count.Flats,\\n    Flat_count.Total_Floors,\\n    Flat_count.Scheduled_Activities\\n      FROM [STG].[O_PLN_STRUCTURES_POUR_MAP_STG] OPD \\nCROSS JOIN (SELECT \\n                                   0 AS Scheduled_Activities,\\n                                   NULL AS Flats,\\n                                   Total_Floors AS Total_Floors\\n                               FROM [STG].[PROJECTS_NEW_STG] WHERE Project_Identifier !=\\'Creek Vista Grande\\') AS Flat_count)a\\n\\n                                      join [DWH].[PLN_STRUCTURE_FACT] sf on\\n                                      a. Sequence_of_Appearance = sf.Sequence_of_Appearance\\n                                     WHERE sf.Pour LIKE (\\'slab%\\') \\n                                     GROUP BY sf.Upload_Date,\\n                                                \\n         a.Project,\\n        a.ACTIVITY_ID,\\n        a.CATEGORY,\\n          ACTIVITY_SEQUENCE,\\n        a.Flats,\\n        a.Total_Floors,\\n        a.Scheduled_Activities\\n-- select \\n-- COUNT(Level) AS Completed,\\n--Upload_Date,\\n--\\'SBU 3\\' AS SBU_ID,\\n-- NULL AS In_Progress,\\n-- COUNT(Level) AS SUM_Achived\\n\\n-- FROM [DWH].[PLN_STRUCTURE_FACT]  group by Upload_Date,SBU_ID\\nUNION ALL\\n SELECT \\n        PTF.Update_Date,\\n        a.Project,\\n        PTF.tower,\\n        a.ACTIVITY_ID,\\n        a.SBU_ID,\\n       \\'Corridor\\' AS Area,\\n       \\'Corridor Progress\\' AS Progress_Type,\\n        a.CATEGORY,\\n        a.ACTIVITY_SEQUENCE,\\n        a.Flats,\\n        a.Total_Floors,\\n        a.Scheduled_Activities,\\n       AVG(Try_CAST(PTF.value as decimal(15,4))) AS Average_Achived,\\n       SUM(Try_Cast(PTF.value as DECIMAL(15,4))) AS SUM_Achived,\\n       COUNT(Try_Cast(PTF.value As DECIMAL(15,4))) AS Count_Achived,\\n       SUM(TRY_CAST(CASE WHEN PTF.value = 1 THEN 1 ELSE NULL END as Decimal(15,4))) AS Completed,\\n        Sum(Try_CAST(CASE WHEN PTF.value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL END as Decimal(15,4))) AS In_Progress,\\n       sum(TRY_CAST(CASE WHEN PTF.value = 0 THEN 1 ELSE NULL END as Decimal(15,4))) AS Yet_To_Start,\\n        5 as SORT_MAIN ,\\n      ABS((ISNULL(a.Scheduled_Activities,0)-(ISNULL( SUM(TRY_CAST(CASE WHEN PTF.value = 1 THEN 1 ELSE NULL END as Decimal(15,4))),0)+\\n       ISNULL(Sum(Try_CAST(CASE WHEN PTF.value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL END as Decimal(15,4))),0)))) AS Yet_To_Start_Manual\\n          from\\n   (\\n        SELECT \\n            Flat_count.Project_Identifier AS Project,\\n            OPD.ACTIVITY_ID,\\n            OPD.SBU_ID,\\n           \\'Corridor\\' AS Area,\\n            \\'Corridor Progress\\' AS Progress_Type,\\n            OPD.CATEGORY,\\n            OPD.ACTIVITY_SEQUENCE,\\n            Flat_count.Flats,\\n            Flat_count.Total_Floors,\\n            Flat_count.Scheduled_Activities\\n   FROM STG.O_PLN_CORRIDOR_MAP_STG OPD\\n          CROSS apply (SELECT \\n                                           Project_Identifier,\\n                                           Total_Floors AS Scheduled_Activities,\\n                                           FLAT_COUNT AS Flats,\\n                                           Total_Floors AS Total_Floors\\n                                       FROM [STG].[PROJECTS_NEW_STG] WHERE Project_Identifier !=\\'Creek Vista Grande\\' )AS Flat_count)a\\n\\n                                                join[DWH].[PLN_CORRIDOR_FACT] PTF\\n                                               ON  a.Activity_Id=PTF.Activity_ID\\n                                               Group By PTF.Update_Date,\\n          a.Project,\\n        PTF.tower,\\n        a.ACTIVITY_ID,\\n        a.SBU_ID,\\n       Area,\\n        Progress_Type,\\n        a.CATEGORY,\\n        a.ACTIVITY_SEQUENCE,\\n        a.Flats,\\n        a.Total_Floors,\\n        a.Scheduled_Activities\\n   \\n   UNION ALL\\n\\n\\n   SELECT \\n        PTF.Upload_Date,\\n         a.Project,\\n        PTF.tower,\\n        a.ACTIVITY_ID,\\n        a.SBU_ID,\\n        \\'KeepOut Area\\' AS Area,\\n        \\'KeepOut Progress\\' AS Progress_Type,\\n        a.CATEGORY,\\n        a.ACTIVITY_SEQUENCE,\\n        a.Flats,\\n           a.Total_Floors,\\n           a.Scheduled_Activities,\\n       AVG(Try_CAST(PTF.value as decimal(15,4))) AS Average_Achived,\\n       SUM(Try_Cast(PTF.value as DECIMAL(15,4))) AS SUM_Achived,\\n       COUNT(Try_Cast(PTF.value As DECIMAL(15,4))) AS Count_Achived,\\n       SUM(TRY_CAST(CASE WHEN PTF.value = 1 THEN 1 ELSE NULL END as Decimal(15,4))) AS Completed,\\n        Sum(Try_CAST(CASE WHEN PTF.value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL END as Decimal(15,4))) AS In_Progress,\\n       sum(TRY_CAST(CASE WHEN PTF.value = 0 THEN 1 ELSE NULL END as Decimal(15,4))) AS Yet_To_Start,\\n      6 as SORT_MAIN ,\\n       ABS((ISNULL(a.Scheduled_Activities,0)-(ISNULL( SUM(TRY_CAST(CASE WHEN PTF.value = 1 THEN 1 ELSE NULL END as Decimal(15,4))),0)\\n        +ISNULL( Sum(Try_CAST(CASE WHEN PTF.value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL END as Decimal(15,4))),0)))) AS Yet_To_Start_Manual\\n    FROM (\\n        SELECT \\n            Flat_count.Project_Identifier AS Project,\\n            OPD.ACTIVITY_ID,\\n            OPD.SBU_ID,\\n            OPD.CATEGORY,\\n            OPD.ACTIVITY_SEQUENCE,\\n            Flat_count.Flats,\\n            Flat_count.Total_Floors,\\n            Flat_count.Scheduled_Activities\\n     FROM STG.O_PLN_KEEPOUT_MAP_STG OPD CROSS JOIN (SELECT \\n                                           Project_Identifier,\\n                                           FLAT_COUNT AS Scheduled_Activities,\\n                                           FLAT_COUNT AS Flats,\\n                                           Total_Floors AS Total_Floors\\n                                       FROM [STG].[PROJECTS_NEW_STG] WHERE Project_Identifier !=\\'Creek Vista Grande\\') AS Flat_count)a\\n\\n                                                join DWH.PLN_KEEPOUT_FACT PTF\\n                                                ON a.Activity_Id=PTF.Activity_Id\\n                                                Group By PTF.Upload_Date,\\n         a.Project,\\n        PTF.tower,\\n        a.ACTIVITY_ID,\\n        a.SBU_ID,\\n        a.CATEGORY,\\n        a.ACTIVITY_SEQUENCE,\\n        a.Flats,\\n        a.Total_Floors,\\n        a.Scheduled_Activities\\n\\n\\n   \\n   \\n   ',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Id as integer,",
+				"          Upload_Date as date,",
+				"          Project as string,",
+				"          Tower as string,",
+				"          Activity_ID as integer,",
+				"          SBU_ID as string,",
+				"          Area as string,",
+				"          Progress_Type as string,",
+				"          Category as string,",
+				"          Activity_Sequence as string,",
+				"          Flats as string,",
+				"          Total_Floors as integer,",
+				"          Scheduled_Activities as integer,",
+				"          Sum_Achived as decimal(36,4),",
+				"          Count_Achived as integer,",
+				"          Average_Achived as decimal(38,3),",
+				"          Completed as decimal(23,0),",
+				"          In_Progress as decimal(38,3),",
+				"          Yet_To_Start as decimal(38,3),",
+				"          Yet_To_Start_Manual as decimal(25,0),",
+				"          Sort_Main as integer,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_PROJECT_PROGRESS_SUMMARY_FACT]'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Id = ID,",
+				"          Upload_Date,",
+				"          Project,",
+				"          Tower,",
+				"          Activity_ID = ACTIVITY_ID,",
+				"          SBU_ID,",
+				"          Area,",
+				"          Progress_Type,",
+				"          Category = CATEGORY,",
+				"          Activity_Sequence = ACTIVITY_SEQUENCE,",
+				"          Flats,",
+				"          Total_Floors,",
+				"          Scheduled_Activities,",
+				"          Sum_Achived = SUM_Achived,",
+				"          Count_Achived,",
+				"          Average_Achived,",
+				"          Completed,",
+				"          In_Progress,",
+				"          Yet_To_Start = Yet_TO_Start,",
+				"          Yet_To_Start_Manual,",
+				"          Sort_Main = SORT_MAIN,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

@@ -1,0 +1,614 @@
+{
+	"name": "PL_O_PLN_CORRIDOR_RAW_STG",
+	"properties": {
+		"activities": [
+			{
+				"name": "O_PLN_CORRIDOR_RAW",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"preCopyScript": "TRUNCATE TABLE [STG].[O_PLN_CORRIDOR_RAW_STG];",
+						"writeBehavior": "Insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id_",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Corridor_Raw_Id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "Upload_Time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Project_Id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Tower",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sbu_Sd",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Level",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Level",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor MEP Marking for Builders Work",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_MEP_Marking_for_Builders_Work",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Cutting & Chasing of Blockwork",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Cutting_and_Chasing_of_Blockwork",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor MEP Services Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_MEP_Services_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Wall MEP Services Packing",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Wall_MEP_Services_Packing",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Plaster",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Plaster",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Screed",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Screed",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Grinding Clearance for Tile",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Grinding_Clearance_for_Tile",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Tile Marking",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Tile_Marking",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Bull Marking",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Bull_Marking",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Electrical Conduits",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Electrical_Conduits",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Cold water supply",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Cold_water_supply",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Fire Fighting Pipe Support",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Fire_Fighting_Pipe_Support",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Modular Instalation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Modular_Instalation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Framing Clearance by MEP",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Framing_Clearance_by_MEP",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Center line marking for Facade Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Center_line_marking_for_Facade_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Curtain Wall Box Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Curtain_Wall_Box_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Curtain Wall Frame Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Curtain_Wall_Frame_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Curtain Wall Glass Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Curtain_Wall_Glass_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Curtain Wall Flashing Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Curtain_Wall_Flashing_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Floor Tile",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Floor_Tile",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Wall Tile",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Wall_Tile",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Fire Hose Reel Cabinet Installation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Fire_Hose_Reel_Cabinet_Installation",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Grouting for Framing Clearance",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Grouting_for_Framing_Clearance",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor FC Framing",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_FC_Framing",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP Access Panel Markings & Inspection",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_Access_Panel_Markings_and_Inspection",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEP Works for Boarding Clearance",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MEP_Works_for_Boarding_Clearance",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Framing Levelling",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Framing_Levelling",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor FC Boarding",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_FC_Boarding",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Joint Taping & Sanding",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Joint_Taping_and_Sanding",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Ceiling Primer",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Ceiling_Primer",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Ceiling Stucco (1st and 2nd Coat)",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Ceiling_Stucco_1st_and_2nd_Coat",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Ceiling First Coat Paint",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Ceiling_First_Coat_Paint",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Grouting",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Grouting",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Silicone",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Silicone",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Left over Screed",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Left_over_Screed",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Left Over Area Floor Tile",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Left_Over_Area_Floor_Tile",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Left Over Area Wall Tile",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Left_Over_Area_Wall_Tile",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Remaining Grout and Silicone Works",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Remaining_Grout_and_Silicone_Works",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor MEP Final Fixtures",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_MEP_Final_Fixtures",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Corridor Final Coat Paint",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Corridor_Final_Coat_Paint",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_O_PLN_CORRIDOR_RAW_STG_SRC",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_O_PLN_CORRIDOR_RAW_STG_TRG",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-01-16T12:52:55Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,134 @@
+{
+	"name": "DS_WOODEN_DOOR_FACT_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_Date",
+				"type": "date"
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Level_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Building",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Flat_No",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Jamb_Width",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Orientation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Door_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Fire_Rating",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Frame",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Foam",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Architrave",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Shutter",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Ironmongery",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Installer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "level_map",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Total",
+				"type": "varchar"
+			},
+			{
+				"name": "SC_Short",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SC_NAME",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DATE_WISE_SPLIT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_WOODEN_DOOR_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

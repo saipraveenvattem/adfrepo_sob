@@ -1,0 +1,84 @@
+{
+	"name": "DS_O_PLN_MILESTONE_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Milestone_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Project_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "Tower",
+				"type": "varchar"
+			},
+			{
+				"name": "Sbu_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "Sl_No",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Group",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity_Description",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Baseline_Start",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actual_Forecast_Start",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Baseline_Finish",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actual_Forecast_Finish",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actual_Forecast_Mitigation_Finish",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actual_Percentage",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Critical",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_MILESTONE_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

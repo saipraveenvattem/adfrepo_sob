@@ -1,0 +1,674 @@
+{
+	"name": "PL_PROJECTS_NEW_STG",
+	"properties": {
+		"activities": [
+			{
+				"name": "PROJECTS_NEW",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"preCopyScript": "TRUNCATE TABLE [STG].[PROJECTS_NEW_STG];",
+						"writeBehavior": "Insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Sort_ID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Sort_ID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Project_Identifier",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Project_Identifier",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FLAT_COUNT",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "FLAT_COUNT",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Project_Short",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Project_Short",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_Floors",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Total_Floors",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_Podiums",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Total_Podiums",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_Typical_Floor",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Total_Typical_Floor",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Typical_Floor_Slab",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Typical_Floor_Slab",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Podium_Slab",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Podium_Slab",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "1_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ONE_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "2_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "TWO_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "1_5_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ONE_FIVE_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "2_5_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "TWO_FIVE_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "3_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "THEREE_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "4_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "FOUR_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "5_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "FIVE_BHK",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Actual_Start",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "Actual_Start",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "BOQ_Value",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "BOQ_Value",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Bathrooms",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Bathrooms",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Center_Tower",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Center_Tower",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Built_Up_Area",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Built_Up_Area",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Chairman_Lift",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Chairman_Lift",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Delay",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Delay",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Duplex",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Duplex",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Fire_Lifts",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Fire_Lifts",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Forecast_Duration",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Forecast_Duration",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Forecast_Finish",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "Forecast_Finish",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "Lat",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Lat",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Long",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Long",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Office_Space",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Office_Space",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Office_Use_Lift",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Office_Use_Lift",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Parkings",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Parkings",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Pent_House",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Pent_House",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Passenger_Lift",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Passenger_Lift",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Project_Configuration",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Project_Configuration",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Project_Duration",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Project_Duration",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Project_Finish",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "Project_Finish",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "Project_Start",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "Project_Start",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "Residence_Use_Lift",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Residence_Use_Lift",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Retail",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Retail",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Service_Lift",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Service_Lift",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase_GF_L1",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Staircase_GF_L1",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Staircase_GF_Roof",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Staircase_GF_Roof",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Total_Units",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "Total_Units",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Tower_A",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Tower_A",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Tower_B",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Tower_B",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Tower_C",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Tower_C",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Tower_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Tower_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Towers",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Towers",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Image_Link",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Image_Link",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Render_Image",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Render_Image",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_PROJECTS_NEW_STG_SRC",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_PROJECTS_NEW_STG_TRG",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-03T10:55:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

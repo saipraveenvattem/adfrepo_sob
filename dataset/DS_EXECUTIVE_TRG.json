@@ -1,0 +1,84 @@
+{
+	"name": "DS_EXECUTIVE_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Achieved_Revenue_Till_2022",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Total_Revenue_BOQ",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balance_Revenue_to_Execute_From_2023",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actuals_From_Business_Plan",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Upload_Date",
+				"type": "date"
+			},
+			{
+				"name": "Project",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Latest_Actuals",
+				"type": "decimal",
+				"precision": 32,
+				"scale": 2
+			},
+			{
+				"name": "Total_to_be_considered",
+				"type": "decimal",
+				"precision": 32,
+				"scale": 2
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "date"
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_EXECUTIVE_SUMMARY_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

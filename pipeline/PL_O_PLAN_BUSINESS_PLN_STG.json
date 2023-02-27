@@ -1,0 +1,333 @@
+{
+	"name": "PL_O_PLAN_BUSINESS_PLN_STG",
+	"properties": {
+		"activities": [
+			{
+				"name": "BusinessPLn",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"preCopyScript": "TRUNCATE TABLE STG.O_PLN_BUSINESS_PLAN_RAW_STG",
+						"writeBehavior": "Insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id_",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "BUSINESS_PLAN_STG_Id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sl. No",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sl_No",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Type",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Type",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SBU",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SBU",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Total Revenue (BOQ)",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Total_Revenue_BOQ",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Achieved Revenue (Till 2021)",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Achieved_Revenue_Till_2021",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Balance Revenue to Execute (From 2022)",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Balance_Revenue_to_Execute_From_2022",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Jan-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Jan_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Feb-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Feb_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Mar-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Mar_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Apr-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Apr_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "May-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "May_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Jun-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Jun_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Jul-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Jul_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Aug-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Aug_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sep-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sep_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Oct-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Oct_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Nov-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Nov_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Dec-22",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Dec_22",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Total",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Total",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_O_PLN_BUSINESS_RAW_STG_SRC",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_O_PLN_BUSINESS_RAW_TRG",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-22T09:15:45Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

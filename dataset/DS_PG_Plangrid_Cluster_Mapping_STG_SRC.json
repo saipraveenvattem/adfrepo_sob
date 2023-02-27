@@ -1,0 +1,53 @@
+{
+	"name": "DS_PG_Plangrid_Cluster_Mapping_STG_SRC",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Sobha_PG_DB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Stamp_First",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Stamp",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cluster_Short",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cluster_Full",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Works",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Approval",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Clearance",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Plangrid_Cluster_Mapping"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

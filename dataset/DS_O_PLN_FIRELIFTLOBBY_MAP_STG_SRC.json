@@ -1,0 +1,19 @@
+{
+	"name": "DS_O_PLN_FIRELIFTLOBBY_MAP_STG_SRC",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Azure_MySQL_DL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureMySqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "o_pln_fireliftlobby_map"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

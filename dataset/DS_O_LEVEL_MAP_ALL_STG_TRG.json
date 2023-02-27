@@ -1,0 +1,30 @@
+{
+	"name": "DS_O_LEVEL_MAP_ALL_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "LEVEL_MAP_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "LEVEL",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_LEVEL_MAP_ALL_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

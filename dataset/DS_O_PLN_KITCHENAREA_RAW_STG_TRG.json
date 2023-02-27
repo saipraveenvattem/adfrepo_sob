@@ -1,0 +1,104 @@
+{
+	"name": "DS_O_PLN_KITCHENAREA_RAW_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "KITCHENAREA_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "project_id",
+				"type": "varchar"
+			},
+			{
+				"name": "tower",
+				"type": "varchar"
+			},
+			{
+				"name": "sbu_id",
+				"type": "varchar"
+			},
+			{
+				"name": "Level",
+				"type": "varchar"
+			},
+			{
+				"name": "Flat",
+				"type": "varchar"
+			},
+			{
+				"name": "Kitchen_Area_Plaster",
+				"type": "varchar"
+			},
+			{
+				"name": "Kitchen_Utility_Framing",
+				"type": "varchar"
+			},
+			{
+				"name": "Kitchen_Utility_Boarding",
+				"type": "varchar"
+			},
+			{
+				"name": "Kitchen_Wall_Tile",
+				"type": "varchar"
+			},
+			{
+				"name": "MEP_Box_Fixing",
+				"type": "varchar"
+			},
+			{
+				"name": "Kitchen_Cabinet",
+				"type": "varchar"
+			},
+			{
+				"name": "Kitchen_Counter_Plywood",
+				"type": "varchar"
+			},
+			{
+				"name": "Kitchen_Counter_Top",
+				"type": "varchar"
+			},
+			{
+				"name": "Kitchen_Counter_Top_Skirting",
+				"type": "varchar"
+			},
+			{
+				"name": "Kitchen_Cabinet_Grouting",
+				"type": "varchar"
+			},
+			{
+				"name": "Kitchen_Cabinet_Silicone",
+				"type": "varchar"
+			},
+			{
+				"name": "MEP_Fixtures_For_Kitchen_Cabinet",
+				"type": "varchar"
+			},
+			{
+				"name": "Kitchen_Appliances",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_KITCHENAREA_RAW_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

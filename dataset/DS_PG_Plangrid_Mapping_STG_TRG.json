@@ -1,0 +1,37 @@
+{
+	"name": "DS_PG_Plangrid_Mapping_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Project_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Act_Project_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Cluster",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Status",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "PG_Plangrid_Mapping_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

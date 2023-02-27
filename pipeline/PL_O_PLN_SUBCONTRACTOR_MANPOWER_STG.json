@@ -1,0 +1,1358 @@
+{
+	"name": "PL_O_PLN_SUBCONTRACTOR_MANPOWER_STG",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"preCopyScript": "TRUNCATE TABLE STG.O_PLN_SUBCONTRACTOR_MANPOWER_STG",
+						"writeBehavior": "Insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id_",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "id_",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SBU",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SBU",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Project",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Project",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Type",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Type",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sub Contractor",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sub_Contractor",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Activity",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Activity",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SCL Engineer",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SCL_Engineer",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PM & Engineers_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PM_And_Engineers_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PM & Engineers_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PM_And_Engineers_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PM & Engineers_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PM_And_Engineers_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Supervisor_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Supervisor_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Supervisor_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Supervisor_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Supervisor_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Supervisor_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Foreman / Staff_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Foreman_Staff_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Foreman / Staff_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Foreman_Staff_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Foreman / Staff_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Foreman_Staff_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Chargehand_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Chargehand_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Chargehand_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Chargehand_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Chargehand_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Chargehand_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Carpenter_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Carpenter_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Carpenter_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Carpenter_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Carpenter_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Carpenter_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Mason_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Mason_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Mason_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Mason_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Mason_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Mason_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Steel Fitter_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Steel_Fitter_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Steel Fitter_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Steel_Fitter_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Steel Fitter_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Steel_Fitter_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Scaffolder_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Scaffolder_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Scaffolder_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Scaffolder_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Scaffolder_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Scaffolder_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Operator_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Operator_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Operator_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Operator_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Operator_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Operator_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Security_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Security_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Security_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Security_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Security_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Security_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Helper_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Helper_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Helper_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Helper_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Helper_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Helper_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Steel Fixers_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Steel_Fixers_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Steel Fixers_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Steel_Fixers_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Steel Fixers_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Steel_Fixers_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Masons_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Masons_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Masons_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Masons_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Masons_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Masons_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Welder_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Welder_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Welder_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Welder_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Welder_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Welder_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Rigger_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Rigger_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Rigger_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Rigger_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Rigger_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Rigger_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Painter_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Painter_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Painter_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Painter_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Painter_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Painter_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Tile Mason_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Tile_Mason_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Tile Mason_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Tile_Mason_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Tile Mason_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Tile_Mason_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Gypsum Carpenter_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Gypsum_Carpenter_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Gypsum Carpenter_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Gypsum_Carpenter_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Gypsum Carpenter_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Gypsum_Carpenter_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Joinery Carpenter_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Joinery_Carpenter_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Joinery Carpenter_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Joinery_Carpenter_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Joinery Carpenter_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Joinery_Carpenter_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Screed Mason_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Screed_Mason_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Screed Mason_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Screed_Mason_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Screed Mason_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Screed_Mason_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Marble / Stone Mason_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Marble_Stone_Mason_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Marble / Stone Mason_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Marble_Stone_Mason_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Marble / Stone Mason_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Marble_Stone_Mason_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Electrician_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Electrician_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Electrician_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Electrician_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Electrician_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Electrician_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Plumber_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Plumber_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Plumber_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Plumber_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Plumber_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Plumber_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "HVAC_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "HVAC_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "HVAC_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "HVAC_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "HVAC_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "HVAC_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sub Contractor_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sub_Contractor_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sub Contractor_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sub_Contractor_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sub Contractor_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sub_Contractor_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Facade Technicians_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Facade_Technicians_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Facade Technicians_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Facade_Technicians_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Facade Technicians_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Facade_Technicians_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "POP Mason_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "POP_Mason_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "POP Mason_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "POP_Mason_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "POP Mason_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "POP_Mason_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Joinery Polisher_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Joinery_Polisher_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Joinery Polisher_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Joinery_Polisher_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Joinery Polisher_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Joinery_Polisher_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Fitter_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Fitter_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Fitter_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Fitter_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Fitter_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Fitter_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Deep Cleaning_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Deep_Cleaning_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Deep Cleaning_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Deep_Cleaning_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Deep Cleaning_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Deep_Cleaning_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OTHERS_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "OTHERS_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OTHERS_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "OTHERS_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OTHERS_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "OTHERS_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sub Total_D",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sub_Total_D",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sub Total_N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sub_Total_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sub Total_D/N",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sub_Total_D_N",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Sub Total_",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Sub_Total",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_O_PLN_SUBCONTRACTOR_MANPOWER_STG_SRC",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_O_PLN_SUBCONTRACTOR_MANPOWER_STG_TRG",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-02-14T09:41:26Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

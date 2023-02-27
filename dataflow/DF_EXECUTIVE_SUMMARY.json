@@ -1,0 +1,113 @@
+{
+	"name": "DF_EXECUTIVE_SUMMARY",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_O_PLN_BUSINESS_PLN_1_RAW_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"description": "Import data from DS_O_PLN_DOOR_DELIVERY_RAW_STG_TRG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_EXECUTIVE_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          upload_time as timestamp,",
+				"          project_id as string,",
+				"          SBU as string,",
+				"          Type as string,",
+				"          Achieved_Revenue_Till_2022 as string,",
+				"          Total_Revenue_BOQ as string,",
+				"          Balance_Revenue_to_Execute_From_2023 as string,",
+				"          Actuals_From_Business_Plan as integer,",
+				"          Update_Date as timestamp,",
+				"          Project as string,",
+				"          Latest_Actuals as decimal(38,2),",
+				"          Total_to_be_considered as decimal(38,2)",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT bp.upload_time,\\n       bp.project_id,\\n       bp.SBU,\\n       bp.Type,\\n       bp.[Achieved_Revenue_Till_2022],\\n       bp.[Total_Revenue_BOQ],\\n       bp.[Balance_Revenue_to_Execute_From_2023],\\n       bp.Actuals_From_Business_Plan,\\n       pv.Update_Date,\\n       pv.Project,\\n       pv.Latest_Actuals,\\n       replace(replace(bp.[Achieved_Revenue_Till_2022],\\',\\',\\'\\'),\\'-\\',\\'\\') + bp.Actuals_From_Business_Plan + pv.Latest_Actuals as Total_to_be_considered\\nFROM (\\n  SELECT opbp.upload_time,\\n         opbp.project_id,\\n         opbp.SBU,\\n         opbp.Type,\\n         opbp.[Achieved_Revenue_Till_2022],\\n         opbp.[Total_Revenue_BOQ],\\n         opbp.[Balance_Revenue_to_Execute_From_2023],\\n         CAST(replace(replace(opbp.[Jan_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) \\n           + CAST(replace(replace(opbp.[Feb_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) + \\n           CAST(replace(replace(opbp.[Mar_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) + \\n           CAST(replace(replace(opbp.[Apr_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) + \\n           CAST(replace(replace(opbp.[May_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) + \\n           CAST(replace(replace(opbp.[Jun_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) + \\n           CAST(replace(replace(opbp.[Jul_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) + \\n           \\n           \\n           CAST(replace(replace(opbp.[Aug_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) + \\n           CAST(replace(replace(opbp.[Sep_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) + \\n           CAST(replace(replace(opbp.[Oct_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) + \\n           CAST(replace(replace(opbp.[Nov_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) + \\n           CAST(replace(replace(opbp.[Dec_23], \\',\\', \\'\\'), \\'-\\', \\'\\') AS INT) AS Actuals_From_Business_Plan,\\n         MAX(opbp.upload_time) OVER (PARTITION BY opbp.project_id) AS Max_BP_date\\n  FROM  [STG].[O_PLN_BUSINESS_PLAN_1_RAW_STG] opbp\\n  WHERE opbp.SBU IN (\\' Overall \\',\\'Overall\\',\\'Overall \\',\\' Overall\\')\\n    AND opbp.Type NOT IN (\\'Forecast\\', \\'Type\\',\\'Plan\\',\\' Forecast \\', \\' Type \\',\\' Plan \\')\\n) bp\\nLEFT JOIN (\\n  SELECT fpp2.Update_Date,\\n         fpp2.[Project_Identifier] AS Project,\\n         SUM(fpp2.[Actual_as_on_date]) AS Latest_Actuals\\n  FROM [DWH].[PLN_PROJECTION_FACT] fpp2\\n  WHERE MONTH(fpp2.Update_Date) = MONTH(GETDATE())\\n  GROUP BY fpp2.Update_Date,\\n           fpp2.[Project_Identifier]\\n) pv ON bp.project_id = pv.Project\\nWHERE bp.Max_BP_date = bp.upload_time',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          upload_time as timestamp,",
+				"          project_id as string,",
+				"          SBU as string,",
+				"          Type as string,",
+				"          Achieved_Revenue_Till_2022 as string,",
+				"          Total_Revenue_BOQ as string,",
+				"          Balance_Revenue_to_Execute_From_2023 as string,",
+				"          Actuals_From_Business_Plan as string,",
+				"          Upload_Date as date,",
+				"          Project as string,",
+				"          Latest_Actuals as decimal(32,2),",
+				"          Total_to_be_considered as decimal(32,2),",
+				"          LoadDateTime as date",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_EXECUTIVE_SUMMARY_FACT]'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID,",
+				"          upload_time,",
+				"          project_id,",
+				"          SBU,",
+				"          Type,",
+				"          Achieved_Revenue_Till_2022,",
+				"          Total_Revenue_BOQ,",
+				"          Balance_Revenue_to_Execute_From_2023,",
+				"          Actuals_From_Business_Plan,",
+				"          Upload_Date = Update_Date,",
+				"          Project,",
+				"          Latest_Actuals,",
+				"          Total_to_be_considered,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

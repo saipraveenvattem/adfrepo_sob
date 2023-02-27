@@ -1,0 +1,98 @@
+{
+	"name": "DS_PLN_STRACTURE_FACT_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_Date",
+				"type": "date"
+			},
+			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Sbu_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Area",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Pour_count",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Pour",
+				"type": "varchar"
+			},
+			{
+				"name": "Sequence_of_Appearance",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "value",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Next_Date",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Avg_days",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "View_Map",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "value_Average",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_STRUCTURE_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

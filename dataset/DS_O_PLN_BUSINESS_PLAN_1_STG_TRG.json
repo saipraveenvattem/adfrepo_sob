@@ -1,0 +1,70 @@
+{
+	"name": "DS_O_PLN_BUSINESS_PLAN_1_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Upload_date",
+				"type": "date"
+			},
+			{
+				"name": "project_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SBU",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Month",
+				"type": "nvarchar"
+			},
+			{
+				"name": "value",
+				"type": "nvarchar"
+			},
+			{
+				"name": "DENSE_RANK",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "sbu_sort",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "month_sort",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "year_sort",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Cummulative",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_BUSINESS_PLAN_1_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

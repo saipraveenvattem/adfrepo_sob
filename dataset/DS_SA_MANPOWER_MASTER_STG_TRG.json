@@ -1,0 +1,96 @@
+{
+	"name": "DS_SA_MANPOWER_MASTER_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Manpower_Master_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Project_id",
+				"type": "varchar"
+			},
+			{
+				"name": "Tower",
+				"type": "varchar"
+			},
+			{
+				"name": "Sbu_id",
+				"type": "varchar"
+			},
+			{
+				"name": "SL_NO",
+				"type": "varchar"
+			},
+			{
+				"name": "EMP_ID_NO",
+				"type": "varchar"
+			},
+			{
+				"name": "TECHNICIAN_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "ACTUAL_DOJ",
+				"type": "varchar"
+			},
+			{
+				"name": "TRADE_AS_PER_ADMIN",
+				"type": "varchar"
+			},
+			{
+				"name": "TRADE_GROUP",
+				"type": "varchar"
+			},
+			{
+				"name": "WORK_STATUS_COST_HEAD",
+				"type": "varchar"
+			},
+			{
+				"name": "DIVISION",
+				"type": "varchar"
+			},
+			{
+				"name": "UNIT",
+				"type": "varchar"
+			},
+			{
+				"name": "WORK_STATUS",
+				"type": "varchar"
+			},
+			{
+				"name": "SHIFT",
+				"type": "varchar"
+			},
+			{
+				"name": "COMPANY",
+				"type": "varchar"
+			},
+			{
+				"name": "SOURCE",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "SA_MANPOWER_MASTER_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

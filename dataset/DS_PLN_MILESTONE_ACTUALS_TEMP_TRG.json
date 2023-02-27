@@ -1,0 +1,69 @@
+{
+	"name": "DS_PLN_MILESTONE_ACTUALS_TEMP_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Project_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SBU_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Milestone_Actuals_Temp_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Upload_time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Group",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Activity",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Actual_Percentage",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LoadDateTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_MILESTONE_ACTUALS_TEMP_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

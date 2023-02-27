@@ -1,0 +1,102 @@
+{
+	"name": "DS_DT_DRAWING_TRACKER_HEADER_STG_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "DRAWING_TRACKER_HEADER_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "drawing_number",
+				"type": "nvarchar"
+			},
+			{
+				"name": "drawing_title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "project_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "category_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "subcategory_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "scheduled_date",
+				"type": "date"
+			},
+			{
+				"name": "pnca_committed_date",
+				"type": "date"
+			},
+			{
+				"name": "actual_received_date",
+				"type": "date"
+			},
+			{
+				"name": "last_revision_title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "revision_count",
+				"type": "nvarchar"
+			},
+			{
+				"name": "remarks",
+				"type": "nvarchar"
+			},
+			{
+				"name": "priority",
+				"type": "nvarchar"
+			},
+			{
+				"name": "status",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "created_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "updated_at",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "created_by",
+				"type": "nvarchar"
+			},
+			{
+				"name": "updated_by",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "DT_DRAWING_TRACKER_HEADER_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

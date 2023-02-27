@@ -1,0 +1,29 @@
+{
+	"name": "DS_PG_PLANGRID_PROJECT_TRG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Project_Short_Code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Name",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "PG_PLANGRID_PROJECT_STG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

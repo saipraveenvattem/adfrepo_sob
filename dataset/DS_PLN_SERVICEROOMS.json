@@ -1,0 +1,91 @@
+{
+	"name": "DS_PLN_SERVICEROOMS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Update_Date",
+				"type": "date"
+			},
+			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Project_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Level_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Sbu_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Tower",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type_of_work",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sclicer",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Value",
+				"type": "decimal",
+				"precision": 14,
+				"scale": 4
+			},
+			{
+				"name": "Activity_Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Category",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Category_Map",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Load_Date_Time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_SERVICEROOMS_FACT"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

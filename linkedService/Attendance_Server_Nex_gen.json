@@ -1,0 +1,12 @@
+{
+	"name": "Attendance_Server_Nex_gen",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=10.150.1.28;initial catalog=adms_db;user id=sa",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEI0NDM1ODQ5LThDMDItNERFNS04Q0M2LTBEMjc5OUU4NTA1Ql9mNGVkZWI5MS0wZTAxLTQxOWMtYjRlYy0wZDk4N2I5MDQyMzciDQp9"
+		}
+	}
+}

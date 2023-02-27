@@ -1,0 +1,16 @@
+{
+	"name": "Attendance_Nexgen_Checkinout",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=10.150.1.28;initial catalog=adms_db;user id=sa",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI3M2E0ZmJlNS0yMzk3LTRiMDctOGIzNC04MDg4ZGMzNWI0ZjYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SobhaattendanceIR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

@@ -1,0 +1,386 @@
+{
+	"name": "PL_O_PLN_DOOR_MANPOWER_STG",
+	"properties": {
+		"activities": [
+			{
+				"name": "O_PLN_DOOR_MANPOWER_STG",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureMySqlSource",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"preCopyScript": "TRUNCATE TABLE STG.O_PLN_DOOR_MANPOWER_STG;",
+						"writeBehavior": "Insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "id_",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "O_PLN_DOOR_MANPOWER_Id",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "upload_time",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "project_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "tower",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sbu_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Date",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Date",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC1",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC1",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC2",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC2",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC3",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC3",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC4",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC4",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC5",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC5",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC6",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC6",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC7",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC7",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC8",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC8",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC9",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC9",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC10",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC10",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC11",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC11",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC12",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC12",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC13",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC13",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC14",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC14",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC15",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC15",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC16",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC16",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC17",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC17",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC18",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC18",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC19",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC19",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SC20",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SC20",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Total",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Total",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_O_PLN_DOOR_MANPOWER_STG_SRC",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_O_PLN_DOOR_MANPOWER_STG_TRG",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-12-19T13:03:59Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

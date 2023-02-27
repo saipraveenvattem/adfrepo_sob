@@ -1,0 +1,114 @@
+{
+	"name": "DF_PLN_GARBAGEROOM",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_O_PLN_GARBAGEROOM_RAW_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"description": "Import data from DS_O_PLN_GARBAGEROOM_RAW_STG_TRG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_PLN_GARBAGEROOM_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "Export data to DS_PLN_GARBAGEROOM_TRG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          PROJECT_ID as integer,",
+				"          LEVEL_ID as integer,",
+				"          SBU_ID as integer,",
+				"          TOWER as string,",
+				"          PROJECT_IDENTIFIER as string,",
+				"          LEVEL as string,",
+				"          Sclicer as string,",
+				"          ACTIVITY_ID as integer,",
+				"          VALUE as string,",
+				"          TYPE_OF_WORK as string,",
+				"          CATEGORY as string,",
+				"          UPLOAD_DATE as date",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT \\n     P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n    GAR.TOWER    ,\\n    P.PROJECT_IDENTIFIER ,\\n    GAR.[LEVEL]    ,\\n    \\'Garbage Room\\' as Sclicer,\\n      GAR.ACTIVITY_ID    ,\\n    CASE \\n        WHEN GAR.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE GAR.VALUE\\n    END AS VALUE,\\n    GAR.TYPE_OF_WORK    ,\\n    GAR.CATEGORY   ,\\n     GAR.UPLOAD_DATE  \\n   \\nFROM \\n\\n(\\n        SELECT CAST(GR.UPLOAD_TIME AS DATE) AS UPLOAD_DATE,\\n        GR.PROJECT_ID,\\n        GR.TOWER,\\n        GR.LEVEL,\\n        COLUMN_NAME.*,\\n        GM.ACTIVITY_ID,\\n        GM.SBU_ID,\\n        GM.CATEGORY,\\n        DENSE_RANK () OVER     (PARTITION BY  PROJECT_ID\\n                            ORDER BY  CAST(UPLOAD_TIME AS DATE) DESC\\n                            )     DRANK\\n    FROM STG.O_PLN_GARBAGEROOM_RAW_STG  GR\\n    CROSS APPLY  (\\n         SELECT    [OUTER_WALL_BLOCKWORK]     ,  \\'OUTER WALL BLOCKWORK\\'\\nUNION ALL SELECT   [GARBAGE_CHUTE_WORKS]     ,  \\'GARBAGE CHUTE WORKS\\'\\nUNION ALL SELECT   [MEP_PIPING_WORKS]     ,  \\'MEP PIPING WORKS\\'\\nUNION ALL SELECT   [MEP_PRESSURE_TEST_AND_CLEARANCE]     ,  \\'MEP PRESSURE TEST & CLEARANCE\\'\\nUNION ALL SELECT   [INNER_WALL_BLOCKWORK]     ,  \\'INNER WALL BLOCKWORK\\'\\nUNION ALL SELECT   [MEP_MARKING_FOR_BUILDERS_WORK]     ,  \\'MEP MARKING FOR BUILDERS WORK\\'\\nUNION ALL SELECT   [CUTTING_AND_CHASING_OF_BLOCKWORK]     ,  \\'CUTTING & CHASING OF BLOCKWORK\\'\\nUNION ALL SELECT   [MEP_SERVICES_INSTALLATION]     ,  \\'MEP SERVICES INSTALLATION\\'\\nUNION ALL SELECT   [WALL_MEP_SERVICES_PACKING]     ,  \\'WALL MEP SERVICES PACKING\\'\\nUNION ALL SELECT   [PLASTER]     ,  \\'PLASTER\\'\\nUNION ALL SELECT   [CORE_CUTTING_AND_CHIPPING]     ,  \\'CORE CUTTING & CHIPPING\\'\\nUNION ALL SELECT   [MEP_SLEEVE_INSTALLATION]     ,  \\'MEP SLEEVE INSTALLATION\\'\\nUNION ALL SELECT   [BORE_PACKING]     ,  \\'BORE PACKING\\'\\nUNION ALL SELECT   [UNDER_SCREED_WATER_PROOFING]     ,  \\'UNDER SCREED WATER PROOFING\\'\\nUNION ALL SELECT   [SCREED]     ,  \\'SCREED\\'\\nUNION ALL SELECT   [WALL_TILE]     ,  \\'WALL TILE\\'\\nUNION ALL SELECT   [MEP_FRAMING_CLEARANCE]     ,  \\'MEP FRAMING CLEARANCE\\'\\nUNION ALL SELECT   [FALSE_CEILING_FRAMING]     ,  \\'FALSE CEILING FRAMING\\'\\nUNION ALL SELECT   [MEP_BOARDING_CLEARANCE]     ,  \\'MEP BOARDING CLEARANCE\\'\\nUNION ALL SELECT   [FALSE_CEILING_BOARDING]     ,  \\'FALSE CEILING BOARDING\\'\\nUNION ALL SELECT   [CEILING_PRIMER]     ,  \\'CEILING PRIMER\\'\\nUNION ALL SELECT   [CEILING_STUCCO_1ST_AND_2ND_COAT]     ,  \\'CEILING STUCCO (1ST AND 2ND COAT)\\'\\nUNION ALL SELECT   [CEILING_FIRST_COAT_PAINT]     ,  \\'CEILING FIRST COAT PAINT\\'\\nUNION ALL SELECT   [UNDER_TILE_WATER_PROOFING]     ,  \\'UNDER TILE WATER PROOFING\\'\\nUNION ALL SELECT   [THRESHOLD]     ,  \\'THRESHOLD\\'\\nUNION ALL SELECT   [FLOOR_TILE]     ,  \\'FLOOR TILE\\'\\nUNION ALL SELECT   [SKIRTING]     ,  \\'SKIRTING\\'\\nUNION ALL SELECT   [GROUTING]     ,  \\'GROUTING\\'\\nUNION ALL SELECT   [SILICONE]     ,  \\'SILICONE\\'\\nUNION ALL SELECT   [HOPPER_DOOR]     ,  \\'HOPPER DOOR\\'\\nUNION ALL SELECT   [DOOR_FRAME_INSTALLATION]     ,  \\'DOOR-FRAME INSTALLATION\\'\\nUNION ALL SELECT   [DOOR_ARCHITRAVE_INSTALLATION]     ,  \\'DOOR-ARCHITRAVE INSTALLATION\\'\\nUNION ALL SELECT   [DOOR_SHUTTER_INSTALLATION]     ,  \\'DOOR-SHUTTER INSTALLATION\\'\\nUNION ALL SELECT   [DOOR_IRONMONGERY_INSTALLATION]     ,  \\'DOOR-IRONMONGERY INSTALLATION\\'\\nUNION ALL SELECT   [DOOR_SILICONE]     ,  \\'DOOR-SILICONE\\'\\nUNION ALL SELECT   [SIGNAGE]     ,  \\'SIGNAGE\\'\\nUNION ALL SELECT   [MEP_FINAL_FIXTURES]     ,  \\'MEP FINAL FIXTURES\\'\\nUNION ALL SELECT   [FINAL_COAT_PAINT]     ,  \\'FINAL COAT PAINT\\'\\n\\n                        )AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n    INNER JOIN STG.O_PLN_GARBAGEROOM_MAP_STG  GM\\n    ON COLUMN_NAME.TYPE_OF_WORK = GM.ACTIVITY_SEQUENCE\\n    WHERE VALUE IS NOT NULL\\n     ) GAR\\nINNER JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          GAR.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          GAR.PROJECT_ID=P.PROJECT_IDENTIFIER\\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          GAR.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          GAR.DRANK = 1',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          Project_ID as integer,",
+				"          Project_Identifier as string,",
+				"          SBU_ID as integer,",
+				"          Level_ID as integer,",
+				"          Tower as string,",
+				"          Level as string,",
+				"          Sclicer as string,",
+				"          Activity_ID as integer,",
+				"          Value as string,",
+				"          Type_of_work as string,",
+				"          Category as string,",
+				"          Update_Date as date,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_GARBAGEROOM_FACT];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID,",
+				"          Project_ID = PROJECT_ID,",
+				"          Project_Identifier = PROJECT_IDENTIFIER,",
+				"          SBU_ID,",
+				"          Level_ID = LEVEL_ID,",
+				"          Tower = TOWER,",
+				"          Level = LEVEL,",
+				"          Sclicer,",
+				"          Activity_ID = ACTIVITY_ID,",
+				"          Value = VALUE,",
+				"          Type_of_work = TYPE_OF_WORK,",
+				"          Category = CATEGORY,",
+				"          Update_Date = UPLOAD_DATE,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

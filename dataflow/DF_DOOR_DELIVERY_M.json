@@ -1,0 +1,111 @@
+{
+	"name": "DF_DOOR_DELIVERY_M",
+	"properties": {
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_O_PLN_DOOR_DELIVERY_RAW_STG_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "source1",
+					"description": "Import data from DS_O_PLN_DOOR_DELIVERY_RAW_STG_TRG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_DOOR_DELIVERY_M_TRG",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "Export data to DS_DOOR_DELIVERY_M_TRG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     MAX_ID as integer (0)",
+				"}",
+				"source(output(",
+				"          Upload_Date as date,",
+				"          PROJECT_ID as integer,",
+				"          SBU_ID as integer,",
+				"          Delivery_Order_No as string,",
+				"          Delivery_Date as string,",
+				"          Door_Type as string,",
+				"          Element as string,",
+				"          Vendor as string,",
+				"          SUM_ASA as integer,",
+				"          MIN_ASA as integer,",
+				"          Used_Data as string",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'SELECT \\n        Upload_Date,\\n          --sbu_id,\\n          P.Sort_ID as PROJECT_ID,\\n          SM.SBU_MAP_ID AS SBU_ID,\\n        Delivery_Order_No,\\n        Delivery_Date,\\n        Door_Type,\\n          Element,\\n        Vendor,\\n        sum(ASA) AS \\'SUM_ASA\\',\\n        MIN(ASA) AS \\'MIN_ASA\\',\\n       \\'Dates_Used\\' AS Used_Data\\n  FROM (\\nSELECT \\n    CAST(upload_time AS DATE) AS Upload_Date,\\n    project_id,\\n    tower,\\n    sbu_id,\\n    [Sr_No],\\n    Building,\\n    NULLIF(Delivery_Order_No,\\'\\') AS Delivery_Order_No,\\n    NULLIF(Delivery_Date,\\'\\') AS Delivery_Date,\\n    Door_Type,\\n    Element,\\n    Fire_Rating,\\n    Orientation,\\n    CASE \\n        WHEN TRIM(Element) = \\'Architrave\\' AND Quantity_Nos NOT IN (\\'\\') THEN Quantity_Nos/2\\n        WHEN TRIM(Element) = \\'Architrave\\' AND Quantity_Nos IN (\\'\\') THEN Quantity_Sets\\n        WHEN TRIM(Element) != \\'Architrave\\' THEN Quantity_Nos\\n    END AS ASA,    \\n    Remarks,\\n    Vendor,\\n    DENSE_RANK () OVER(PARTITION BY project_id ORDER BY CAST(upload_time AS DATE) DESC) AS AASD\\nFROM STG.O_PLN_DOOR_DELIVERY_RAW_STG  \\n) AA\\n\\nLEFT JOIN  [DWH].[PROJECTS_NEW_DIM] P\\n      ON          AA.PROJECT_ID=P.PROJECT_IDENTIFIER \\n     LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          AA.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE AASD = 1 AND Delivery_Order_No IS NOT NULL\\n    GROUP BY Upload_Date,P.Sort_ID,SM.SBU_MAP_ID,Delivery_Order_No,Delivery_Date,Door_Type,Element,Vendor,PROJECT_IDENTIFIER\\n     \\nUNION ALL\\n\\nSELECT\\n            Upload_Date,\\n\\n   --         project_id,\\n               --sbu_id,\\n               P.Sort_ID as PROJECT_ID,\\n               SM.SBU_MAP_ID AS SBU_ID,\\n            Delivery_Order_No,\\n            Delivery_Date,\\n            Door_Type,\\n            [Element],\\n             Vendor,\\n            Qty_Delivered AS \\'sum(ASA)\\',\\n            Final_Delivery AS \\'MIN(ASA)\\',\\n            \\'Total_Used\\'   AS Used_Data\\nFROM (\\nSELECT\\n                Upload_Date,\\n                project_id,\\n                    sbu_id,\\n                Door_Type,\\n                [Element],\\n                Vendor,\\n                Delivery_Order_No,\\n                Delivery_Date,\\n                Qty_Delivered,\\n                LAG(Total_Delivery,2) OVER (PARTITION BY Sort_Data ORDER BY Total_Delivery,[Element]) Final_Delivery\\nFROM (\\nSELECT \\n                Upload_Date,\\n                --Door_Type,\\n                    Sort_Data,\\n                    Element,\\n                Vendor,\\n                Delivery_Order_No,\\n                Delivery_Date,\\n                Qty_Delivered,\\n                    project_id,\\n                    sbu_id,\\n                Door_Type,\\n                MIN(Qty_Delivered) AS Total_Delivery\\nFROM (\\nSELECT\\n                Upload_Date,\\n                project_id,sbu_id,\\n                Door_Type,\\n                    CASE WHEN Door_Type= \\'TD1\\' THEN \\'1\\'\\n                     WHEN Door_Type= \\'TD2\\' THEN \\'2\\'\\n                     WHEN Door_Type= \\'TD3\\' THEN \\'3\\'\\n                     WHEN Door_Type= \\'TD4\\' THEN \\'4\\'\\n                     WHEN Door_Type= \\'TD5\\' THEN \\'5\\'\\n                     WHEN Door_Type= \\'TD6\\' THEN \\'6\\'\\n                     WHEN Door_Type= \\'TD7\\' THEN \\'7\\'\\n                ELSE \\'0\\' End AS Sort_Data, \\n                Element,\\n                Vendor,\\n                Delivery_Order_No,\\n                Delivery_Date,\\n                SUM(Set_C + Qty_S) AS Qty_Delivered\\nFROM (\\nSELECT\\n                D.Upload_Date,\\n                D.project_id,D.sbu_id,\\n                D.Door_Type,\\n                D.Element,\\n                D.Vendor,\\n                D.Delivery_Order_No,\\n                D.Delivery_Date,\\n                SUM(CAST(D.Quantity_Sets AS INT)) AS Set_C,\\n                SUM(CAST(D.Quantity_Nos AS INT)) AS Qty_C,\\n                    CASE WHEN Element = (\\'Architrave\\') THEN SUM(CAST(D.Quantity_Nos AS INT))/2 ELSE SUM(CAST(D.Quantity_Nos AS INT)) END AS Qty_S\\nFROM (\\nSELECT \\n        CAST(DD.Upload_time AS DATE) AS Upload_Date,\\n        DD.project_id,DD.sbu_id,\\n        DD.Door_Type,\\n        DD.Element,\\n        DD.Vendor,\\n        DD.Delivery_Order_No,\\n        DD.Delivery_Date,\\n        DD.Quantity_Sets,\\n        DD.Quantity_Nos, DENSE_RANK () OVER(PARTITION BY DD.project_id ORDER BY CAST(DD.Upload_time AS DATE) desc) AS KASD\\n    FROM STG.O_PLN_DOOR_DELIVERY_RAW_STG DD\\n        WHERE Door_Type NOT IN (\\'\\',\\'-\\')\\n) D\\nWHERE KASD = 1 Group by D.Upload_Date,D.project_id,D.sbu_id,D.Door_Type,D.Element, D.Vendor,D.Delivery_Order_No,D.Delivery_Date\\n) A\\nGROUP BY Upload_Date,project_id,sbu_id,Door_Type,Element,Vendor,Delivery_Order_No,Delivery_Date\\n)AA\\nGROUP BY Upload_Date,project_id,sbu_id,Door_Type,Sort_Data,Element,Vendor,Delivery_Order_No,Delivery_Date,Qty_Delivered,project_id,Door_Type\\n)A1\\n)BB\\nLEFT JOIN  [DWH].[PROJECTS_NEW_DIM] P\\n      ON          BB.PROJECT_ID=P.PROJECT_IDENTIFIER \\n     LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          BB.SBU_ID=SM.SBU_IDENTIFIER\\n',",
+				"     format: 'query',",
+				"     staged: true) ~> source1",
+				"source1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ID as integer,",
+				"          Project_ID as integer,",
+				"          SBU_ID as integer,",
+				"          Delivery_Order_No as string,",
+				"          Delivery_Date as string,",
+				"          Door_Type as string,",
+				"          Element as string,",
+				"          Vendor as string,",
+				"          SUM_ASA as string,",
+				"          MIN_ASA as string,",
+				"          Used_Data as string,",
+				"          Update_Date as date,",
+				"          LoadDateTime as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     preSQLs:['TRUNCATE TABLE [DWH].[DOOR_DELIVERY_M_FACT];'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ID,",
+				"          Project_ID = PROJECT_ID,",
+				"          SBU_ID,",
+				"          Delivery_Order_No,",
+				"          Delivery_Date,",
+				"          Door_Type,",
+				"          Element,",
+				"          Vendor,",
+				"          SUM_ASA,",
+				"          MIN_ASA,",
+				"          Used_Data,",
+				"          Update_Date = Upload_Date,",
+				"          LoadDateTime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
