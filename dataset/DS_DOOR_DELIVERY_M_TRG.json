@@ -71,7 +71,7 @@
 		],
 		"typeProperties": {
 			"schema": "DWH",
-			"table": "DOOR_DELIVERY_M_FACT"
+			"table": "PLN_WOODEN_DOOR_FACT"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
