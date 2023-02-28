@@ -622,7 +622,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectListforMILESTONEMAINTABLEPlan",
 				"joinwithProjectsDim derive(Legend = 'Plan') ~> LegendderivedColumnForMILESTONEMAINTABLEPlan",
-				"LegendderivedColumnForOutputplan, RemoveColumns2 union(byName: true)~> UnionAllFinal",
+				"LegendderivedColumnForOutputplan, LegendderivedColumnForMILESTONEMAINTABLEPlan union(byName: true)~> UnionAllFinal",
 				"UnionAllFinal, ManualActuals join(UnionAllFinal@Activity_New == ManualActuals@Activity_New",
 				"     && UnionAllFinal@Project_ID == ManualActuals@project_id",
 				"     && UnionAllFinal@Legend == ManualActuals@Legend,",
