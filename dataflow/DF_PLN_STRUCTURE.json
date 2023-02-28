@@ -99,7 +99,7 @@
 				"     mapColumn(",
 				"          Id = ID,",
 				"          Upload_Date = UPLOAD_DATE,",
-				"          Project_Identifier = PROJECT_Identifier,",
+				"          Project_Identifier,",
 				"          Project_Id = PROJECT_Id,",
 				"          Level_Id = LEVEL_ID,",
 				"          Sbu_id = SBU_ID,",
