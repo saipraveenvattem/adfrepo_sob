@@ -100,11 +100,13 @@
 				"          Level_ID = LEVEL_ID,",
 				"          Tower = TOWER,",
 				"          Level = LEVEL,",
+				"          Flat = FLAT,",
 				"          Sclicer,",
 				"          Activity_ID = ACTIVITY_ID,",
 				"          Value = VALUE,",
 				"          Type_of_work = TYPE_OF_WORK,",
 				"          Category = CATEGORY,",
+				"          Update_Date = UPLOAD_DATE,",
 				"          LoadDateTime",
 				"     )) ~> sink1"
 			]
