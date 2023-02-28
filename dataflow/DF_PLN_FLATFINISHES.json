@@ -70,6 +70,7 @@
 				"          Id as integer,",
 				"          Upload_Date as date,",
 				"          project_id as integer,",
+				"          Project_Identifier as string,",
 				"          Level_Id as integer,",
 				"          SBU_ID as integer,",
 				"          Tower as string,",
