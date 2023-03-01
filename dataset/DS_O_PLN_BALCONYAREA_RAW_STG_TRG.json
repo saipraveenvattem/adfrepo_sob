@@ -127,6 +127,10 @@
 				"type": "nvarchar"
 			},
 			{
+				"name": "Balustrade_Internal_Flashing",
+				"type": "nvarchar"
+			},
+			{
 				"name": "Balcony_Skirting",
 				"type": "nvarchar"
 			},
@@ -135,7 +139,7 @@
 				"type": "nvarchar"
 			},
 			{
-				"name": "Ceiling_Texture",
+				"name": "Balcony_Ceiling_Texture",
 				"type": "nvarchar"
 			},
 			{
@@ -151,11 +155,19 @@
 				"type": "nvarchar"
 			},
 			{
-				"name": "MEP_Final_Fixtures",
+				"name": "Balcony_MEP_Final_Fixtures",
 				"type": "nvarchar"
 			},
 			{
 				"name": "Balcony_Final_Coat_Paint",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Balcony_Drain_Cover_Supply",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Cover_Fixing_For_Balcony_Drain",
 				"type": "nvarchar"
 			},
 			{
