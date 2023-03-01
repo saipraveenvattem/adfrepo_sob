@@ -100,7 +100,7 @@
 				"          Level_ID = LEVEL_ID,",
 				"          Tower = TOWER,",
 				"          Level = LEVEL,",
-				"          Flat = Sclicer,",
+				"          Flat = FLAT,",
 				"          Sclicer,",
 				"          Activity_ID = ACTIVITY_ID,",
 				"          Value = VALUE,",

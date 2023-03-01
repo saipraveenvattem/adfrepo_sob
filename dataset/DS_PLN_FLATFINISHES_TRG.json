@@ -26,6 +26,10 @@
 				"precision": 10
 			},
 			{
+				"name": "Project_Identifier",
+				"type": "nvarchar"
+			},
+			{
 				"name": "Level_Id",
 				"type": "int",
 				"precision": 10
