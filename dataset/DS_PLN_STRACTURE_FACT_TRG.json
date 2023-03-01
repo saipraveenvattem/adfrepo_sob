@@ -21,11 +21,11 @@
 				"type": "date"
 			},
 			{
-				"name": "Project_Identifier",
+				"name": "Project_Id",
 				"type": "nvarchar"
 			},
 			{
-				"name": "Project_Id",
+				"name": "Project_Identifier",
 				"type": "nvarchar"
 			},
 			{
