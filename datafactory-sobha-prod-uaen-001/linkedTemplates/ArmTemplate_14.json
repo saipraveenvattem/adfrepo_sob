@@ -13,6 +13,141 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_CRITICAL_ISSUE_TRACKER')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_CRITICAL_ISSUE_TRACKER_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1",
+							"description": "Import data from DS_O_PLN_CRITICAL_ISSUE_TRACKER_RAW_STG_TRG"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_CRITICAL_ISSUE_TRACKER_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"description": "Export data to DS_PLN_CRITICAL_ISSUE_TRACKER_TRG"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          PROJECT_ID as integer,",
+						"          SBU_ID as integer,",
+						"          Upload_Date as date,",
+						"          Reference_Number as string,",
+						"          PR_PO_Other_Ref_No as string,",
+						"          Pending_With as string,",
+						"          Issue_Description as string,",
+						"          Current_Status as string,",
+						"          Impact_On as string,",
+						"          Status as string,",
+						"          Project as string,",
+						"          Tower as string,",
+						"          Raised_On as string,",
+						"          Actual_Closure_Date as string,",
+						"          Target_Closure_Date as string,",
+						"          Ageing as integer,",
+						"          Agetub as string,",
+						"          Agetub_sort as integer",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT      \\n    P.PROJECT_ID,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n    A.Upload_Time AS Upload_Date,\\n    A.Reference_Number,\\n    A.PR_PO_Other_Ref_No, \\n    --A.SBU_SCLICER, --we need to Join and get sbu_ID from [DWH].[PLN_SBU_MAPPING_DIM] PowerBI\\n    A.Pending_With,\\n    A.Issue_Description,\\n    A.Current_Status,\\n    A.Impact_On,\\n    A.Status,\\n    A.Project,\\n    --A.citprojectid, --we need to Join and get sbu_ID from [DWH].[PLN_PROJECTS_DIM] PowerBI\\n    A.Tower,\\n    --A.Project_Identifier, --we need to Join and get sbu_ID from [DWH].[PLN_PROJECTS_DIM] PowerBI\\n    A.Raised_On,\\n    A.Actual_Closure_Date,\\n    A.Target_Closure_Date,\\n    A.Ageing,\\n    CASE \\n        WHEN A.Ageing <=7  THEN  \\'(0-7)\\'\\n        WHEN A.Ageing <= 14 THEN \\'(8-14)\\'\\n        WHEN A.Ageing <= 21 THEN \\'(15-21)\\'\\n        WHEN A.Ageing <= 30 THEN \\'(22-30)\\'\\n        WHEN A.Ageing IS NULL THEN NULL\\n        ELSE \\'>30\\' END AS Agetub,\\n    CASE \\n        WHEN A.Ageing <=7  THEN 1\\n        WHEN A.Ageing <=14 THEN 2\\n        WHEN A.Ageing <=21 THEN 3\\n        WHEN A.Ageing <=30 THEN 4\\n        WHEN A.Ageing IS NULL THEN NULL\\n        ELSE 5     END AS Agetub_sort\\nFROM(\\n        SELECT \\n                AC.*,\\n                CASE \\n                    WHEN TRIM(LOWER(AC.Status)) = \\'open\\' AND ISNULL(AC.Raised_On,\\'\\') <> \\'\\' THEN DATEDIFF(day,CAST(substring( AC.Raised_On,charindex(\\'/\\',AC.Raised_On)+1,2)+\\'/\\'+ left(AC.Raised_On,2)+\\'/\\'+right(AC.Raised_On,4) AS DATE ),GETDATE())\\n                    WHEN TRIM(LOWER(AC.Status)) = \\'closed\\' AND ISNULL(AC.Actual_Closure_Date,\\'\\') <> \\'\\' AND ISNULL(AC.Actual_Closure_Date,\\'\\') like (\\'%/%\\') AND ISNULL(AC.Raised_On,\\'\\') <> \\'\\' \\n                        THEN  DATEDIFF(day,cast(substring( AC.Raised_On,charindex(\\'/\\',AC.Raised_On)+1,2)+\\'/\\'+ left(AC.Raised_On,2)+\\'/\\'+right(AC.Raised_On,4) as date),cast(substring( AC.Actual_Closure_Date,charindex(\\'/\\',AC.Actual_Closure_Date)+1,2)+\\'/\\'+ left(AC.Actual_Closure_Date,2)+\\'/\\'+right(AC.Actual_Closure_Date,4) as date))\\n                ELSE NULL END AS Ageing        \\n        FROM(\\n            SELECT      \\n                CAST(upload_time as DATE)  Upload_Time,\\n                CI.Reference_Number,\\n                CI.PR_PO_Other_Ref_No,\\n                CASE\\n                    WHEN CI.SBU_Issue_Raised_by LIKE \\'%SBU 1%\\' THEN \\'SBU 1\\'\\n                    WHEN CI.SBU_Issue_Raised_by LIKE \\'%SBU 2%\\' THEN \\'SBU 2\\'\\n                    WHEN CI.SBU_Issue_Raised_by LIKE \\'%SBU 3%\\' THEN \\'SBU 3\\'\\n                    WHEN CI.SBU_Issue_Raised_by LIKE \\'%SBU 4%\\' THEN \\'SBU 4\\'\\n                    WHEN CI.SBU_Issue_Raised_by LIKE \\'%SBU 5%\\' THEN \\'SBU 5\\'\\n                    ELSE \\'UNKNOWN\\' END AS SBU_SCLICER,\\n                CASE\\n                    WHEN CI.Pending_With IS NULL OR TRIM(CI.Pending_With) = \\'\\' THEN \\'Not Available\\'\\n                    ELSE CI.Pending_With\\n                    END AS Pending_With,\\n                CI.Issue_Description,\\n                CI.Current_Status,\\n                CI.Impact_On,\\n                CI.Status,\\n                CI.Project,\\n                CI.Project_id as CITPROJECTID,\\n                PS.Project_id,\\n                PS.Project_Identifier,\\n                CI.Sbu_ID,\\n                CI.Tower,\\n                --CI.Raised_On,\\n                --CI.Target_Closure_Date,\\n                --CI.Actual_Closure_Date\\n                CASE \\n                    WHEN CI.Raised_On IS NOT NULL AND TRIM(CI.Raised_On) NOT IN (\\'\\',\\'-\\')  and CI.raised_on like \\'%-%\\' then format(cast(CI.raised_on as date),\\'dd/MM/yyyy\\')  \\n                    else CI.raised_on  end AS Raised_On,\\n                CASE \\n                    WHEN CI.Actual_Closure_Date IS NOT NULL AND TRIM(CI.Actual_Closure_Date) NOT IN (\\'\\',\\'-\\')  and CI.Actual_Closure_Date like \\'%-%\\' then format(cast(CI.Actual_Closure_Date as date),\\'dd/MM/yyyy\\')  \\n                    else CI.Actual_Closure_Date  end AS Actual_Closure_Date,\\n                CASE \\n                    WHEN CI.Target_Closure_Date IS NOT NULL AND TRIM( CI.Target_Closure_Date) NOT IN (\\'\\',\\'-\\')  and CI.Target_Closure_Date like \\'%-%\\' then format(cast(CI.Target_Closure_Date as date),\\'dd/MM/yyyy\\')  \\n                    else CI.Target_Closure_Date  end AS Target_Closure_Date\\n            FROM\\n                        STG.O_PLN_CRITICAL_ISSUE_TRACKER_STG CI\\n            LEFT JOIN    STG.PROJECTS_STG AS PS \\n                ON        CI.Project_id = PS.Project_identifier\\n                    --need to understand from where this project_short came.\\n            WHERE        TRIM(CI.Issue_Description) NOT IN (\\'\\')) AC\\n        )A\\nLEFT JOIN    [DWH].[PLN_PROJECTS_DIM] P\\n    ON      A.PROJECT_IDENTIFIER=P.PROJECT_IDENTIFIER \\nLEFT JOIN    [DWH].[PLN_SBU_MAPPING_DIM] SM\\n    ON      A.SBU_ID=SM.SBU_IDENTIFIER',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Project_ID as integer,",
+						"          SBU_ID as integer,",
+						"          Tower as string,",
+						"          Reference_Number as string,",
+						"          PR_PO_Other_Ref_No as string,",
+						"          Pending_With as string,",
+						"          Issue_Description as string,",
+						"          Current_Status as string,",
+						"          Impact_On as string,",
+						"          Status as string,",
+						"          Project as string,",
+						"          Raised_On as string,",
+						"          Actual_Closure_Date as string,",
+						"          Target_Closure_Date as string,",
+						"          Ageing as string,",
+						"          Agetub as string,",
+						"          Agetub_sort as string,",
+						"          Update_Date as date,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_CRITICAL_ISSUE_TRACKER_FACT];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Project_ID = PROJECT_ID,",
+						"          SBU_ID,",
+						"          Tower,",
+						"          Reference_Number,",
+						"          PR_PO_Other_Ref_No,",
+						"          Pending_With,",
+						"          Issue_Description,",
+						"          Current_Status,",
+						"          Impact_On,",
+						"          Status,",
+						"          Project,",
+						"          Raised_On,",
+						"          Actual_Closure_Date,",
+						"          Target_Closure_Date,",
+						"          Ageing,",
+						"          Agetub,",
+						"          Agetub_sort = Agetub,",
+						"          Update_Date = Upload_Date,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_PLN_DRYAREA')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -70,7 +205,7 @@
 						"     allowSchemaDrift: false,",
 						"     validateSchema: false,",
 						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'SELECT\\n    P.Sort_ID as PROJECT_ID,\\n    P.PROJECT_IDENTIFIER ,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n     SM.SBU_MAP_ID AS SBU_ID,\\n    DA.TOWER,\\n    DA.[LEVEL],\\n    DA.FLAT,\\n    \\'Dry Area\\' as Sclicer,\\n     DA.ACTIVITY_ID,\\n    CASE \\n        WHEN DA.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE DA.VALUE\\n    END AS VALUE,\\n    DA.TYPE_OF_WORK,\\n    DA.CATEGORY,\\n     DA.UPLOAD_DATE\\nFROM(\\n     SELECT\\n            DR.UPLOAD_TIME AS UPLOAD_DATE,\\n            DR.PROJECT_ID,\\n            DR.TOWER,\\n            DR.[LEVEL],\\n            DR.FLAT,\\n            COLUMN_NAME.*,\\n            DM.ACTIVITY_ID,\\n            DM.SBU_ID,\\n            DM.CATEGORY,\\n            DENSE_RANK() OVER (PARTITION BY  PROJECT_ID ORDER BY  UPLOAD_TIME DESC ) AS DRANK\\n     FROM [STG].[O_PLN_DRYAREA_RAW_STG] DR\\n     CROSS APPLY(\\n                      SELECT  [HSE_CLEARANCE_FOR_DESHUTTERING],\\'HSE CLEARANCE FOR DESHUTTERING\\'\\n          UNION ALL SELECT  [MEP_RISER_WORKS],\\'MEP RISER WORKS\\'\\n          UNION ALL SELECT  [LPG_PIPE],\\'LPG PIPE\\'\\n          UNION ALL SELECT  [BLOCKWORK_LAYOUT_MARKING],\\'BLOCKWORK LAYOUT MARKING\\'\\n          UNION ALL SELECT  [BLOCKWORK_FIRST_LAYER],\\'BLOCKWORK FIRST LAYER\\'\\n          UNION ALL SELECT  [BLOCKWORK_WITH_1MTR_MARKING],\\'BLOCKWORK WITH 1MTR MARKING\\'\\n          UNION ALL SELECT  [GI_LINTEL],\\'GI LINTEL\\'\\n          UNION ALL SELECT  [RCC_LINTEL_STIFFENER] ,\\'RCC LINTEL / STIFFENER\\'\\n          UNION ALL SELECT  [ABOVE_LINTEL_BLOCK_WORK],\\'ABOVE LINTEL BLOCK WORK\\'\\n          UNION ALL SELECT  [HEAD_RESTRAINTS_INSTALLATION],\\'HEAD RESTRAINTS INSTALLATION\\'\\n          UNION ALL SELECT  [FIRE_SEALANT_WORKS_AND_PU_FOAM_WORKS],\\'FIRE SEALANT WORKS & PU FOAM WORKS\\'\\n          UNION ALL SELECT  [MEP_MARKING_FOR_HL_BUILDERS_WORK],\\'MEP MARKING FOR HL BUILDERS WORK\\'\\n          UNION ALL SELECT  [BLOCKWORK_CUTTING_FOR_MEP_SERVICES] ,\\'BLOCKWORK CUTTING FOR MEP SERVICES\\'\\n          UNION ALL SELECT  [MEP_WALL_MARKING_FOR_CUTTING_AND_CHASING],\\'MEP WALL MARKING FOR CUTTING & CHASING\\'\\n          UNION ALL SELECT  [BULL_MARKING_FOR_PLASTER],\\'BULL MARKING FOR PLASTER\\'\\n          UNION ALL SELECT  [SUB_FRAME],\\'SUB FRAME\\'\\n          UNION ALL SELECT  [CORNER_BEAD_FIXING],\\'CORNER BEAD FIXING\\'\\n          UNION ALL SELECT  [CUTTING_AND_CHASING],\\'CUTTING & CHASING\\'\\n          UNION ALL SELECT  [MEP_PLASTERING_CLEARANCE_BOX_FIXING_AND_PIPE_SETTING], \\'MEP PLASTERING CLEARANCE (BOX FIXING & PIPE SETTING)\\'\\n          UNION ALL SELECT  [ONU_DB_AND_ALL_MEP_WORKS_INSTALLATION],\\'ONU, DB & ALL MEP WORKS INSTALLATION\\'\\n          UNION ALL SELECT  [ONU_DB_AND_ALL_MEP_WORKS_PACKING],\\'ONU, DB & ALL MEP WORKS PACKING\\'\\n          UNION ALL SELECT  [DRY_AREA_PLASTER],\\'DRY AREA PLASTER\\'\\n          UNION ALL SELECT  [PLASTERING_CLEARANCE_WITH_1_METER_MARKING], \\'PLASTERING CLEARANCE WITH 1 METER MARKING\\'\\n          UNION ALL SELECT  [CENTER_LINE_MARKING_FOR_FACADE_INSTALLATION], \\'CENTER LINE MARKING FOR FACADE INSTALLATION\\'\\n          UNION ALL SELECT  [UCW_STARTER_GUTTER],\\'UCW-STARTER GUTTER\\'\\n          UNION ALL SELECT  [UCW_BRACKETS],\\'UCW-BRACKETS\\'\\n          UNION ALL SELECT  [UCW_PANELS],\\'UCW-PANELS\\'\\n          UNION ALL SELECT  [UCW_ALIGNMENT],\\'UCW-ALIGNMENT\\'\\n          UNION ALL SELECT  [DRY_AREA_TILE_MARKING],\\'DRY AREA TILE MARKING\\'\\n          UNION ALL SELECT  [DRY_AREA_BORE_PACKING],\\'DRY AREA BORE PACKING\\'\\n          UNION ALL SELECT  [DRY_AREA_SCREED],\\'DRY AREA SCREED\\'\\n          UNION ALL SELECT  [SCREED_CURING],\\'SCREED CURING\\'\\n          UNION ALL SELECT  [PRIMER_STUCCO_BANDING],\\'PRIMER,STUCCO BANDING\\'\\n          UNION ALL SELECT  [BULK_HEAD],\\'BULK HEAD\\'\\n          UNION ALL SELECT  [MEP_H_L_WIRING],\\'MEP H/L WIRING\\'\\n          UNION ALL SELECT  [MEP_H_L_FRAMING_CLEARANCE],\\'MEP H/L FRAMING CLEARANCE\\'\\n          UNION ALL SELECT  [FIRE_SEALANT_WORKS_AROUND_DUCTS],\\'FIRE SEALANT WORKS AROUND DUCTS\\'\\n          UNION ALL SELECT  [DRY_AREA_FC_FRAMING],\\'DRY AREA FC FRAMING\\'\\n          UNION ALL SELECT  [WARDROBE_NIB_WALL],\\'WARDROBE NIB WALL\\'\\n          UNION ALL SELECT  [MEP_H_L_BOARDING_CLEARANCE],\\'MEP H/L BOARDING CLEARANCE\\'\\n          UNION ALL SELECT  [FC_BOARDING_WITH_JOINT_TAPING],\\'FC BOARDING WITH JOINT TAPING\\'\\n          UNION ALL SELECT  [PRIMER_CEILING],\\'PRIMER CEILING\\'\\n          UNION ALL SELECT  [STUCCO_1ST_COAT_CEILING],\\'STUCCO 1ST COAT CEILING\\'\\n          UNION ALL SELECT  [STUCCO_2ND_COAT_CEILING],\\'STUCCO 2ND COAT CEILING\\'\\n          UNION ALL SELECT  [FIRST_COAT_PAINT_CEILING],\\'FIRST COAT PAINT CEILING\\'\\n          UNION ALL SELECT  [MAIN_DOOR_THRESHOLD],\\'MAIN DOOR THRESHOLD\\'\\n          UNION ALL SELECT  [DRY_AREA_FLOOR_TILING],\\'DRY AREA FLOOR TILING\\'\\n          UNION ALL SELECT  [DRY_AREA_SKIRTING],\\'DRY AREA SKIRTING\\'\\n          UNION ALL SELECT  [POP_ABOVE_SKIRTING],\\'POP ABOVE SKIRTING\\'\\n          UNION ALL SELECT  [HINGE_DOOR_BOX_INSTALLATION],\\'HINGE DOOR BOX INSTALLATION\\'\\n          UNION ALL SELECT  [SCREED_NEAR_HINGE_DOOR],\\'SCREED NEAR HINGE DOOR\\'\\n          UNION ALL SELECT  [HINGE_DOOR_FRAME_INSTALLATION],\\'HINGE DOOR FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_BOX_SECTION],\\'CURTAIN WALL BOX SECTION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_FRAME_INSTALLATION],\\'CURTAIN WALL FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_GLASS_INSTALLATION],\\'CURTAIN WALL GLASS INSTALLATION\\'\\n          UNION ALL SELECT  [UCW_GI_SHEET_INSTALLATION_WALL],\\'UCW-GI SHEET INSTALLATION - WALL\\'\\n          UNION ALL SELECT  [UCW_GI_SHEET_INSTALLATION_FLOOR],\\'UCW-GI SHEET INSTALLATION - FLOOR\\'\\n          UNION ALL SELECT  [SCREED_NEAR_CURTAIN_WALL],\\'SCREED NEAR CURTAIN WALL\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_BOX_INSTALLATION],\\'SLIDING DOOR BOX INSTALLATION\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_FRAME_INSTALLATION],\\'SLIDING DOOR FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [SCREED_NEAR_SLIDING_DOOR],\\'SCREED NEAR SLIDING DOOR\\'\\n          UNION ALL SELECT  [LEFT_OVER_TILE_INSTALLATION],\\'LEFT OVER TILE INSTALLATION\\'\\n          UNION ALL SELECT  [LEFT_OVER_SKIRTING],\\'LEFT OVER SKIRTING\\'\\n          UNION ALL SELECT  [TILE_GROUTING],\\'TILE GROUTING\\'\\n          UNION ALL SELECT  [TILE_SILICONE_WORKS],\\'TILE SILICONE WORKS\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_MULLION],\\'CURTAIN WALL MULLION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_FLASHING_INSTALLATION],\\'CURTAIN WALL FLASHING INSTALLATION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_SILICONE],\\'CURTAIN WALL SILICONE\\'\\n          UNION ALL SELECT  [UCW_FIRESTOP_AND_SILICONE],\\'UCW-FIRESTOP AND SILICONE\\'\\n          UNION ALL SELECT  [UCW_GI_FLASHING],\\'UCW-GI FLASHING\\'\\n          UNION ALL SELECT  [HINGE_DOOR_GLASS_INSTALLATION],\\'HINGE DOOR GLASS INSTALLATION\\'\\n          UNION ALL SELECT  [HINGE_DOOR_INTERNAL_SILICONE],\\'HINGE DOOR INTERNAL SILICONE\\'\\n          UNION ALL SELECT  [HINGE_DOOR_ALIGNMENT],\\'HINGE DOOR ALIGNMENT\\'\\n          UNION ALL SELECT  [HINGE_DOOR_EXTERNAL_SILICONE],\\'HINGE DOOR EXTERNAL SILICONE\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_GLASS_INSTALLATION],\\'SLIDING DOOR GLASS INSTALLATION\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_INTERNAL_SILICONE],\\'SLIDING DOOR INTERNAL SILICONE\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_ALIGNMENT],\\'SLIDING DOOR ALIGNMENT\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_EXTERNAL_SILICONE],\\'SLIDING DOOR EXTERNAL SILICONE\\'\\n          UNION ALL SELECT  [WINDOW_JAMB_CORNER_PELMET_AREA_SHADOW_ANGLE_POP_WORKS],\\'WINDOW JAMB,CORNER,PELMET AREA, SHADOW ANGLE POP WORKS\\'\\n          UNION ALL SELECT  [WALL_STUCCO_1ST_COAT],\\'WALL STUCCO 1ST COAT\\'\\n          UNION ALL SELECT  [WALL_STUCCO_2ND_COAT],\\'WALL STUCCO 2ND COAT\\'\\n          UNION ALL SELECT  [WALL_PAINT_1ST_COAT],\\'WALL PAINT 1ST COAT\\'\\n          UNION ALL SELECT  [DOOR_FRAME_INSTALLATION],\\'DOOR - FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_ARCHITRAVE_INSTALLATION],\\'DOOR - ARCHITRAVE INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_SHUTTER_INSTALLATION],\\'DOOR - SHUTTER INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_IRONMONGERY_INSTALLATION],\\'DOOR - IRONMONGERY INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_SILICONE_WORKS],\\'DOOR - SILICONE WORKS\\'\\n          UNION ALL SELECT  [CUT_PIECE_SKIRTING_NEAR_DOOR],\\'CUT PIECE SKIRTING NEAR DOOR\\'\\n          UNION ALL SELECT  [GAS_METER_INSTALLATION],\\'GAS METER INSTALLATION\\'\\n          UNION ALL SELECT  [MEP_KITCHEN_APPLIANCES],\\'MEP KITCHEN APPLIANCES\\'\\n          UNION ALL SELECT  [WARDROBE_CARCASS_INSTALLATION],\\'WARDROBE CARCASS INSTALLATION\\'\\n          UNION ALL SELECT  [WARDROBE_SHUTTER_INSTALLATION],\\'WARDROBE SHUTTER INSTALLATION\\'\\n          UNION ALL SELECT  [WARDROBE_SILICONE_WORKS],\\'WARDROBE SILICONE WORKS\\'\\n          UNION ALL SELECT  [CUT_PIECE_SKIRTING_NEAR_WARDROBE],\\'CUT PIECE SKIRTING NEAR WARDROBE\\'\\n          UNION ALL SELECT  [AIR_BALANCING_FOR_FCU],\\'AIR BALANCING FOR FCU\\'\\n          UNION ALL SELECT  [FCU_CLOSURE_CLEARANCE],\\'FCU CLOSURE CLEARANCE\\'\\n          UNION ALL SELECT  [VCD_CLOSURE_FCU],\\'VCD CLOSURE - FCU\\'\\n          UNION ALL SELECT  [AIR_BALANCING_FOR_FAHU],\\'AIR BALANCING FOR FAHU\\'\\n          UNION ALL SELECT  [FAHU_CLOSURE_CLEARANCE],\\'FAHU CLOSURE CLEARANCE\\'\\n          UNION ALL SELECT  [VCD_CLOSURE_FAHU],\\'VCD CLOSURE - FAHU\\'\\n          UNION ALL SELECT  [FINAL_FIXTURES_INSTALLATION],\\'FINAL FIXTURES INSTALLATION\\'\\n          UNION ALL SELECT  [ACCESS_PANEL_FINAL_COAT_AND_INSTALLATION],\\'ACCESS PANEL FINAL COAT AND INSTALLATION\\'\\n          UNION ALL SELECT  [DRY_AREA_FINAL_COAT_PREPARATION],\\'DRY AREA FINAL COAT PREPARATION\\'\\n          UNION ALL SELECT  [DRY_AREA_FINAL_COAT_PAINT],\\'DRY AREA FINAL COAT PAINT\\'\\n          UNION ALL SELECT  [THERMOSTAT_COVER_INSTALLATION],\\'THERMOSTAT COVER INSTALLATION\\'\\n          UNION ALL SELECT  [INTERCOM_COVER_INSTALLATION],\\'INTERCOM COVER INSTALLATION\\'\\n          UNION ALL SELECT  [ONU_AND_DB_PANEL_DOOR],\\'ONU & DB PANEL DOOR\\'\\n          UNION ALL SELECT  [SWITCH_SOCKET_COVER_INSTALLATION],\\'SWITCH SOCKET COVER INSTALLATION\\'\\n          ) AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n          INNER JOIN [STG].[O_PLN_DRYAREA_MAP_STG] DM\\n          ON COLUMN_NAME.TYPE_OF_WORK = DM.ACTIVITY_SEQUENCE\\n          WHERE VALUE IS NOT NULL ) DA\\nLEFT JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          DA.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          DA.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          DA.SBU_ID=SM.SBU_IDENTIFIER\\n\\n',",
+						"     query: 'SELECT\\n    P.Sort_ID as PROJECT_ID,\\n    P.PROJECT_IDENTIFIER ,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n     SM.SBU_MAP_ID AS SBU_ID,\\n    DA.TOWER,\\n    DA.[LEVEL],\\n    DA.FLAT,\\n    \\'Dry Area\\' as Sclicer,\\n     DA.ACTIVITY_ID,\\n    CASE \\n        WHEN DA.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE DA.VALUE\\n    END AS VALUE,\\n    DA.TYPE_OF_WORK,\\n    DA.CATEGORY,\\n     DA.UPLOAD_DATE\\nFROM(\\n     SELECT\\n            DR.UPLOAD_TIME AS UPLOAD_DATE,\\n            DR.PROJECT_ID,\\n            DR.TOWER,\\n            DR.[LEVEL],\\n            DR.FLAT,\\n            COLUMN_NAME.*,\\n            DM.ACTIVITY_ID,\\n            DM.SBU_ID,\\n            DM.CATEGORY,\\n            DENSE_RANK() OVER (PARTITION BY  PROJECT_ID ORDER BY  Convert(Date,UPLOAD_TIME) DESC ) AS DRANK\\n     FROM [STG].[O_PLN_DRYAREA_RAW_STG] DR\\n     CROSS APPLY(\\n                      SELECT  [HSE_CLEARANCE_FOR_DESHUTTERING],\\'HSE CLEARANCE FOR DESHUTTERING\\'\\n          UNION ALL SELECT  [MEP_RISER_WORKS],\\'MEP RISER WORKS\\'\\n          UNION ALL SELECT  [LPG_PIPE],\\'LPG PIPE\\'\\n          UNION ALL SELECT  [BLOCKWORK_LAYOUT_MARKING],\\'BLOCKWORK LAYOUT MARKING\\'\\n          UNION ALL SELECT  [BLOCKWORK_FIRST_LAYER],\\'BLOCKWORK FIRST LAYER\\'\\n          UNION ALL SELECT  [BLOCKWORK_WITH_1MTR_MARKING],\\'BLOCKWORK WITH 1MTR MARKING\\'\\n          UNION ALL SELECT  [GI_LINTEL],\\'GI LINTEL\\'\\n          UNION ALL SELECT  [RCC_LINTEL_STIFFENER] ,\\'RCC LINTEL / STIFFENER\\'\\n          UNION ALL SELECT  [ABOVE_LINTEL_BLOCK_WORK],\\'ABOVE LINTEL BLOCK WORK\\'\\n          UNION ALL SELECT  [HEAD_RESTRAINTS_INSTALLATION],\\'HEAD RESTRAINTS INSTALLATION\\'\\n          UNION ALL SELECT  [FIRE_SEALANT_WORKS_AND_PU_FOAM_WORKS],\\'FIRE SEALANT WORKS & PU FOAM WORKS\\'\\n          UNION ALL SELECT  [MEP_MARKING_FOR_HL_BUILDERS_WORK],\\'MEP MARKING FOR HL BUILDERS WORK\\'\\n          UNION ALL SELECT  [BLOCKWORK_CUTTING_FOR_MEP_SERVICES] ,\\'BLOCKWORK CUTTING FOR MEP SERVICES\\'\\n          UNION ALL SELECT  [MEP_WALL_MARKING_FOR_CUTTING_AND_CHASING],\\'MEP WALL MARKING FOR CUTTING & CHASING\\'\\n          UNION ALL SELECT  [BULL_MARKING_FOR_PLASTER],\\'BULL MARKING FOR PLASTER\\'\\n          UNION ALL SELECT  [SUB_FRAME],\\'SUB FRAME\\'\\n          UNION ALL SELECT  [CORNER_BEAD_FIXING],\\'CORNER BEAD FIXING\\'\\n          UNION ALL SELECT  [CUTTING_AND_CHASING],\\'CUTTING & CHASING\\'\\n          UNION ALL SELECT  [MEP_PLASTERING_CLEARANCE_BOX_FIXING_AND_PIPE_SETTING], \\'MEP PLASTERING CLEARANCE (BOX FIXING & PIPE SETTING)\\'\\n          UNION ALL SELECT  [ONU_DB_AND_ALL_MEP_WORKS_INSTALLATION],\\'ONU, DB & ALL MEP WORKS INSTALLATION\\'\\n          UNION ALL SELECT  [ONU_DB_AND_ALL_MEP_WORKS_PACKING],\\'ONU, DB & ALL MEP WORKS PACKING\\'\\n          UNION ALL SELECT  [DRY_AREA_PLASTER],\\'DRY AREA PLASTER\\'\\n          UNION ALL SELECT  [PLASTERING_CLEARANCE_WITH_1_METER_MARKING], \\'PLASTERING CLEARANCE WITH 1 METER MARKING\\'\\n          UNION ALL SELECT  [CENTER_LINE_MARKING_FOR_FACADE_INSTALLATION], \\'CENTER LINE MARKING FOR FACADE INSTALLATION\\'\\n          UNION ALL SELECT  [UCW_STARTER_GUTTER],\\'UCW-STARTER GUTTER\\'\\n          UNION ALL SELECT  [UCW_BRACKETS],\\'UCW-BRACKETS\\'\\n          UNION ALL SELECT  [UCW_PANELS],\\'UCW-PANELS\\'\\n          UNION ALL SELECT  [UCW_ALIGNMENT],\\'UCW-ALIGNMENT\\'\\n          UNION ALL SELECT  [DRY_AREA_TILE_MARKING],\\'DRY AREA TILE MARKING\\'\\n          UNION ALL SELECT  [DRY_AREA_BORE_PACKING],\\'DRY AREA BORE PACKING\\'\\n          UNION ALL SELECT  [DRY_AREA_SCREED],\\'DRY AREA SCREED\\'\\n          UNION ALL SELECT  [SCREED_CURING],\\'SCREED CURING\\'\\n          UNION ALL SELECT  [PRIMER_STUCCO_BANDING],\\'PRIMER,STUCCO BANDING\\'\\n          UNION ALL SELECT  [BULK_HEAD],\\'BULK HEAD\\'\\n          UNION ALL SELECT  [MEP_H_L_WIRING],\\'MEP H/L WIRING\\'\\n          UNION ALL SELECT  [MEP_H_L_FRAMING_CLEARANCE],\\'MEP H/L FRAMING CLEARANCE\\'\\n          UNION ALL SELECT  [FIRE_SEALANT_WORKS_AROUND_DUCTS],\\'FIRE SEALANT WORKS AROUND DUCTS\\'\\n          UNION ALL SELECT  [DRY_AREA_FC_FRAMING],\\'DRY AREA FC FRAMING\\'\\n          UNION ALL SELECT  [WARDROBE_NIB_WALL],\\'WARDROBE NIB WALL\\'\\n          UNION ALL SELECT  [MEP_H_L_BOARDING_CLEARANCE],\\'MEP H/L BOARDING CLEARANCE\\'\\n          UNION ALL SELECT  [FC_BOARDING_WITH_JOINT_TAPING],\\'FC BOARDING WITH JOINT TAPING\\'\\n          UNION ALL SELECT  [PRIMER_CEILING],\\'PRIMER CEILING\\'\\n          UNION ALL SELECT  [STUCCO_1ST_COAT_CEILING],\\'STUCCO 1ST COAT CEILING\\'\\n          UNION ALL SELECT  [STUCCO_2ND_COAT_CEILING],\\'STUCCO 2ND COAT CEILING\\'\\n          UNION ALL SELECT  [FIRST_COAT_PAINT_CEILING],\\'FIRST COAT PAINT CEILING\\'\\n          UNION ALL SELECT  [MAIN_DOOR_THRESHOLD],\\'MAIN DOOR THRESHOLD\\'\\n          UNION ALL SELECT  [DRY_AREA_FLOOR_TILING],\\'DRY AREA FLOOR TILING\\'\\n          UNION ALL SELECT  [DRY_AREA_SKIRTING],\\'DRY AREA SKIRTING\\'\\n          UNION ALL SELECT  [POP_ABOVE_SKIRTING],\\'POP ABOVE SKIRTING\\'\\n          UNION ALL SELECT  [HINGE_DOOR_BOX_INSTALLATION],\\'HINGE DOOR BOX INSTALLATION\\'\\n          UNION ALL SELECT  [SCREED_NEAR_HINGE_DOOR],\\'SCREED NEAR HINGE DOOR\\'\\n          UNION ALL SELECT  [HINGE_DOOR_FRAME_INSTALLATION],\\'HINGE DOOR FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_BOX_SECTION],\\'CURTAIN WALL BOX SECTION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_FRAME_INSTALLATION],\\'CURTAIN WALL FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_GLASS_INSTALLATION],\\'CURTAIN WALL GLASS INSTALLATION\\'\\n          UNION ALL SELECT  [UCW_GI_SHEET_INSTALLATION_WALL],\\'UCW-GI SHEET INSTALLATION - WALL\\'\\n          UNION ALL SELECT  [UCW_GI_SHEET_INSTALLATION_FLOOR],\\'UCW-GI SHEET INSTALLATION - FLOOR\\'\\n          UNION ALL SELECT  [SCREED_NEAR_CURTAIN_WALL],\\'SCREED NEAR CURTAIN WALL\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_BOX_INSTALLATION],\\'SLIDING DOOR BOX INSTALLATION\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_FRAME_INSTALLATION],\\'SLIDING DOOR FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [SCREED_NEAR_SLIDING_DOOR],\\'SCREED NEAR SLIDING DOOR\\'\\n          UNION ALL SELECT  [LEFT_OVER_TILE_INSTALLATION],\\'LEFT OVER TILE INSTALLATION\\'\\n          UNION ALL SELECT  [LEFT_OVER_SKIRTING],\\'LEFT OVER SKIRTING\\'\\n          UNION ALL SELECT  [TILE_GROUTING],\\'TILE GROUTING\\'\\n          UNION ALL SELECT  [TILE_SILICONE_WORKS],\\'TILE SILICONE WORKS\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_MULLION],\\'CURTAIN WALL MULLION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_FLASHING_INSTALLATION],\\'CURTAIN WALL FLASHING INSTALLATION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_SILICONE],\\'CURTAIN WALL SILICONE\\'\\n          UNION ALL SELECT  [UCW_FIRESTOP_AND_SILICONE],\\'UCW-FIRESTOP AND SILICONE\\'\\n          UNION ALL SELECT  [UCW_GI_FLASHING],\\'UCW-GI FLASHING\\'\\n          UNION ALL SELECT  [HINGE_DOOR_GLASS_INSTALLATION],\\'HINGE DOOR GLASS INSTALLATION\\'\\n          UNION ALL SELECT  [HINGE_DOOR_INTERNAL_SILICONE],\\'HINGE DOOR INTERNAL SILICONE\\'\\n          UNION ALL SELECT  [HINGE_DOOR_ALIGNMENT],\\'HINGE DOOR ALIGNMENT\\'\\n          UNION ALL SELECT  [HINGE_DOOR_EXTERNAL_SILICONE],\\'HINGE DOOR EXTERNAL SILICONE\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_GLASS_INSTALLATION],\\'SLIDING DOOR GLASS INSTALLATION\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_INTERNAL_SILICONE],\\'SLIDING DOOR INTERNAL SILICONE\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_ALIGNMENT],\\'SLIDING DOOR ALIGNMENT\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_EXTERNAL_SILICONE],\\'SLIDING DOOR EXTERNAL SILICONE\\'\\n          UNION ALL SELECT  [WINDOW_JAMB_CORNER_PELMET_AREA_SHADOW_ANGLE_POP_WORKS],\\'WINDOW JAMB,CORNER,PELMET AREA, SHADOW ANGLE POP WORKS\\'\\n          UNION ALL SELECT  [WALL_STUCCO_1ST_COAT],\\'WALL STUCCO 1ST COAT\\'\\n          UNION ALL SELECT  [WALL_STUCCO_2ND_COAT],\\'WALL STUCCO 2ND COAT\\'\\n          UNION ALL SELECT  [WALL_PAINT_1ST_COAT],\\'WALL PAINT 1ST COAT\\'\\n          UNION ALL SELECT  [DOOR_FRAME_INSTALLATION],\\'DOOR - FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_ARCHITRAVE_INSTALLATION],\\'DOOR - ARCHITRAVE INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_SHUTTER_INSTALLATION],\\'DOOR - SHUTTER INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_IRONMONGERY_INSTALLATION],\\'DOOR - IRONMONGERY INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_SILICONE_WORKS],\\'DOOR - SILICONE WORKS\\'\\n          UNION ALL SELECT  [CUT_PIECE_SKIRTING_NEAR_DOOR],\\'CUT PIECE SKIRTING NEAR DOOR\\'\\n          UNION ALL SELECT  [GAS_METER_INSTALLATION],\\'GAS METER INSTALLATION\\'\\n          UNION ALL SELECT  [MEP_KITCHEN_APPLIANCES],\\'MEP KITCHEN APPLIANCES\\'\\n          UNION ALL SELECT  [WARDROBE_CARCASS_INSTALLATION],\\'WARDROBE CARCASS INSTALLATION\\'\\n          UNION ALL SELECT  [WARDROBE_SHUTTER_INSTALLATION],\\'WARDROBE SHUTTER INSTALLATION\\'\\n          UNION ALL SELECT  [WARDROBE_SILICONE_WORKS],\\'WARDROBE SILICONE WORKS\\'\\n          UNION ALL SELECT  [CUT_PIECE_SKIRTING_NEAR_WARDROBE],\\'CUT PIECE SKIRTING NEAR WARDROBE\\'\\n          UNION ALL SELECT  [AIR_BALANCING_FOR_FCU],\\'AIR BALANCING FOR FCU\\'\\n          UNION ALL SELECT  [FCU_CLOSURE_CLEARANCE],\\'FCU CLOSURE CLEARANCE\\'\\n          UNION ALL SELECT  [VCD_CLOSURE_FCU],\\'VCD CLOSURE - FCU\\'\\n          UNION ALL SELECT  [AIR_BALANCING_FOR_FAHU],\\'AIR BALANCING FOR FAHU\\'\\n          UNION ALL SELECT  [FAHU_CLOSURE_CLEARANCE],\\'FAHU CLOSURE CLEARANCE\\'\\n          UNION ALL SELECT  [VCD_CLOSURE_FAHU],\\'VCD CLOSURE - FAHU\\'\\n          UNION ALL SELECT  [FINAL_FIXTURES_INSTALLATION],\\'FINAL FIXTURES INSTALLATION\\'\\n          UNION ALL SELECT  [ACCESS_PANEL_FINAL_COAT_AND_INSTALLATION],\\'ACCESS PANEL FINAL COAT AND INSTALLATION\\'\\n          UNION ALL SELECT  [DRY_AREA_FINAL_COAT_PREPARATION],\\'DRY AREA FINAL COAT PREPARATION\\'\\n          UNION ALL SELECT  [DRY_AREA_FINAL_COAT_PAINT],\\'DRY AREA FINAL COAT PAINT\\'\\n          UNION ALL SELECT  [THERMOSTAT_COVER_INSTALLATION],\\'THERMOSTAT COVER INSTALLATION\\'\\n          UNION ALL SELECT  [INTERCOM_COVER_INSTALLATION],\\'INTERCOM COVER INSTALLATION\\'\\n          UNION ALL SELECT  [ONU_AND_DB_PANEL_DOOR],\\'ONU & DB PANEL DOOR\\'\\n          UNION ALL SELECT  [SWITCH_SOCKET_COVER_INSTALLATION],\\'SWITCH SOCKET COVER INSTALLATION\\'\\n          ) AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n          INNER JOIN [STG].[O_PLN_DRYAREA_MAP_STG] DM\\n          ON COLUMN_NAME.TYPE_OF_WORK = DM.ACTIVITY_SEQUENCE\\n          WHERE VALUE IS NOT NULL ) DA\\nLEFT JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          DA.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          DA.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          DA.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE DRANK = 1\\n',",
 						"     format: 'query',",
 						"     staged: true) ~> source1",
 						"source1 keyGenerate(output(SurrogateKey_ID as long),",
@@ -1213,7 +1348,7 @@
 						"     allowSchemaDrift: false,",
 						"     validateSchema: false,",
 						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'SELECT \\n    P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n     SM.SBU_MAP_ID AS SBU_ID,\\n    KA.TOWER,\\n    P.PROJECT_IDENTIFIER ,\\n    \\'Kitchen Area\\' as Sclicer,\\n    KA.FLAT,\\n    KA.[LEVEL],\\n     KA.ACTIVITY_ID,\\n    CASE \\n        WHEN KA.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE KA.VALUE\\n    END AS VALUE,\\n    KA.TYPE_OF_WORK,\\n    KA.CATEGORY,\\n     KA.UPLOAD_DATE\\nFROM (\\n          SELECT \\n               KR.UPLOAD_TIME AS UPLOAD_DATE,\\n               KR.PROJECT_ID,\\n               KR.TOWER,\\n               KR.[LEVEL],\\n               KR.FLAT,\\n               COLUMN_NAME.*,\\n               KM.ACTIVITY_ID,\\n               KM.SBU_ID,\\n               KM.CATEGORY,\\n               DENSE_RANK () OVER (PARTITION BY  PROJECT_ID ORDER BY  UPLOAD_TIME DESC )DRANK\\n           FROM [STG].[O_PLN_KITCHENAREA_RAW_STG] KR\\n           CROSS APPLY (\\n                          SELECT [KITCHEN_AREA_PLASTER] , \\'KITCHEN AREA PLASTER\\'\\n                              UNION ALL SELECT [KITCHEN_UTILITY_FRAMING] , \\'KITCHEN / UTILITY FRAMING\\'\\n                              UNION ALL SELECT [KITCHEN_UTILITY_BOARDING] , \\'KITCHEN / UTILITY BOARDING\\'\\n                              UNION ALL SELECT [KITCHEN_WALL_TILE] , \\'KITCHEN WALL TILE\\'\\n                              UNION ALL SELECT [MEP_BOX_FIXING] , \\'MEP BOX FIXING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET] , \\'KITCHEN CABINET\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_PLYWOOD] , \\'KITCHEN COUNTER PLYWOOD\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_TOP] , \\'KITCHEN COUNTER TOP\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_TOP_SKIRTING] , \\'KITCHEN COUNTER TOP SKIRTING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET_GROUTING] , \\'KITCHEN CABINET GROUTING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET_SILICONE] , \\'KITCHEN CABINET SILICONE\\'\\n                              UNION ALL SELECT [MEP_FIXTURES_FOR_KITCHEN_CABINET] , \\'MEP FIXTURES FOR KITCHEN CABINET\\'\\n                              UNION ALL SELECT [KITCHEN_APPLIANCES] , \\'KITCHEN APPLIANCES\\'\\n                         ) AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n               INNER JOIN  [STG].[O_PLN_KITCHENAREA_MAP_STG] KM\\n                    ON          COLUMN_NAME.TYPE_OF_WORK = KM.ACTIVITY_SEQUENCE\\n               WHERE          VALUE IS NOT NULL\\n     ) KA\\nINNER JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          KA.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          KA.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          KA.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          KA.DRANK = 1',",
+						"     query: 'SELECT \\n    P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n     SM.SBU_MAP_ID AS SBU_ID,\\n    KA.TOWER,\\n    P.PROJECT_IDENTIFIER ,\\n    \\'Kitchen Area\\' as Sclicer,\\n    KA.FLAT,\\n    KA.[LEVEL],\\n     KA.ACTIVITY_ID,\\n    CASE \\n        WHEN KA.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE KA.VALUE\\n    END AS VALUE,\\n    KA.TYPE_OF_WORK,\\n    KA.CATEGORY,\\n     KA.UPLOAD_DATE\\nFROM (\\n          SELECT \\n               KR.UPLOAD_TIME AS UPLOAD_DATE,\\n               KR.PROJECT_ID,\\n               KR.TOWER,\\n               KR.[LEVEL],\\n               KR.FLAT,\\n               COLUMN_NAME.*,\\n               KM.ACTIVITY_ID,\\n               KM.SBU_ID,\\n               KM.CATEGORY,\\n               DENSE_RANK () OVER (PARTITION BY  PROJECT_ID ORDER BY   Convert(Date,UPLOAD_TIME) DESC ) DRANK\\n           FROM [STG].[O_PLN_KITCHENAREA_RAW_STG] KR\\n           CROSS APPLY (\\n                          SELECT [KITCHEN_AREA_PLASTER] , \\'KITCHEN AREA PLASTER\\'\\n                              UNION ALL SELECT [KITCHEN_UTILITY_FRAMING_CLEARANCE],\\'KITCHEN / UTILITY FRAMING CLEARANCE\\'\\n                              UNION ALL SELECT [KITCHEN_UTILITY_FRAMING] , \\'KITCHEN / UTILITY FRAMING\\'\\n                              UNION ALL SELECT [KITCHEN_UTILITY_BOARDING_CLEARANCE],\\'KITCHEN / UTILITY BOARDING CLEARANCE\\'\\n                              UNION ALL SELECT [KITCHEN_UTILITY_BOARDING] , \\'KITCHEN / UTILITY BOARDING\\'\\n                              UNION ALL SELECT [KITCHEN_WALL_TILE] , \\'KITCHEN WALL TILE\\'\\n                              UNION ALL SELECT [MEP_BOX_FIXING] , \\'MEP BOX FIXING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET] , \\'KITCHEN CABINET\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_PLYWOOD] , \\'KITCHEN COUNTER PLYWOOD\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_TOP] , \\'KITCHEN COUNTER TOP\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_TOP_SKIRTING] , \\'KITCHEN COUNTER TOP SKIRTING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET_GROUTING] , \\'KITCHEN CABINET GROUTING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET_SILICONE] , \\'KITCHEN CABINET SILICONE\\'\\n                              UNION ALL SELECT [MEP_FIXTURES_FOR_KITCHEN_CABINET] , \\'MEP FIXTURES FOR KITCHEN CABINET\\'\\n                              UNION ALL SELECT [KITCHEN_APPLIANCES] , \\'KITCHEN APPLIANCES\\'\\n                         ) AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n               INNER JOIN  [STG].[O_PLN_KITCHENAREA_MAP_STG] KM\\n                    ON          COLUMN_NAME.TYPE_OF_WORK = KM.ACTIVITY_SEQUENCE\\n               WHERE          VALUE IS NOT NULL\\n     ) KA\\nINNER JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          KA.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          KA.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          KA.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          KA.DRANK = 1',",
 						"     format: 'query',",
 						"     staged: true) ~> source1",
 						"source1 keyGenerate(output(SurrogateKey_ID as long),",
@@ -2415,126 +2550,6 @@
 						"          View_Map = VIEW_MAP,",
 						"          value_Average = VALUE_AVERAGE,",
 						"          LoadDateTime",
-						"     )) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_PLN_SUBCONTRACT_MANPOWER')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "DWH/Facts"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_O_PLN_SUBCONTRACTOR_MANPOWER_STG_TRG",
-								"type": "DatasetReference"
-							},
-							"name": "source1",
-							"description": "Import data from DS_O_PLN_DOOR_DELIVERY_RAW_STG_TRG"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_PLN_SUBCONTRACT_MANPOWER_TRG",
-								"type": "DatasetReference"
-							},
-							"name": "sink1",
-							"description": "Export data to DS_DOOR_DELIVERY_M_TRG"
-						}
-					],
-					"transformations": [
-						{
-							"name": "surrogateKey1"
-						},
-						{
-							"name": "derivedColumn1"
-						}
-					],
-					"scriptLines": [
-						"parameters{",
-						"     MAX_ID as integer (0)",
-						"}",
-						"source(output(",
-						"          Id_ as integer,",
-						"          upload_time as timestamp,",
-						"          tower as string,",
-						"          project_id as integer,",
-						"          sbu_id as integer,",
-						"          SBU as string,",
-						"          Project as string,",
-						"          type as string,",
-						"          Sub_Contractor as string,",
-						"          Activity as string,",
-						"          SCL_Engineer as string,",
-						"          Shift as string,",
-						"          Count as string,",
-						"          Trade as string",
-						"     ),",
-						"     allowSchemaDrift: false,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'select \\n        GAR.Id_,\\n          GAR.upload_time,  \\n          GAR.tower, \\n          p.Sort_ID as project_id,\\n          sm.Sbu_Map_Id as sbu_id,\\n          RTRIM(GAR.SBU) as SBU,\\n          RTRIM(GAR.Project) as Project, \\n          RTRIM(GAR.type) as type,\\n          GAR.Sub_Contractor,\\n          GAR.Activity,\\n          GAR.SCL_Engineer,\\n          GAR.Shift, \\n          GAR.Count,\\n          GAR. Trade\\nfrom(\\nselect\\n          s.Id_,\\n          s.upload_time,  \\n          s.tower, \\n          RTRIM(s.SBU) as SBU,\\n          RTRIM(s.Project) as Project, \\n          RTRIM(s.type) as type,\\n          s.Sub_Contractor,\\n          s.Activity,\\n          s.SCL_Engineer,\\n          column_name.Trade_uncleaned as Trade,\\n          case when column_name.Trade_uncleaned like \\'%D\\' then \\'Day\\'\\n                when column_name.Trade_uncleaned like \\'%N\\' then \\'Night\\'\\n                when column_name.Trade_uncleaned like \\'%D/N\\' then \\'Day_Night\\'\\n                else \\'Error\\'\\n                end as Shift, \\n          column_name.Count\\nfrom STG.O_PLN_SUBCONTRACTOR_MANPOWER_STG s\\ncross Apply (\\n                         SELECT     PM_And_Engineers_D     ,     \\'PM & Engineers_D\\'\\n                         UNION ALL SELECT     PM_And_Engineers_N     ,     \\'PM & Engineers_N\\'\\n                         UNION ALL SELECT     PM_And_Engineers_D_N     ,     \\'PM_And_Engineers_D/N\\'\\n                         UNION ALL SELECT     Supervisor_D     ,     \\'Supervisor_D\\'\\n                         UNION ALL SELECT     Supervisor_N     ,     \\'Supervisor_N\\'\\n                         UNION ALL SELECT     Supervisor_D_N     ,     \\'Supervisor_D/N\\'\\n                         UNION ALL SELECT     Foreman_Staff_D     ,     \\'Foreman / Staff_D\\'\\n                         UNION ALL SELECT     Foreman_Staff_N     ,     \\'Foreman / Staff_N\\'\\n                         UNION ALL SELECT     Foreman_Staff_D_N     ,     \\'Foreman / Staff_D/N\\'\\n                         UNION ALL SELECT     Chargehand_D     ,     \\'Chargehand_D\\'\\n                         UNION ALL SELECT     Chargehand_N     ,     \\'Chargehand_N\\'\\n                         UNION ALL SELECT     Chargehand_D_N     ,     \\'Chargehand_D/N\\'\\n                         UNION ALL SELECT     Carpenter_D     ,     \\'Carpenter_D\\'\\n                         UNION ALL SELECT     Carpenter_N     ,     \\'Carpenter_N\\'\\n                         UNION ALL SELECT     Carpenter_D_N     ,     \\'Carpenter_D/N\\'\\n                         UNION ALL SELECT     Mason_D     ,     \\'Mason_D\\'\\n                         UNION ALL SELECT     Mason_N     ,     \\'Mason_N\\'\\n                         UNION ALL SELECT     Mason_D_N     ,     \\'Mason_D/N\\'\\n                         UNION ALL SELECT     Steel_Fitter_D     ,     \\'Steel Fitter_D\\'\\n                         UNION ALL SELECT     Steel_Fitter_N     ,     \\'Steel Fitter_N\\'\\n                         UNION ALL SELECT     Steel_Fitter_D_N     ,     \\'Steel Fitter_D/N\\'\\n                         UNION ALL SELECT     Scaffolder_D     ,     \\'Scaffolder_D\\'\\n                         UNION ALL SELECT     Scaffolder_N     ,     \\'Scaffolder_N\\'\\n                         UNION ALL SELECT     Scaffolder_D_N     ,     \\'Scaffolder_D/N\\'\\n                         UNION ALL SELECT     Operator_D     ,     \\'Operator_D\\'\\n                         UNION ALL SELECT     Operator_N     ,     \\'Operator_N\\'\\n                         UNION ALL SELECT     Operator_D_N     ,     \\'Operator_D/N\\'\\n                         UNION ALL SELECT     Security_D     ,     \\'Security_D\\'\\n                         UNION ALL SELECT     Security_N     ,     \\'Security_N\\'\\n                         UNION ALL SELECT     Security_D_N     ,     \\'Security_D/N\\'\\n                         UNION ALL SELECT     Helper_D     ,     \\'Helper_D\\'\\n                         UNION ALL SELECT     Helper_N     ,     \\'Helper_N\\'\\n                         UNION ALL SELECT     Helper_D_N     ,     \\'Helper_D/N\\'\\n                         UNION ALL SELECT     Steel_Fixers_D     ,     \\'Steel Fixers_D\\'\\n                         UNION ALL SELECT     Steel_Fixers_N     ,     \\'Steel Fixers_N\\'\\n                         UNION ALL SELECT     Steel_Fixers_D_N     ,     \\'Steel Fixers_D/N\\'\\n                         UNION ALL SELECT     Masons_D     ,     \\'Masons_D\\'\\n                         UNION ALL SELECT     Masons_N     ,     \\'Masons_N\\'\\n                         UNION ALL SELECT     Masons_D_N     ,     \\'Masons_D/N\\'\\n                         UNION ALL SELECT     Welder_D     ,     \\'Welder_D\\'\\n                         UNION ALL SELECT     Welder_N     ,     \\'Welder_N\\'\\n                         UNION ALL SELECT     Welder_D_N     ,     \\'Welder_D/N\\'\\n                         UNION ALL SELECT     Rigger_D     ,     \\'Rigger_D\\'\\n                         UNION ALL SELECT     Rigger_N     ,     \\'Rigger_N\\'\\n                         UNION ALL SELECT     Rigger_D_N     ,     \\'Rigger_D/N\\'\\n                         UNION ALL SELECT     Painter_D     ,     \\'Painter_D\\'\\n                         UNION ALL SELECT     Painter_N     ,     \\'Painter_N\\'\\n                         UNION ALL SELECT     Painter_D_N     ,     \\'Painter_D/N\\'\\n                         UNION ALL SELECT     Tile_Mason_D     ,     \\'Tile Mason_D\\'\\n                         UNION ALL SELECT     Tile_Mason_N     ,     \\'Tile Mason_N\\'\\n                         UNION ALL SELECT     Tile_Mason_D_N     ,     \\'Tile Mason_D/N\\'\\n                         UNION ALL SELECT     Gypsum_Carpenter_D     ,     \\'Gypsum Carpenter_D\\'\\n                         UNION ALL SELECT     Gypsum_Carpenter_N     ,     \\'Gypsum Carpenter_N\\'\\n                         UNION ALL SELECT     Gypsum_Carpenter_D_N     ,     \\'Gypsum Carpenter_D/N\\'\\n                         UNION ALL SELECT     Joinery_Carpenter_D     ,     \\'Joinery Carpenter_D\\'\\n                         UNION ALL SELECT     Joinery_Carpenter_N     ,     \\'Joinery Carpenter_N\\'\\n                         UNION ALL SELECT     Joinery_Carpenter_D_N     ,     \\'Joinery Carpenter_D/N\\'\\n                         UNION ALL SELECT     Screed_Mason_D     ,     \\'Screed Mason_D\\'\\n                         UNION ALL SELECT     Screed_Mason_N     ,     \\'Screed Mason_N\\'\\n                         UNION ALL SELECT     Screed_Mason_D_N     ,     \\'Screed Mason_D/N\\'\\n                         UNION ALL SELECT     Marble_Stone_Mason_D     ,     \\'Marble / Stone Mason_D\\'\\n                         UNION ALL SELECT     Marble_Stone_Mason_N     ,     \\'Marble / Stone Mason_N\\'\\n                         UNION ALL SELECT     Marble_Stone_Mason_D_N     ,     \\'Marble / Stone Mason_D/N\\'\\n                         UNION ALL SELECT     Electrician_D     ,     \\'Electrician_D\\'\\n                         UNION ALL SELECT     Electrician_N     ,     \\'Electrician_N\\'\\n                         UNION ALL SELECT     Electrician_D_N     ,     \\'Electrician_D/N\\'\\n                         UNION ALL SELECT     Plumber_D     ,     \\'Plumber_D\\'\\n                         UNION ALL SELECT     Plumber_N     ,     \\'Plumber_N\\'\\n                         UNION ALL SELECT     Plumber_D_N     ,     \\'Plumber_D/N\\'\\n                         UNION ALL SELECT     HVAC_D     ,     \\'HVAC_D\\'\\n                         UNION ALL SELECT     HVAC_N     ,     \\'HVAC_N\\'\\n                         UNION ALL SELECT     HVAC_D_N     ,     \\'HVAC_D/N\\'\\n                         UNION ALL SELECT     Sub_Contractor_D     ,     \\'Sub Contractor_D\\'\\n                         UNION ALL SELECT     Sub_Contractor_N     ,     \\'Sub Contractor_N\\'\\n                         UNION ALL SELECT     Sub_Contractor_D_N     ,     \\'Sub Contractor_D/N\\'\\n                         UNION ALL SELECT     Facade_Technicians_D     ,     \\'Facade Technicians_D\\'\\n                         UNION ALL SELECT     Facade_Technicians_N     ,     \\'Facade Technicians_N\\'\\n                         UNION ALL SELECT     Facade_Technicians_D_N     ,     \\'Facade Technicians_D/N\\'\\n                         UNION ALL SELECT     POP_Mason_D     ,     \\'POP Mason_D\\'\\n                         UNION ALL SELECT     POP_Mason_N     ,     \\'POP Mason_N\\'\\n                         UNION ALL SELECT     POP_Mason_D_N     ,     \\'POP Mason_D/N\\'\\n                         UNION ALL SELECT     Joinery_Polisher_D     ,     \\'Joinery Polisher_D\\'\\n                         UNION ALL SELECT     Joinery_Polisher_N     ,     \\'Joinery Polisher_N\\'\\n                         UNION ALL SELECT     Joinery_Polisher_D_N     ,     \\'Joinery Polisher_D/N\\'\\n                         UNION ALL SELECT     Fitter_D     ,     \\'Fitter_D\\'\\n                         UNION ALL SELECT     Fitter_N     ,     \\'Fitter_N\\'\\n                         UNION ALL SELECT     Fitter_D_N     ,     \\'Fitter_D/N\\'\\n                         UNION ALL SELECT     Deep_Cleaning_D     ,     \\'Deep Cleaning_D\\'\\n                         UNION ALL SELECT     Deep_Cleaning_N     ,     \\'Deep Cleaning_N\\'\\n                         UNION ALL SELECT     Deep_Cleaning_D_N     ,     \\'Deep Cleaning_D/N\\'\\n                         UNION ALL SELECT     Others_D     ,     \\'Others_D\\'\\n                         UNION ALL SELECT     Others_N     ,     \\'Others_N\\'\\n                         UNION ALL SELECT     Others_D_N     ,     \\'Others_D/N\\'\\n                         )as column_name(Count,Trade_uncleaned)\\n                         where \\n                         Count not in (\\'\\',\\' - \\',\\'D/N\\',\\'N\\',\\'D\\',\\'Total\\',\\'SCL Engineer\\',\\'Activity\\',\\'Sub Total\\',\\'Others\\',\\'Deep Cleaning\\',\\'Fitter\\',\\'Joinery Polisher\\',\\'POP Mason\\',\\'Facade Technicians\\',\\'Sub Contractor\\'\\n                         ,\\'HVAC\\',\\'Plumber\\',\\'Electrician\\',\\'Steel Fixer\\',\\'Marble / Stone Mason\\',\\'Screed Mason\\',\\'Joinery Carpenter\\',\\'Gypsum Carpenter\\',\\'Tile Mason\\',\\n                         \\'Painter\\',\\'Rigger\\',\\'Welder\\',\\'Masons\\',\\'Steel Fixers\\',\\'Carpenters\\',\\'Helper\\',\\'Security\\',\\'Operator\\',\\'Scaffolder\\',\\'Steel Fitter\\',\\'Mason\\',\\n                         \\'Carpenter\\',\\'Chargehand\\',\\'Foreman / Staff\\',\\'Supervisor\\',\\'PM_And_Engineers\\',\\'Supervisor\\')\\n                         and Project not in (\\'\\')\\n                         ) as GAR\\n                    LEFT JOIN  [DWH].[PROJECTS_NEW_DIM] P\\n                         ON  GAR.PROJECT=P.PROJECT_IDENTIFIER\\n              LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n                         ON   GAR.SBU=SM.SBU_IDENTIFIER\\n                    \\n\\n                    \\n\\n                    ',",
-						"     format: 'query',",
-						"     staged: true) ~> source1",
-						"source1 keyGenerate(output(SurrogateKey_ID as long),",
-						"     startAt: 1L,",
-						"     stepValue: 1L) ~> surrogateKey1",
-						"surrogateKey1 derive(LoadDateTime = currentUTC()) ~> derivedColumn1",
-						"derivedColumn1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          Id as integer,",
-						"          Upload_Time as timestamp,",
-						"          Project_Id as integer,",
-						"          Tower as string,",
-						"          Sbu_Id as integer,",
-						"          SBU as string,",
-						"          Project as string,",
-						"          Type as string,",
-						"          Sub_Contractor as string,",
-						"          Activity as string,",
-						"          SCL_Engineer as string,",
-						"          Trade as string,",
-						"          Shift as string,",
-						"          Count as string,",
-						"          LoadDate_time as timestamp",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     staged: true,",
-						"     allowCopyCommand: true,",
-						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_SUBCONTRACTOR_MANPOWER_FACT]'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          Id = Id_,",
-						"          Upload_Time = upload_time,",
-						"          Project_Id = project_id,",
-						"          Tower = tower,",
-						"          Sbu_Id = sbu_id,",
-						"          SBU,",
-						"          Project,",
-						"          Type = type,",
-						"          Sub_Contractor,",
-						"          Activity,",
-						"          SCL_Engineer,",
-						"          Trade,",
-						"          Shift,",
-						"          Count,",
-						"          LoadDate_time = LoadDateTime",
 						"     )) ~> sink1"
 					]
 				}

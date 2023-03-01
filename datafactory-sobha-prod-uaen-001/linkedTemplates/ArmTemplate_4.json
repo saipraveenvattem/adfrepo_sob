@@ -1367,7 +1367,19 @@
 						"scale": 0
 					},
 					{
+						"name": "Kitchen / Utility Framing Clearance",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
 						"name": "Kitchen / Utility Framing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Kitchen / Utility Boarding Clearance",
 						"type": "varchar",
 						"precision": 0,
 						"scale": 0
@@ -1611,26 +1623,26 @@
 				"type": "AzureSqlDWTable",
 				"schema": [
 					{
-						"name": "KITCHENAREA_id",
+						"name": "Kitchenarea_Id",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "upload_time",
+						"name": "Upload_Time",
 						"type": "datetime",
 						"precision": 23,
 						"scale": 3
 					},
 					{
-						"name": "project_id",
+						"name": "Project_Id",
 						"type": "varchar"
 					},
 					{
-						"name": "tower",
+						"name": "Tower",
 						"type": "varchar"
 					},
 					{
-						"name": "sbu_id",
+						"name": "Sbu_Id",
 						"type": "varchar"
 					},
 					{
@@ -1650,7 +1662,15 @@
 						"type": "varchar"
 					},
 					{
+						"name": "Kitchen_Utility_Framing_Clearance",
+						"type": "varchar"
+					},
+					{
 						"name": "Kitchen_Utility_Boarding",
+						"type": "varchar"
+					},
+					{
+						"name": "Kitchen_Utility_Boarding_Clearance",
 						"type": "varchar"
 					},
 					{
