@@ -1,0 +1,1740 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "datafactory-sobha-prod-uaen-001"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_WETAREA_MAP_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "WETAREA_MAP_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SBU_SHORT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_WETAREA_MAP_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_WETAREA_RAW_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "project_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "tower",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "sbu_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Level",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Flat",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Plastering Clearance with 1 Mtr Marking",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wet Area Tile Marking",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Marking",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wet Area Cutting & Chasing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Pex pipe installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Re packing of MEP Services",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Pipe installation - Borepacking",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wet Area Bore Packing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Cistern installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Drywall framing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Pex Elbow & Connections",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Bottom Boarding Clearance",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Bottom boarding",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Under Screed Waterproofing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wet Area Screed",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ledge Wall Full Board Closure Clearance",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP HL Water Supply & Drainage",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP HL Ducting & FCU Works",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP HL Electrical Services Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP HL Works & Testing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP HL Packing Clearance",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Packing for all builders work opening",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wet Area MEP H/L Fire Sealent & Framing Clearance",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wet area Wall Tile",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wet Area FC Framing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wet Area MEP H/L Boarding Clearance",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "FC Boarding & Joint Taping",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ceiling Paint Primer",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ceiling Paint Stucco 1st Coat & 2nd Coat",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wet Area Ceiling First Coat Paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Grill & Diffuser Installtion",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Shower Threshold",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Linear Drain Supply",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Linear Drain Fixing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Under Tile Waterproofing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Bathroom Door Threshold",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wet Area Floor Tile",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall tile bottom Tile",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Grouting - Wall & Floor",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Silicone - Wall & Floor Corners",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Shower Partition - U channel",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Shower Partition - Glass",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Accessories & Silicon",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Bathroom Door - Frame Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Bathroom Door - Architrave Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Bathroom Door - Shutter Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Bathroom Door - Ironmongery Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Vanity Cabinet",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Vanity Cabinet Counter top",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Final Fixtures (Sanitary ,CP fittings & Lights,WB)",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Ledge Wall Clearance",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ledge Wall Closing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Silicone around MEP Fixtures",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wet Area Final Coat paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL1",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL2",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL3",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL4",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL5",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL6",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL7",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL8",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL9",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL10",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL11",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL12",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL13",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL14",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL15",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL16",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL17",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL18",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL19",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL20",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL21",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL22",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL23",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL24",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL25",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_wetarea_raw"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_WETAREA_RAW_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "WetArea_Raw_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Flat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Plastering_Clearance_with_1_Mtr_Marking",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wet_Area_Tile_Marking",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Marking",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wet_Area_Cutting_And_Chasing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Pex_pipe_installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Re_packing_of_MEP_Services",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Pipe_installation_Borepacking",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wet_Area_Bore_Packing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cistern_installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Drywall_framing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Pex_Elbow_Connections",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bottom_Boarding_Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bottom_boarding",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Under_Screed_Waterproofing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wet_Area_Screed",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ledge_Wall_Full_Board_Closure_Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_HL_Water_Supply_Drainage",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_HL_Ducting_FCU_Works",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_HL_Electrical_Services_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_HL_Works_Testing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_HL_Packing_Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Packing_for_all_builders_work_opening",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wet_Area_MEP_H_L_Fire_Sealent_Framing_Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wet_area_Wall_Tile",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wet_Area_FC_Framing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wet_Area_MEP_H_L_Boarding_Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FC_Boarding_Joint_Taping",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_Paint_Primer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_Paint_Stucco_1st_Coat_2nd_Coat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wet_Area_Ceiling_First_Coat_Paint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Grill_Diffuser_Installtion",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Shower_Threshold",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Linear_Drain_Supply",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Linear_Drain_Fixing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Under_Tile_Waterproofing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bathroom_Door_Threshold",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wet_Area_Floor_Tile",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_tile_bottom_Tile",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Grouting_Wall_Floor",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Silicone_Wall_Floor_Corners",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Shower_Partition_U_channel",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Shower_Partition_Glass",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Accessories_Silicon",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bathroom_Door_Frame_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bathroom_Door_Architrave_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bathroom_Door_Shutter_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bathroom_Door_Ironmongery_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Vanity_Cabinet",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Vanity_Cabinet_Counter_top",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Final_Fixtures_Sanitary_CP_fittings_Lights_WB",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Ledge_Wall_Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ledge_Wall_Closing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Silicone_around_MEP_Fixtures",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wet_Area_Final_Coat_paint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Upload_Time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_WETAREA_RAW_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_SBU_MAPPING_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "mapping_id",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "sbu_identifier",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "sbu_shorts",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "sbu_description",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_sbu_mapping"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_SBU_MAPPING_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "SBU_MAPPING_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Mapping_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Sbu_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sbu_Shorts",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sbu_Description",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_SBU_MAPPING_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_PLANGRID_MAPPING_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Act_Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Cluster",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Status",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PG_PLANGRID_MAPPING_DIM"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_PLANGRID_PROJECT_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Sobha_PG_DB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Project_Short_Code",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Plangrid_Project"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_PLANGRID_PROJECT_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Project_Short_Code",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "PG_PLANGRID_PROJECT_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_PROJECT_MASTER_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Sobha_PG_DB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Created_ON",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Project_Status",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Project_Master"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_PROJECT_MASTER_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Created_ON",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Project_Status",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PG_PROJECT_MASTER_DIM"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Plangrid_Cluster_Mapping_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Sobha_PG_DB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Stamp_First",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Stamp",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cluster_Short",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cluster_Full",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Works",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Approval",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Clearance",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Plangrid_Cluster_Mapping"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Plangrid_Cluster_Mapping_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Stamp_First",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Stamp",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cluster_Short",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cluster_Full",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Works",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Approval",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Clearance",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "PG_Plangrid_Cluster_Mapping_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Plangrid_Cluster_Mapping_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Stamp_First",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Stamp",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cluster_Short",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cluster_Full",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Works",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Approval",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PG_Plangrid_Cluster_Mapping_DIM"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Plangrid_Mapping_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Sobha_PG_DB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Act_Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Cluster",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Status",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Plangrid_Mapping"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Plangrid_Mapping_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Act_Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Cluster",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Status",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "PG_Plangrid_Mapping_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Plangrid_Project_DIM_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Sobha_PG_DB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Project_Short_Code",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Plangrid_Project"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Plangrid_Project_DIM_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Short_Code",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PG_Plangrid_Project_DIM"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Project_Master_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Sobha_PG_DB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Created_ON",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Project_Status",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Project_Master"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Project_Master_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Created_ON",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Project_Status",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "PG_Project_Master_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_TASK_REPORT_FACT_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Task_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Stamp",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Title",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Description",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Status",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sheet",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Location",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Root_Cause",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Created_By",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Assigned_To",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Watchers",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Photos",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Archived",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Start_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Due_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Cost_Impact",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cost_Impact_Amount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "Schedule_Impact",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Schedule_Impact_Amount_Days",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Last_Updated_On",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Closed_on",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Task_Refresh_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Task_Ref_No",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PG_TASK_REPORT_FACT"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

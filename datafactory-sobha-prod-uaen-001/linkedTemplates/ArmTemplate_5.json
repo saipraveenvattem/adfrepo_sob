@@ -1,0 +1,4611 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "datafactory-sobha-prod-uaen-001"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_STAIRCASE_MAP_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "STAIRCASE_MAP_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SBU_SHORT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_STAIRCASE_MAP_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_STAIRCASE_RAW_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "project_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "tower",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "sbu_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Level",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Stair Case No",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Conduit Marking",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Cutting and Chasing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Conduit Fixtures",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall Packing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Plaster",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Grinding",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "POP",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Medium Coat Ceiling Spray Plaster",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Two Coat Fine Ceiling Spray Plaster",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ceiling Primer",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ceiling Texture",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall Primer",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall Stucco banding",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall Stucco (1st and 2nd Coat)",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Pressurization Equipment",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sanding",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall First Coat Paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ceiling First Coat Paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Handrail Floor Mounted",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Handrail Wall Mounted",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Grinding",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Bug Fill",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Primer",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Base Coat",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Final Coat",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Threshold Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door - Frame Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door - Architrave Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door - Shutter Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door - Ironmongery Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door - Silicone Works",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Signage",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Nosing Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Handrail Painting",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Preparation for Final Coat Paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Final Fixtures Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Final Coat Paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase Pressurization",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL1",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL2",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL3",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL4",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL5",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL6",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL7",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL8",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL9",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL10",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL11",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL12",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL13",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL14",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL15",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL16",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL17",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL18",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL19",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL20",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL21",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL22",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL23",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL24",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL25",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL26",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL27",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_staircase_raw"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_STAIRCASE_RAW_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "STAIRCASE_RAW_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "sbu_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Stair_Case_No",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Conduit_Marking",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cutting_and_Chasing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Conduit_Fixtures",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_Packing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Plaster",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Grinding",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Medium_Coat_Ceiling_Spray_Plaster",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Two_Coat_Fine_Ceiling_Spray_Plaster",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_Primer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_Texture",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_Primer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_Stucco_banding",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_Stucco_(1st_and_2nd_Coat)",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Pressurization_Equipment",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sanding",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_First_Coat_Paint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_First_Coat_Paint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Handrail_Floor_Mounted",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Handrail_Wall_Mounted",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Grinding",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Bug_Fill",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Primer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Base_Coat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Final_Coat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Threshold_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Frame_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Architrave_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Shutter_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Ironmongery_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Silicone_Works",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Signage",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Nosing_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Handrail_Painting",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Preparation_for_Final_Coat_Paint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Final_Fixtures_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Final_Coat_Paint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_Pressurization",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_STAIRCASE_RAW_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_STRUCTURES_POUR_MAP_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "ID_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "area",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sequence_of_Appearance",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Pour_count",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "type_of_pour",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "project_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_structures_pour_map"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_STRUCTURES_POUR_MAP_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "STRUCTURES_POUR_MAP_ID_",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "area",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sequence_of_Appearance",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Pour_count",
+						"type": "nvarchar"
+					},
+					{
+						"name": "type_of_pour",
+						"type": "nvarchar"
+					},
+					{
+						"name": "project_id",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_STRUCTURES_POUR_MAP_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_STRUCTURE_POURING_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "project_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "tower",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "sbu_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Level",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 1",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 1",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 1",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 2",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 2",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 2",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 3",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 3",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 3",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 4",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 4",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 4",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 5",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 5",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 5",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 6",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 6",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 6",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 7",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 7",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 7",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 8",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 8",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 8",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 9",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 9",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 9",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 10",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 10",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 10",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 11",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 11",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 11",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 12",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 12",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 13",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 13",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 13",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 14",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 14",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 14",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 15",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 15",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 15",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 16",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 16",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 16",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 17",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 17",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 17",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 18",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 18",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 18",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 19",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 19",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 19",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 20",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 20",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 20",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 21",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 21",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 21",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 22",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 22",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 22",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 23",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 23",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 23",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 24",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 24",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 24",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 25",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 25",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 25",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 26",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 26",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 26",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 27",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 27",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 27",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 28",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 28",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 28",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 29",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 29",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 29",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Wall 30",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Slab 30",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Staircase 12",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_structure_pouring"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_STRUCTURE_POURING_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "STRUCTURE_POURING_id_",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "sbu_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_3",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_3",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_3",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_4",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_4",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_4",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_5",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_5",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_5",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_6",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_6",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_6",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_7",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_7",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_7",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_8",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_8",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_8",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_9",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_9",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_9",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_10",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_10",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_10",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_11",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_11",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_11",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_12",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_12",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_13",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_13",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_13",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_14",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_14",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_14",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_15",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_15",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_15",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_16",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_16",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_16",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_17",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_17",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_17",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_18",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_18",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_18",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_19",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_19",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_19",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_20",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_20",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_20",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_21",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_21",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_21",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_22",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_22",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_22",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_23",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_23",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_23",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_24",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_24",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_24",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_25",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_25",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_25",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_26",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_26",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_26",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_27",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_27",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_27",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_28",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_28",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_28",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_29",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_29",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_29",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_30",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_30",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_12",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_STRUCTURE_POURING_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_SUBCONTRACTOR_MANPOWER_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "project_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "tower",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "sbu_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Project",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Type",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sub Contractor",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Activity",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SCL Engineer",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "PM & Engineers_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "PM & Engineers_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "PM & Engineers_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Supervisor_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Supervisor_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Supervisor_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Foreman / Staff_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Foreman / Staff_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Foreman / Staff_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Chargehand_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Chargehand_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Chargehand_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Carpenter_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Carpenter_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Carpenter_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Mason_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Mason_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Mason_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Steel Fitter_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Steel Fitter_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Steel Fitter_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Scaffolder_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Scaffolder_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Scaffolder_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Operator_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Operator_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Operator_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Security_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Security_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Security_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Helper_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Helper_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Helper_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Steel Fixers_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Steel Fixers_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Steel Fixers_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Masons_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Masons_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Masons_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Welder_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Welder_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Welder_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Rigger_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Rigger_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Rigger_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Painter_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Painter_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Painter_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tile Mason_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tile Mason_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tile Mason_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Gypsum Carpenter_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Gypsum Carpenter_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Gypsum Carpenter_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Joinery Carpenter_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Joinery Carpenter_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Joinery Carpenter_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Screed Mason_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Screed Mason_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Screed Mason_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Marble / Stone Mason_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Marble / Stone Mason_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Marble / Stone Mason_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Electrician_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Electrician_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Electrician_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Plumber_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Plumber_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Plumber_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "HVAC_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "HVAC_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "HVAC_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sub Contractor_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sub Contractor_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sub Contractor_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Facade Technicians_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Facade Technicians_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Facade Technicians_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "POP Mason_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "POP Mason_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "POP Mason_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Joinery Polisher_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Joinery Polisher_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Joinery Polisher_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Fitter_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Fitter_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Fitter_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Deep Cleaning_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Deep Cleaning_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Deep Cleaning_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "OTHERS_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "OTHERS_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "OTHERS_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sub Total_D",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sub Total_N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sub Total_D/N",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Sub Total_",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_subcontractor_manpower"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_SUBCONTRACTOR_MANPOWER_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "sbu_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sub_Contractor",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SCL_Engineer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PM_And_Engineers_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PM_And_Engineers_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PM_And_Engineers_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Supervisor_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Supervisor_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Supervisor_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Foreman_Staff_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Foreman_Staff_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Foreman_Staff_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Chargehand_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Chargehand_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Chargehand_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Carpenter_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Carpenter_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Carpenter_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Mason_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Mason_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Mason_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Steel_Fitter_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Steel_Fitter_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Steel_Fitter_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Scaffolder_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Scaffolder_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Scaffolder_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Operator_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Operator_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Operator_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Security_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Security_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Security_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Helper_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Helper_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Helper_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Steel_Fixers_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Steel_Fixers_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Steel_Fixers_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Masons_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Masons_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Masons_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Welder_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Welder_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Welder_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Rigger_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Rigger_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Rigger_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Painter_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Painter_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Painter_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Tile_Mason_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Tile_Mason_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Tile_Mason_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Gypsum_Carpenter_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Gypsum_Carpenter_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Gypsum_Carpenter_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Joinery_Carpenter_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Joinery_Carpenter_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Joinery_Carpenter_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Screed_Mason_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Screed_Mason_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Screed_Mason_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Marble_Stone_Mason_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Marble_Stone_Mason_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Marble_Stone_Mason_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Electrician_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Electrician_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Electrician_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Plumber_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Plumber_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Plumber_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "HVAC_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "HVAC_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "HVAC_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sub_Contractor_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sub_Contractor_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sub_Contractor_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Facade_Technicians_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Facade_Technicians_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Facade_Technicians_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POP_Mason_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POP_Mason_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POP_Mason_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Joinery_Polisher_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Joinery_Polisher_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Joinery_Polisher_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Fitter_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Fitter_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Fitter_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Deep_Cleaning_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Deep_Cleaning_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Deep_Cleaning_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "OTHERS_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "OTHERS_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "OTHERS_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sub_Total_D",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sub_Total_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sub_Total_D_N",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sub_Total",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_SUBCONTRACTOR_MANPOWER_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_TELEPHONEROOM_MAP_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_SHORT",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_ID",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "CATEGORY",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_telephoneroom_map"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_TELEPHONEROOM_MAP_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "TELEPHONEROOM_MAP_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SBU_SHORT",
+						"type": "varchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "varchar"
+					},
+					{
+						"name": "CATEGORY",
+						"type": "varchar"
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_TELEPHONEROOM_MAP_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_TELEPHONEROOM_RAW_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "project_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "tower",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "sbu_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Level",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Blockwork Layout",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Blockwork",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Marking for Builders Work",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Cutting & Chasing of Blockwork",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Services Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall MEP Services Packing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Plaster",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Screed",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ceiling Stucco (1st and 2nd Coat)",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall Stucco (1st and 2nd Coat)",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ceiling First Coat Paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall First Coat Paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Installation of cable tray and trunking",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Installation of Panels",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Cable laying and glanding works",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Dressing and termination of SMDB",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Bus bar with Tap off Box completion",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Fire Sealant",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Grinding",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Bug Fill",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Primer",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy First Coat",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Final Coat",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Floor Tile",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Skirting",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "POP",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Grout",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Threshold",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door-Frame Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door-Architrave Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door-Shutter Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door-Ironmongery Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Signage",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Final Fixtures",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Final Coat Paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL1",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL2",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL3",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL4",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL5",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL6",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL7",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL8",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL9",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL10",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL11",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL12",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL13",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL14",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL15",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL16",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL17",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL18",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL19",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL20",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL21",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL22",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL23",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL24",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL25",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL26",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL27",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_telephoneroom_raw"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_TELEPHONEROOM_RAW_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "TELEPHONEROOM_RAW_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "sbu_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Blockwork_Layout",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Blockwork",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Marking_for_Builders_Work",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cutting_&_Chasing_of_Blockwork",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Services_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_MEP_Services_Packing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Plaster",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Screed",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_Stucco_(1st_and_2nd_Coat)",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_Stucco_(1st_and_2nd_Coat)",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_First_Coat_Paint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_First_Coat_Paint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Installation_of_cable_tray_and_trunking",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Installation_of_Panels",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cable_laying_and_glanding_works",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Fire_Sealant",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Grinding",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Bug_Fill",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Primer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_First_Coat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Final_Coat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Floor_Tile",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Skirting",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Grout",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Threshold",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Frame_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Architrave_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Shutter_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Ironmongery_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Final_Fixtures",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Final_Coat_Paint",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_TELEPHONEROOM_RAW_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_TOWER_PODIUM_MAP_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "Project",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Area",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Level",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_tower_podium_map"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_TOWER_PODIUM_MAP_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Project",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Area",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_TOWER_PODIUM_MAP_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_WATERROOM_MAP_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_SHORT",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_ID",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "CATEGORY",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_waterroom_map"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_WATERROOM_MAP_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "O_PLN_WATERROOM_MAP_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SBU_SHORT",
+						"type": "varchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "varchar"
+					},
+					{
+						"name": "CATEGORY",
+						"type": "varchar"
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_WATERROOM_MAP_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_WATERROOM_RAW_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "project_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "tower",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "sbu_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Level",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Blockwork Layout",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Blockwork",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Marking for Builders Work",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Cutting & Chasing of Blockwork",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Services Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall MEP Services Packing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Plaster",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Core Cutting & Chipping",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Sleeve Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Bore Packing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Screed",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall Primer",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall Stucco (1st and 2nd Coat)",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Wall First Coat Paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Installation of PPR pipes",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Manifold & Valve installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "PRV installation & connections",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Testing of Pipes",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Fire Sealant Works",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Framing Clearance",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "False Ceiling Framing",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Boarding Clearance",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "False Ceiling Boarding",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ceiling Primer",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Ceiling Stucco (1st and 2nd Coat)",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "First Coat Paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Threshold",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door-Frame Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door-Architrave Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door-Shutter Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Door-Ironmongery Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Grinding",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Bug Fill",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Primer",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy First Coat",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Epoxy Final Coat",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Skirting",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "POP Works",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Grouting",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Silicone",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "MEP Final Fixtures",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "PSV Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Water Meter Installation",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Final Coat Paint",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL1",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL2",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL3",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL4",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL5",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL6",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL7",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL8",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL9",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL10",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL11",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL12",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL13",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL14",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL15",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL16",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL17",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL18",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL19",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL20",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL21",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL22",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL23",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL24",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TEMPCOL25",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_waterroom_raw"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_WATERROOM_RAW_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "WATERROOM_RAW_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "sbu_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Blockwork_Layout",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Blockwork",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Marking_for_Builders_Work",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cutting_and_Chasing_of_Blockwork",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Services_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_MEP_Services_Packing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Plaster",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Cutting_and_Chipping",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Sleeve_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bore_Packing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Screed",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_Primer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_Stucco_1st_and_2nd_Coat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_First_Coat_Paint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Installation_of_PPR_pipes",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Manifold_and_Valve_installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PRV_installation_and_connections",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Testing_of_Pipes",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Fire_Sealant_Works",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Framing_Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "False_Ceiling_Framing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Boarding_Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "False_Ceiling_Boarding",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_Primer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_Stucco_1st_and_2nd_Coat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "First_Coat_Paint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Threshold",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Frame_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Architrave_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Shutter_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Ironmongery_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Grinding",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Bug_Fill",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Primer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_First_Coat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Epoxy_Final_Coat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Skirting",
+						"type": "nvarchar"
+					},
+					{
+						"name": "POP_Works",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Grouting",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Silicone",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Final_Fixtures",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PSV_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Water_Meter_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Final_Coat_Paint",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_WATERROOM_RAW_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_WETAREA_MAP_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_SHORT",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_ID",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "CATEGORY",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_wetarea_map"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

@@ -1,0 +1,1497 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "datafactory-sobha-prod-uaen-001"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DT_PROJECT_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSqlMI_SRC",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlMITable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "project_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "status",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "created_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "updated_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "created_by",
+						"type": "nvarchar"
+					},
+					{
+						"name": "updated_by",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "project"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DT_PROJECT_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "PROJECT_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "project_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "status",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "created_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "updated_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "created_by",
+						"type": "nvarchar"
+					},
+					{
+						"name": "updated_by",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "DT_PROJECT_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DT_RFIS_SUBMITTALS_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSqlMI_SRC",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlMITable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "project_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "department_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "submittion_type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "submittal_ref_no",
+						"type": "nvarchar"
+					},
+					{
+						"name": "submittal_desc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "submitted_on",
+						"type": "date"
+					},
+					{
+						"name": "pnca_commitment_date",
+						"type": "date"
+					},
+					{
+						"name": "pnca_commitment",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "response_required_date",
+						"type": "date"
+					},
+					{
+						"name": "delays",
+						"type": "nvarchar"
+					},
+					{
+						"name": "actual_received_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "plangrid_link",
+						"type": "nvarchar"
+					},
+					{
+						"name": "pending_with",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "pending_status",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "reassigned_to",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "reassigned_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "reassigned_by",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "closed_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "closed_by",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "status",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "remarks",
+						"type": "nvarchar"
+					},
+					{
+						"name": "created_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "updated_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "created_by",
+						"type": "nvarchar"
+					},
+					{
+						"name": "updated_by",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "rfis_submittals"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DT_RFIS_SUBMITTALS_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "RFIS_SUBMITTALS_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Department_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Submittion_type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Submittal_ref_no",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Submittal_desc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Submitted_on",
+						"type": "date"
+					},
+					{
+						"name": "Pnca_commitment_date",
+						"type": "date"
+					},
+					{
+						"name": "Pnca_commitment",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Response_required_date",
+						"type": "date"
+					},
+					{
+						"name": "Delays",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Actual_received_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Plangrid_link",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Pending_with",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Pending_status",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Reassigned_to",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Reassigned_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Reassigned_by",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Closed_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Closed_by",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Status",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Remarks",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Created_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Updated_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Created_by",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Updated_by",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "DT_RFIS_SUBMITTALS_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DT_SUBCATEGORY_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSqlMI_SRC",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlMITable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "subcategory_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "category_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "status",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "created_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "updated_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "created_by",
+						"type": "nvarchar"
+					},
+					{
+						"name": "updated_by",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "subcategory"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_DT_SUBCATEGORY_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Subcategory_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Subcategory_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Status",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Created_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Updated_at",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Created_by",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Updated_by",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "DT_SUBCATEGORY_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_EXECUTIVE_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Achieved_Revenue_Till_2022",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Total_Revenue_BOQ",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Balance_Revenue_to_Execute_From_2023",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Actuals_From_Business_Plan",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Upload_Date",
+						"type": "date"
+					},
+					{
+						"name": "Project",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Latest_Actuals",
+						"type": "decimal",
+						"precision": 32,
+						"scale": 2
+					},
+					{
+						"name": "Total_to_be_considered",
+						"type": "decimal",
+						"precision": 32,
+						"scale": 2
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_EXECUTIVE_SUMMARY_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_F_PLN_PROJECTION_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "Upload_Date",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Project Sclicer",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Area",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Category",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Activity Description",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Projection for the month",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "Yesterday",
+						"type": "date",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Plan_Yesterday",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "Plan as on date",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "Actual_Yesterday",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "Actual as on date",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "Shortfall Reasons",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_Custom_Sort",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Achived",
+						"type": "decimal",
+						"precision": 14,
+						"scale": 4
+					},
+					{
+						"name": "Achived_90",
+						"type": "decimal",
+						"precision": 14,
+						"scale": 4
+					}
+				],
+				"typeProperties": {
+					"tableName": "f_pln_projection"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_F_PLN_PROJECTION_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Upload_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Project_Sclicer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Area",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity_Description",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Projection_for_the_month",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "Yesterday",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Plan_Yesterday",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "Plan_as_on_date",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "Actual_Yesterday",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "Actual_as_on_date",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "Shortfall_Reasons",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_Custom_Sort",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Achived",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					},
+					{
+						"name": "Achived_90",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 2
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "F_PLN_PROJECTION_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_GAANT_HURRY_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Upload_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "project_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Group",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sort_Grp",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Activity_New",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity_Description",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sort_Activity",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Actual_Start_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Actual_Finish_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Original_Actuals",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Actual_Achived",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Legend",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PLN_ACT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_GAANT_HURRY_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Gaant_Hurry_Src')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_MANPOWER_MERGE_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "SL_NO",
+						"type": "nvarchar"
+					},
+					{
+						"name": "EMP_ID_NO",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TECHNICIAN_NAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ACTUAL_DOJ",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TRADE_AS_PER_ADMIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TRADE_GROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WORK_STATUS_COST_HEAD",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UNIT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WORK_STATUS",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SHIFT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "COMPANY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOURCE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Emp_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Login_Time",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "MANPOWER_MERGE_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_MANPOWER_MERGE_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "SL_NO",
+						"type": "nvarchar"
+					},
+					{
+						"name": "EMP_ID_NO",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TECHNICIAN_NAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ACTUAL_DOJ",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TRADE_AS_PER_ADMIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TRADE_GROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WORK_STATUS_COST_HEAD",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UNIT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WORK_STATUS",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SHIFT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "COMPANY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOURCE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Emp_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Login_Time",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_MANPOWER_MERGE_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_MANPOWER_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "SL NO",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "EMP ID NO.",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TECHNICIAN NAME",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTUAL DOJ",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TRADE AS PER ADMIN",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "TRADE GROUP",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "WORK STATUS/COST HEAD",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "DIVISION",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "UNIT",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "WORK STATUS",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SHIFT",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "COMPANY",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SOURCE",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Type",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "name",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Emp_ID",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Login_Time",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "manpower_merge"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_MySQL_Data_Loads_DB')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_LEVEL_MAP_ALL_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "level_map",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "level",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_level_map_all"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_LEVEL_MAP_ALL_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "LEVEL_MAP_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "LEVEL",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_LEVEL_MAP_ALL_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_BALCONYAREA_MAP_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_SHORT",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_ID",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "CATEGORY",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_balconyarea_map"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_BALCONYAREA_MAP_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "BALCONYAREA_MAP_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SBU_SHORT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CATEGORY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_BALCONYAREA_MAP_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_BALCONYAREA_RAW_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "o_pln_balconyarea_raw"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

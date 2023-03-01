@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "datafactory-sobha-prod-uaen-001"
+		},
+		"Attendance_Nexgen_Checkinout_connectionString": {
+			"value": ""
+		},
+		"Attendance_Server_Nex_gen_connectionString": {
+			"value": ""
+		},
+		"LS_AzureDataLakeStorage_accountKey": {
+			"value": ""
+		},
+		"LS_AzureSqlMI_SRC_connectionString": {
+			"value": ""
+		},
+		"LS_AzureSynapseAnalytics_DW_connectionString": {
+			"value": ""
+		},
+		"LS_Azure_MySQL_DL_connectionString": {
+			"value": ""
+		},
+		"LS_Azure_MySQL_FL_connectionString": {
+			"value": ""
+		},
+		"NexgenLocalUserinfo_connectionString": {
+			"value": ""
+		},
+		"Nexgen_Local_Premise_connectionString": {
+			"value": ""
+		},
+		"Sobha_Azure_Attendance_connectionString": {
+			"value": ""
+		},
+		"Sobha_PG_DB_connectionString": {
+			"value": ""
+		},
+		"LS_AzureDataLakeStorage_properties_typeProperties_url": {
+			"value": "https://sobhadatalakestorage01.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

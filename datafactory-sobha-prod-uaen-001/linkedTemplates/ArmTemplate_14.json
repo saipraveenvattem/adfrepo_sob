@@ -1,0 +1,2545 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "datafactory-sobha-prod-uaen-001"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_DRYAREA')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_DRYAREA_RAW_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_DRYAREA_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          PROJECT_ID as integer,",
+						"          PROJECT_IDENTIFIER as string,",
+						"          LEVEL_ID as integer,",
+						"          SBU_ID as integer,",
+						"          TOWER as string,",
+						"          LEVEL as string,",
+						"          FLAT as string,",
+						"          Sclicer as string,",
+						"          ACTIVITY_ID as integer,",
+						"          VALUE as string,",
+						"          TYPE_OF_WORK as string,",
+						"          CATEGORY as string,",
+						"          UPLOAD_DATE as timestamp",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT\\n    P.Sort_ID as PROJECT_ID,\\n    P.PROJECT_IDENTIFIER ,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n     SM.SBU_MAP_ID AS SBU_ID,\\n    DA.TOWER,\\n    DA.[LEVEL],\\n    DA.FLAT,\\n    \\'Dry Area\\' as Sclicer,\\n     DA.ACTIVITY_ID,\\n    CASE \\n        WHEN DA.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE DA.VALUE\\n    END AS VALUE,\\n    DA.TYPE_OF_WORK,\\n    DA.CATEGORY,\\n     DA.UPLOAD_DATE\\nFROM(\\n     SELECT\\n            DR.UPLOAD_TIME AS UPLOAD_DATE,\\n            DR.PROJECT_ID,\\n            DR.TOWER,\\n            DR.[LEVEL],\\n            DR.FLAT,\\n            COLUMN_NAME.*,\\n            DM.ACTIVITY_ID,\\n            DM.SBU_ID,\\n            DM.CATEGORY,\\n            DENSE_RANK() OVER (PARTITION BY  PROJECT_ID ORDER BY  UPLOAD_TIME DESC ) AS DRANK\\n     FROM [STG].[O_PLN_DRYAREA_RAW_STG] DR\\n     CROSS APPLY(\\n                      SELECT  [HSE_CLEARANCE_FOR_DESHUTTERING],\\'HSE CLEARANCE FOR DESHUTTERING\\'\\n          UNION ALL SELECT  [MEP_RISER_WORKS],\\'MEP RISER WORKS\\'\\n          UNION ALL SELECT  [LPG_PIPE],\\'LPG PIPE\\'\\n          UNION ALL SELECT  [BLOCKWORK_LAYOUT_MARKING],\\'BLOCKWORK LAYOUT MARKING\\'\\n          UNION ALL SELECT  [BLOCKWORK_FIRST_LAYER],\\'BLOCKWORK FIRST LAYER\\'\\n          UNION ALL SELECT  [BLOCKWORK_WITH_1MTR_MARKING],\\'BLOCKWORK WITH 1MTR MARKING\\'\\n          UNION ALL SELECT  [GI_LINTEL],\\'GI LINTEL\\'\\n          UNION ALL SELECT  [RCC_LINTEL_STIFFENER] ,\\'RCC LINTEL / STIFFENER\\'\\n          UNION ALL SELECT  [ABOVE_LINTEL_BLOCK_WORK],\\'ABOVE LINTEL BLOCK WORK\\'\\n          UNION ALL SELECT  [HEAD_RESTRAINTS_INSTALLATION],\\'HEAD RESTRAINTS INSTALLATION\\'\\n          UNION ALL SELECT  [FIRE_SEALANT_WORKS_AND_PU_FOAM_WORKS],\\'FIRE SEALANT WORKS & PU FOAM WORKS\\'\\n          UNION ALL SELECT  [MEP_MARKING_FOR_HL_BUILDERS_WORK],\\'MEP MARKING FOR HL BUILDERS WORK\\'\\n          UNION ALL SELECT  [BLOCKWORK_CUTTING_FOR_MEP_SERVICES] ,\\'BLOCKWORK CUTTING FOR MEP SERVICES\\'\\n          UNION ALL SELECT  [MEP_WALL_MARKING_FOR_CUTTING_AND_CHASING],\\'MEP WALL MARKING FOR CUTTING & CHASING\\'\\n          UNION ALL SELECT  [BULL_MARKING_FOR_PLASTER],\\'BULL MARKING FOR PLASTER\\'\\n          UNION ALL SELECT  [SUB_FRAME],\\'SUB FRAME\\'\\n          UNION ALL SELECT  [CORNER_BEAD_FIXING],\\'CORNER BEAD FIXING\\'\\n          UNION ALL SELECT  [CUTTING_AND_CHASING],\\'CUTTING & CHASING\\'\\n          UNION ALL SELECT  [MEP_PLASTERING_CLEARANCE_BOX_FIXING_AND_PIPE_SETTING], \\'MEP PLASTERING CLEARANCE (BOX FIXING & PIPE SETTING)\\'\\n          UNION ALL SELECT  [ONU_DB_AND_ALL_MEP_WORKS_INSTALLATION],\\'ONU, DB & ALL MEP WORKS INSTALLATION\\'\\n          UNION ALL SELECT  [ONU_DB_AND_ALL_MEP_WORKS_PACKING],\\'ONU, DB & ALL MEP WORKS PACKING\\'\\n          UNION ALL SELECT  [DRY_AREA_PLASTER],\\'DRY AREA PLASTER\\'\\n          UNION ALL SELECT  [PLASTERING_CLEARANCE_WITH_1_METER_MARKING], \\'PLASTERING CLEARANCE WITH 1 METER MARKING\\'\\n          UNION ALL SELECT  [CENTER_LINE_MARKING_FOR_FACADE_INSTALLATION], \\'CENTER LINE MARKING FOR FACADE INSTALLATION\\'\\n          UNION ALL SELECT  [UCW_STARTER_GUTTER],\\'UCW-STARTER GUTTER\\'\\n          UNION ALL SELECT  [UCW_BRACKETS],\\'UCW-BRACKETS\\'\\n          UNION ALL SELECT  [UCW_PANELS],\\'UCW-PANELS\\'\\n          UNION ALL SELECT  [UCW_ALIGNMENT],\\'UCW-ALIGNMENT\\'\\n          UNION ALL SELECT  [DRY_AREA_TILE_MARKING],\\'DRY AREA TILE MARKING\\'\\n          UNION ALL SELECT  [DRY_AREA_BORE_PACKING],\\'DRY AREA BORE PACKING\\'\\n          UNION ALL SELECT  [DRY_AREA_SCREED],\\'DRY AREA SCREED\\'\\n          UNION ALL SELECT  [SCREED_CURING],\\'SCREED CURING\\'\\n          UNION ALL SELECT  [PRIMER_STUCCO_BANDING],\\'PRIMER,STUCCO BANDING\\'\\n          UNION ALL SELECT  [BULK_HEAD],\\'BULK HEAD\\'\\n          UNION ALL SELECT  [MEP_H_L_WIRING],\\'MEP H/L WIRING\\'\\n          UNION ALL SELECT  [MEP_H_L_FRAMING_CLEARANCE],\\'MEP H/L FRAMING CLEARANCE\\'\\n          UNION ALL SELECT  [FIRE_SEALANT_WORKS_AROUND_DUCTS],\\'FIRE SEALANT WORKS AROUND DUCTS\\'\\n          UNION ALL SELECT  [DRY_AREA_FC_FRAMING],\\'DRY AREA FC FRAMING\\'\\n          UNION ALL SELECT  [WARDROBE_NIB_WALL],\\'WARDROBE NIB WALL\\'\\n          UNION ALL SELECT  [MEP_H_L_BOARDING_CLEARANCE],\\'MEP H/L BOARDING CLEARANCE\\'\\n          UNION ALL SELECT  [FC_BOARDING_WITH_JOINT_TAPING],\\'FC BOARDING WITH JOINT TAPING\\'\\n          UNION ALL SELECT  [PRIMER_CEILING],\\'PRIMER CEILING\\'\\n          UNION ALL SELECT  [STUCCO_1ST_COAT_CEILING],\\'STUCCO 1ST COAT CEILING\\'\\n          UNION ALL SELECT  [STUCCO_2ND_COAT_CEILING],\\'STUCCO 2ND COAT CEILING\\'\\n          UNION ALL SELECT  [FIRST_COAT_PAINT_CEILING],\\'FIRST COAT PAINT CEILING\\'\\n          UNION ALL SELECT  [MAIN_DOOR_THRESHOLD],\\'MAIN DOOR THRESHOLD\\'\\n          UNION ALL SELECT  [DRY_AREA_FLOOR_TILING],\\'DRY AREA FLOOR TILING\\'\\n          UNION ALL SELECT  [DRY_AREA_SKIRTING],\\'DRY AREA SKIRTING\\'\\n          UNION ALL SELECT  [POP_ABOVE_SKIRTING],\\'POP ABOVE SKIRTING\\'\\n          UNION ALL SELECT  [HINGE_DOOR_BOX_INSTALLATION],\\'HINGE DOOR BOX INSTALLATION\\'\\n          UNION ALL SELECT  [SCREED_NEAR_HINGE_DOOR],\\'SCREED NEAR HINGE DOOR\\'\\n          UNION ALL SELECT  [HINGE_DOOR_FRAME_INSTALLATION],\\'HINGE DOOR FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_BOX_SECTION],\\'CURTAIN WALL BOX SECTION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_FRAME_INSTALLATION],\\'CURTAIN WALL FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_GLASS_INSTALLATION],\\'CURTAIN WALL GLASS INSTALLATION\\'\\n          UNION ALL SELECT  [UCW_GI_SHEET_INSTALLATION_WALL],\\'UCW-GI SHEET INSTALLATION - WALL\\'\\n          UNION ALL SELECT  [UCW_GI_SHEET_INSTALLATION_FLOOR],\\'UCW-GI SHEET INSTALLATION - FLOOR\\'\\n          UNION ALL SELECT  [SCREED_NEAR_CURTAIN_WALL],\\'SCREED NEAR CURTAIN WALL\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_BOX_INSTALLATION],\\'SLIDING DOOR BOX INSTALLATION\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_FRAME_INSTALLATION],\\'SLIDING DOOR FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [SCREED_NEAR_SLIDING_DOOR],\\'SCREED NEAR SLIDING DOOR\\'\\n          UNION ALL SELECT  [LEFT_OVER_TILE_INSTALLATION],\\'LEFT OVER TILE INSTALLATION\\'\\n          UNION ALL SELECT  [LEFT_OVER_SKIRTING],\\'LEFT OVER SKIRTING\\'\\n          UNION ALL SELECT  [TILE_GROUTING],\\'TILE GROUTING\\'\\n          UNION ALL SELECT  [TILE_SILICONE_WORKS],\\'TILE SILICONE WORKS\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_MULLION],\\'CURTAIN WALL MULLION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_FLASHING_INSTALLATION],\\'CURTAIN WALL FLASHING INSTALLATION\\'\\n          UNION ALL SELECT  [CURTAIN_WALL_SILICONE],\\'CURTAIN WALL SILICONE\\'\\n          UNION ALL SELECT  [UCW_FIRESTOP_AND_SILICONE],\\'UCW-FIRESTOP AND SILICONE\\'\\n          UNION ALL SELECT  [UCW_GI_FLASHING],\\'UCW-GI FLASHING\\'\\n          UNION ALL SELECT  [HINGE_DOOR_GLASS_INSTALLATION],\\'HINGE DOOR GLASS INSTALLATION\\'\\n          UNION ALL SELECT  [HINGE_DOOR_INTERNAL_SILICONE],\\'HINGE DOOR INTERNAL SILICONE\\'\\n          UNION ALL SELECT  [HINGE_DOOR_ALIGNMENT],\\'HINGE DOOR ALIGNMENT\\'\\n          UNION ALL SELECT  [HINGE_DOOR_EXTERNAL_SILICONE],\\'HINGE DOOR EXTERNAL SILICONE\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_GLASS_INSTALLATION],\\'SLIDING DOOR GLASS INSTALLATION\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_INTERNAL_SILICONE],\\'SLIDING DOOR INTERNAL SILICONE\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_ALIGNMENT],\\'SLIDING DOOR ALIGNMENT\\'\\n          UNION ALL SELECT  [SLIDING_DOOR_EXTERNAL_SILICONE],\\'SLIDING DOOR EXTERNAL SILICONE\\'\\n          UNION ALL SELECT  [WINDOW_JAMB_CORNER_PELMET_AREA_SHADOW_ANGLE_POP_WORKS],\\'WINDOW JAMB,CORNER,PELMET AREA, SHADOW ANGLE POP WORKS\\'\\n          UNION ALL SELECT  [WALL_STUCCO_1ST_COAT],\\'WALL STUCCO 1ST COAT\\'\\n          UNION ALL SELECT  [WALL_STUCCO_2ND_COAT],\\'WALL STUCCO 2ND COAT\\'\\n          UNION ALL SELECT  [WALL_PAINT_1ST_COAT],\\'WALL PAINT 1ST COAT\\'\\n          UNION ALL SELECT  [DOOR_FRAME_INSTALLATION],\\'DOOR - FRAME INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_ARCHITRAVE_INSTALLATION],\\'DOOR - ARCHITRAVE INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_SHUTTER_INSTALLATION],\\'DOOR - SHUTTER INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_IRONMONGERY_INSTALLATION],\\'DOOR - IRONMONGERY INSTALLATION\\'\\n          UNION ALL SELECT  [DOOR_SILICONE_WORKS],\\'DOOR - SILICONE WORKS\\'\\n          UNION ALL SELECT  [CUT_PIECE_SKIRTING_NEAR_DOOR],\\'CUT PIECE SKIRTING NEAR DOOR\\'\\n          UNION ALL SELECT  [GAS_METER_INSTALLATION],\\'GAS METER INSTALLATION\\'\\n          UNION ALL SELECT  [MEP_KITCHEN_APPLIANCES],\\'MEP KITCHEN APPLIANCES\\'\\n          UNION ALL SELECT  [WARDROBE_CARCASS_INSTALLATION],\\'WARDROBE CARCASS INSTALLATION\\'\\n          UNION ALL SELECT  [WARDROBE_SHUTTER_INSTALLATION],\\'WARDROBE SHUTTER INSTALLATION\\'\\n          UNION ALL SELECT  [WARDROBE_SILICONE_WORKS],\\'WARDROBE SILICONE WORKS\\'\\n          UNION ALL SELECT  [CUT_PIECE_SKIRTING_NEAR_WARDROBE],\\'CUT PIECE SKIRTING NEAR WARDROBE\\'\\n          UNION ALL SELECT  [AIR_BALANCING_FOR_FCU],\\'AIR BALANCING FOR FCU\\'\\n          UNION ALL SELECT  [FCU_CLOSURE_CLEARANCE],\\'FCU CLOSURE CLEARANCE\\'\\n          UNION ALL SELECT  [VCD_CLOSURE_FCU],\\'VCD CLOSURE - FCU\\'\\n          UNION ALL SELECT  [AIR_BALANCING_FOR_FAHU],\\'AIR BALANCING FOR FAHU\\'\\n          UNION ALL SELECT  [FAHU_CLOSURE_CLEARANCE],\\'FAHU CLOSURE CLEARANCE\\'\\n          UNION ALL SELECT  [VCD_CLOSURE_FAHU],\\'VCD CLOSURE - FAHU\\'\\n          UNION ALL SELECT  [FINAL_FIXTURES_INSTALLATION],\\'FINAL FIXTURES INSTALLATION\\'\\n          UNION ALL SELECT  [ACCESS_PANEL_FINAL_COAT_AND_INSTALLATION],\\'ACCESS PANEL FINAL COAT AND INSTALLATION\\'\\n          UNION ALL SELECT  [DRY_AREA_FINAL_COAT_PREPARATION],\\'DRY AREA FINAL COAT PREPARATION\\'\\n          UNION ALL SELECT  [DRY_AREA_FINAL_COAT_PAINT],\\'DRY AREA FINAL COAT PAINT\\'\\n          UNION ALL SELECT  [THERMOSTAT_COVER_INSTALLATION],\\'THERMOSTAT COVER INSTALLATION\\'\\n          UNION ALL SELECT  [INTERCOM_COVER_INSTALLATION],\\'INTERCOM COVER INSTALLATION\\'\\n          UNION ALL SELECT  [ONU_AND_DB_PANEL_DOOR],\\'ONU & DB PANEL DOOR\\'\\n          UNION ALL SELECT  [SWITCH_SOCKET_COVER_INSTALLATION],\\'SWITCH SOCKET COVER INSTALLATION\\'\\n          ) AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n          INNER JOIN [STG].[O_PLN_DRYAREA_MAP_STG] DM\\n          ON COLUMN_NAME.TYPE_OF_WORK = DM.ACTIVITY_SEQUENCE\\n          WHERE VALUE IS NOT NULL ) DA\\nLEFT JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          DA.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          DA.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          DA.SBU_ID=SM.SBU_IDENTIFIER\\n\\n',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Project_ID as integer,",
+						"          Project_Identifier as string,",
+						"          SBU_ID as integer,",
+						"          Level_ID as integer,",
+						"          Tower as string,",
+						"          Level as string,",
+						"          Flat as string,",
+						"          Sclicer as string,",
+						"          Activity_ID as integer,",
+						"          Value as string,",
+						"          Type_of_work as string,",
+						"          Category as string,",
+						"          Update_Date as date,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_DRYAREA_FACT];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Project_ID = PROJECT_ID,",
+						"          Project_Identifier = PROJECT_IDENTIFIER,",
+						"          SBU_ID,",
+						"          Level_ID = LEVEL_ID,",
+						"          Tower = TOWER,",
+						"          Level = LEVEL,",
+						"          Flat = FLAT,",
+						"          Sclicer,",
+						"          Activity_ID = ACTIVITY_ID,",
+						"          Value = VALUE,",
+						"          Type_of_work = TYPE_OF_WORK,",
+						"          Category = CATEGORY,",
+						"          Update_Date = UPLOAD_DATE,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_ELECTRICROOM')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_ELECTRICALROOM_RAW_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1",
+							"description": "Import data from DS_O_PLN_ELECTRICALROOM_RAW_STG_TRG"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_ELECTRICROOM_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          PROJECT_ID as integer,",
+						"          LEVEL_ID as integer,",
+						"          SBU_ID as integer,",
+						"          PROJECT_IDENTIFIER as string,",
+						"          TOWER as string,",
+						"          LEVEL as string,",
+						"          Sclicer as string,",
+						"          ACTIVITY_ID as integer,",
+						"          VALUE as string,",
+						"          TYPE_OF_WORK as string,",
+						"          CATEGORY as string,",
+						"          UPLOAD_DATE as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT \\n    P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n    P.PROJECT_IDENTIFIER,\\n    E.TOWER    ,\\n    E.LEVEL,\\n    \\'Electrical Room\\' as Sclicer,\\n    E.ACTIVITY_ID    ,\\n    CASE \\n        WHEN E.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE E.VALUE\\n    END AS VALUE,\\n    E.TYPE_OF_WORK    ,\\n    E.CATEGORY   ,\\n    E.UPLOAD_DATE  \\nFROM (\\nSELECT ER.UPLOAD_TIME AS UPLOAD_DATE,\\nER.PROJECT_ID,\\nER.TOWER,\\nER.LEVEL,\\nCOLUMN_NAME.*,\\nEM.ACTIVITY_ID,\\nEM.SBU_ID,\\nEM.CATEGORY,\\nDENSE_RANK () OVER(PARTITION BY  PROJECT_ID ORDER BY  CAST(UPLOAD_TIME AS DATE) DESC) DRANK\\nFROM STG.O_PLN_ELECTRICALROOM_RAW_STG ER\\n CROSS APPLY  (\\n         SELECT BLOCKWORK_LAYOUT,\\'BLOCKWORK LAYOUT\\'\\nUNION ALL SELECT BLOCKWORK,\\'BLOCKWORK\\'\\nUNION ALL SELECT MEP_MARKING_FOR_BUILDERS_WORK,\\'MEP MARKING FOR BUILDERS WORK\\'\\nUNION ALL SELECT CUTTING_AND_CHASING_OF_BLOCKWORK,\\'CUTTING AND CHASING OF BLOCKWORK\\'\\nUNION ALL SELECT MEP_SERVICES_INSTALLATION,\\'MEP SERVICES INSTALLATION\\'\\nUNION ALL SELECT WALL_MEP_SERVICES_PACKING,\\'WALL MEP SERVICES PACKING\\'\\nUNION ALL SELECT PLASTER,\\'PLASTER\\'\\nUNION ALL SELECT SCREED,\\'SCREED\\'\\nUNION ALL SELECT WALL_AND_CEILING_PRIMER,\\'WALL AND CEILING PRIMER\\'\\nUNION ALL SELECT CEILING_STUCCO_1ST_AND_2ND_COAT,\\'CEILING STUCCO (1ST AND 2ND COAT)\\'\\nUNION ALL SELECT WALL_STUCCO_1ST_AND_2ND_COAT,\\'WALL STUCCO (1ST AND 2ND COAT)\\'\\nUNION ALL SELECT CEILING_FIRST_COAT_PAINT,\\'CEILING FIRST COAT PAINT\\'\\nUNION ALL SELECT WALL_FIRST_COAT_PAINT,\\'WALL FIRST COAT PAINT\\'\\nUNION ALL SELECT METER_BOARD_FIXING,\\'METER BOARD FIXING\\'\\nUNION ALL SELECT METER_BOARD_PAINTING,\\'METER BOARD PAINTING\\'\\nUNION ALL SELECT INSTALLATION_OF_CABLE_TRAY_AND_TRUNKING,\\'INSTALLATION OF CABLE TRAY AND TRUNKING\\'\\nUNION ALL SELECT INSTALLATION_OF_PANELS,\\'INSTALLATION OF PANELS\\'\\nUNION ALL SELECT CABLE_LAYING_AND_GLANDING_WORKS,\\'CABLE LAYING AND GLANDING WORKS\\'\\nUNION ALL SELECT DRESSING_AND_TERMINATION_OF_SMDB_AND_PANELS,\\'DRESSING AND TERMINATION OF SMDB AND PANELS\\'\\nUNION ALL SELECT BUS_BAR_WITH_TAP_OFF_BOX_COMPLETION,\\'BUS BAR WITH TAP OFF BOX COMPLETION\\'\\nUNION ALL SELECT THRESHOLD,\\'THRESHOLD\\'\\nUNION ALL SELECT FLOOR_TILE,\\'FLOOR TILE\\'\\nUNION ALL SELECT DOOR_FRAME_INSTALLATION,\\'DOOR FRAME INSTALLATION\\'\\nUNION ALL SELECT DOOR_ARCHITRAVE_INSTALLATION,\\'DOOR ARCHITRAVE INSTALLATION\\'\\nUNION ALL SELECT DOOR_SHUTTER_INSTALLATION,\\'DOOR SHUTTER INSTALLATION\\'\\nUNION ALL SELECT DOOR_IRONMONGERY_INSTALLATION,\\'DOOR IRONMONGERY INSTALLATION\\'\\nUNION ALL SELECT DOOR_SILICONE,\\'DOOR SILICONE\\'\\nUNION ALL SELECT EPOXY_GRINDING,\\'EPOXY ERINDING\\'\\nUNION ALL SELECT EPOXY_BUG_FILL,\\'EPOXY BUG FILL\\'\\nUNION ALL SELECT EPOXY_PRIMER,\\'EPOXY PRIMER\\'\\nUNION ALL SELECT EPOXY_FIRST_COAT,\\'EPOXY FIRST COAT\\'\\nUNION ALL SELECT EPOXY_FINAL_COAT,\\'EPOXY FINAL COAT\\'\\nUNION ALL SELECT SKIRTING,\\'SKIRTING\\'\\nUNION ALL SELECT POP_WORKS,\\'POP WORKS\\'\\nUNION ALL SELECT ELECTRICAL_ROOM_TOP_BOARDING,\\'ELECTRICAL ROOM TOP BOARDING\\'\\nUNION ALL SELECT FIRE_SEALANT_WORKS,\\'FIRE SEALANT WORKS\\'\\nUNION ALL SELECT ANGLE_FIXING,\\'ANGLE FIXING\\'\\nUNION ALL SELECT SHAFT_BOARDING,\\'SHAFT BOARDING\\'\\nUNION ALL SELECT GROUTING,\\'EROUTING\\'\\nUNION ALL SELECT SILICONE,\\'SILICONE\\'\\nUNION ALL SELECT SIGNAGE,\\'SIGNAGE\\'\\nUNION ALL SELECT MEP_FINAL_FIXTURES,\\'MEP FINAL FIXTURES\\'\\nUNION ALL SELECT ELECTRIC_METER_INSTALLATION,\\'ELECTRIC METER INSTALLATION\\'\\nUNION ALL SELECT FINAL_COAT_PAINT,\\'FINAL COAT PAINT\\'\\n)AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\nJOIN STG.O_PLN_ELECTRICALROOM_MAP_STG EM\\nON COLUMN_NAME.TYPE_OF_WORK = EM.ACTIVITY_SEQUENCE\\nWHERE VALUE IS NOT NULL\\n) E\\nLEFT JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          E.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM]P\\n      ON          E.PROJECT_ID=P.PROJECT_IDENTIFIER\\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          E.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          E.DRANK = 1\\n\\n',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(LoadDateTime = currentUTC(),",
+						"          ID = SurrogateKey_ID+$MAX_ID) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Project_ID as integer,",
+						"          Project_Indentifer as string,",
+						"          SBU_ID as integer,",
+						"          Level_ID as integer,",
+						"          Tower as string,",
+						"          Level as string,",
+						"          Sclicer as string,",
+						"          Activity_ID as integer,",
+						"          Value as string,",
+						"          Type_of_work as string,",
+						"          Category as string,",
+						"          Update_date as date,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_ELECTRICROOM_FACT];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Project_ID = PROJECT_ID,",
+						"          Project_Indentifer = PROJECT_IDENTIFIER,",
+						"          SBU_ID,",
+						"          Level_ID = LEVEL_ID,",
+						"          Tower = TOWER,",
+						"          Level = LEVEL,",
+						"          Sclicer,",
+						"          Activity_ID = ACTIVITY_ID,",
+						"          Value = VALUE,",
+						"          Type_of_work = TYPE_OF_WORK,",
+						"          Category = CATEGORY,",
+						"          Update_date = UPLOAD_DATE,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_ENGINEERING_DRAWING')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_ENGINEERING_DRAWING_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1",
+							"description": "Import data from DS_O_PLN_DRAWING_DETAIL_DRAW_STG_TRG"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_ENGINEERING_DRAWING_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"description": "Export data to "
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          PROJECT_ID as integer,",
+						"          PROJECT_IDENTIFIER as string,",
+						"          SBU_ID as integer,",
+						"          Upload_Date as date,",
+						"          tower as string,",
+						"          Type as string,",
+						"          Villa_Type as string,",
+						"          Category as string,",
+						"          Drawing_Number as string,",
+						"          Drawing_Title as string,",
+						"          Scheduled_Date as string,",
+						"          {PNCA_commitment } as string,",
+						"          R0 as string,",
+						"          R0_Trans_Id as string,",
+						"          R1 as string,",
+						"          R1_Trans_Id as string,",
+						"          R2 as string,",
+						"          R2_Trans_Id as string,",
+						"          R3 as string,",
+						"          R3_Trans_Id as string,",
+						"          R4 as string,",
+						"          R4_Trans_Id as string,",
+						"          R5 as string,",
+						"          R5_Trans_Id as string,",
+						"          R6 as string,",
+						"          R6_Trans_Id as string,",
+						"          R7 as string,",
+						"          R7_Trans_Id as string,",
+						"          R8 as string,",
+						"          R8_Trans_Id as string,",
+						"          R9 as string,",
+						"          R9_Trans_Id as string,",
+						"          R10 as string,",
+						"          R10_Trans_Id as string,",
+						"          R11 as string,",
+						"          R11_Trans_Id as string,",
+						"          R12 as string,",
+						"          R12_Trans_Id as string,",
+						"          R13 as string,",
+						"          R13_Trans_Id as string,",
+						"          R14 as string,",
+						"          R14_Trans_Id as string,",
+						"          R15 as string,",
+						"          R15_Trans_Id as string,",
+						"          R16 as string,",
+						"          R16_Trans_Id as string,",
+						"          R17 as string,",
+						"          R17_Trans_Id as string,",
+						"          R18 as string,",
+						"          R18_Trans_Id as string,",
+						"          R19 as string,",
+						"          R19_Trans_Id as string,",
+						"          R20 as string,",
+						"          R20_Trans_Id as string,",
+						"          R21 as string,",
+						"          R21_Trans_Id as string,",
+						"          R22 as string,",
+						"          R22_Trans_Id as string,",
+						"          R23 as string,",
+						"          R23_Trans_Id as string,",
+						"          R24 as string,",
+						"          R24_Trans_Id as string,",
+						"          R25 as string,",
+						"          R25_Trans_Id as string",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT \\n          P.Sort_ID as PROJECT_ID,\\n           PROJECT_ID as PROJECT_IDENTIFIER,\\n          SM.SBU_MAP_ID AS SBU_ID,\\n          CAST(upload_time AS DATE) AS Upload_Date,\\n        [tower],\\n        [Type],\\n        [Villa Type] AS [Villa_Type],\\n        Category,\\n        [Drawing Number] AS [Drawing_Number],\\n        [Drawing Title] AS [Drawing_Title],\\n        NULLIF([Scheduled Date],\\'\\') AS \\'Scheduled_Date\\',\\n        NULLIF([PNCA commitment],\\'\\') AS \\'PNCA_commitment \\',\\n        NULLIF(R0,\\'\\') AS R0,\\n        NULLIF([R0-Trans_Id],\\'\\') AS [R0_Trans_Id],\\n        NULLIF(R1,\\'\\') AS R1,\\n        NULLIF([R1-Trans_Id],\\'\\') AS [R1_Trans_Id],\\n        NULLIF(R2,\\'\\') AS R2,\\n        NULLIF([R2-Trans_Id],\\'\\') AS [R2_Trans_Id],\\n        NULLIF(R3,\\'\\') AS R3,\\n        NULLIF([R3-Trans_Id],\\'\\') AS [R3_Trans_Id],\\n        NULLIF(R4,\\'\\') AS R4,\\n        NULLIF([R4-Trans_Id],\\'\\') AS [R4_Trans_Id],\\n        NULLIF(R5,\\'\\') AS R5,\\n        NULLIF([R5-Trans_Id],\\'\\') AS [R5_Trans_Id],\\n        NULLIF(R6,\\'\\') AS R6,\\n        NULLIF([R6-Trans_Id],\\'\\') AS [R6_Trans_Id],\\n        NULLIF(R7,\\'\\') AS R7,\\n        NULLIF([R7-Trans_Id],\\'\\') AS [R7_Trans_Id],\\n        NULLIF(R8,\\'\\') AS R8,\\n        NULLIF([R8-Trans_Id],\\'\\') AS [R8_Trans_Id],\\n        NULLIF(R9,\\'\\') AS R9,\\n        NULLIF([R9-Trans_Id],\\'\\') AS [R9_Trans_Id],\\n        NULLIF(R10,\\'\\') AS R10,\\n        NULLIF([R10-Trans_Id],\\'\\') AS [R10_Trans_Id],\\n        NULLIF(R11,\\'\\') AS R11,\\n        NULLIF([R11-Trans_Id],\\'\\') AS [R11_Trans_Id],\\n        NULLIF(R12,\\'\\') AS R12,\\n        NULLIF([R12-Trans_Id],\\'\\') AS [R12_Trans_Id],\\n        NULLIF(R11,\\'\\') AS R13,\\n        NULLIF([R13-Trans_Id],\\'\\') AS [R13_Trans_Id],\\n        NULLIF(R12,\\'\\') AS R14,\\n        NULLIF([R14-Trans_Id],\\'\\') AS [R14_Trans_Id],\\n        NULLIF(R13,\\'\\') AS R15,\\n        NULLIF([R15-Trans_Id],\\'\\') AS [R15_Trans_Id],\\n        NULLIF(R16,\\'\\') AS R16,\\n        NULLIF([R16-Trans_Id],\\'\\') AS [R16_Trans_Id],\\n        NULLIF(R17,\\'\\') AS R17,\\n        NULLIF([R17-Trans_Id],\\'\\') AS [R17_Trans_Id],\\n        NULLIF(R18,\\'\\') AS R18,\\n        NULLIF([R18-Trans_Id],\\'\\') AS [R18_Trans_Id],\\n        NULLIF(R19,\\'\\') AS R19,\\n        NULLIF([R19-Trans_Id],\\'\\') AS [R19_Trans_Id],\\n        NULLIF(R20,\\'\\') AS R20,\\n        NULLIF([R20-Trans_Id],\\'\\') AS [R20_Trans_Id],\\n        NULLIF(R21,\\'\\') AS R21,\\n        NULLIF([R21-Trans_Id],\\'\\') AS [R21_Trans_Id],\\n        NULLIF(R22,\\'\\') AS R22,\\n        NULLIF([R22-Trans_Id],\\'\\') AS [R22_Trans_Id],\\n        NULLIF(R23,\\'\\') AS R23,\\n        NULLIF([R23-Trans_Id],\\'\\') AS [R23_Trans_Id],\\n        NULLIF(R24,\\'\\') AS R24,\\n        NULLIF([R24-Trans_Id],\\'\\') AS [R24_Trans_Id],\\n        NULLIF(R25,\\'\\') AS R25,\\n        NULLIF([R25-Trans_Id],\\'\\') AS [R25_Trans_Id]\\nFROM ( SELECT * , DENSE_RANK () OVER (PARTITION BY  project_id ORDER BY  CAST(upload_time AS DATE) DESC) Project_Udate_DRANK\\n        FROM STG.O_PLN_DRAWING_DETAIL_DRAW_STG\\n    WHERE ([Type] IS NOT NULL AND TRIM([Type]) NOT IN (\\'\\')) \\n     ) AB \\n     LEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          AB.PROJECT_ID=P.PROJECT_IDENTIFIER \\n     LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          AB.SBU_ID=SM.SBU_IDENTIFIER\\n',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Project_ID as integer,",
+						"          Project_Identifier as string,",
+						"          SBU_ID as integer,",
+						"          Tower as string,",
+						"          Type as string,",
+						"          Villa_Type as string,",
+						"          Category as string,",
+						"          Drawing_Number as string,",
+						"          Drawing_Title as string,",
+						"          Scheduled_Date as string,",
+						"          PNCA_commitment as string,",
+						"          R0 as string,",
+						"          R0_Trans_Id as string,",
+						"          R1 as string,",
+						"          R1_Trans_Id as string,",
+						"          R2 as string,",
+						"          R2_Trans_Id as string,",
+						"          R3 as string,",
+						"          R3_Trans_Id as string,",
+						"          R4 as string,",
+						"          R4_Trans_Id as string,",
+						"          R5 as string,",
+						"          R5_Trans_Id as string,",
+						"          R6 as string,",
+						"          R6_Trans_Id as string,",
+						"          R7 as string,",
+						"          R7_Trans_Id as string,",
+						"          R8 as string,",
+						"          R8_Trans_Id as string,",
+						"          R9 as string,",
+						"          R9_Trans_Id as string,",
+						"          R10 as string,",
+						"          R10_Trans_Id as string,",
+						"          R11 as string,",
+						"          R11_Trans_Id as string,",
+						"          R12 as string,",
+						"          R12_Trans_Id as string,",
+						"          R13 as string,",
+						"          R13_Trans_Id as string,",
+						"          R14 as string,",
+						"          R14_Trans_Id as string,",
+						"          R15 as string,",
+						"          R15_Trans_Id as string,",
+						"          R16 as string,",
+						"          R16_Trans_Id as string,",
+						"          R17 as string,",
+						"          R17_Trans_Id as string,",
+						"          R18 as string,",
+						"          R18_Trans_Id as string,",
+						"          R19 as string,",
+						"          R19_Trans_Id as string,",
+						"          R20 as string,",
+						"          R20_Trans_Id as string,",
+						"          R21 as string,",
+						"          R21_Trans_Id as string,",
+						"          R22 as string,",
+						"          R22_Trans_Id as string,",
+						"          R23 as string,",
+						"          R23_Trans_Id as string,",
+						"          R24 as string,",
+						"          R24_Trans_Id as string,",
+						"          R25 as string,",
+						"          R25_Trans_Id as string,",
+						"          Update_Date as date,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_ENGINEERING_DRAWING_FACT];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Project_ID = PROJECT_ID,",
+						"          SBU_ID,",
+						"          Tower = tower,",
+						"          Type,",
+						"          Villa_Type,",
+						"          Category,",
+						"          Drawing_Number,",
+						"          Drawing_Title,",
+						"          Scheduled_Date,",
+						"          PNCA_commitment = {PNCA_commitment },",
+						"          R0,",
+						"          R0_Trans_Id,",
+						"          R1,",
+						"          R1_Trans_Id,",
+						"          R2,",
+						"          R2_Trans_Id,",
+						"          R3,",
+						"          R3_Trans_Id,",
+						"          R4,",
+						"          R4_Trans_Id,",
+						"          R5,",
+						"          R5_Trans_Id,",
+						"          R6,",
+						"          R6_Trans_Id,",
+						"          R7,",
+						"          R7_Trans_Id,",
+						"          R8,",
+						"          R8_Trans_Id,",
+						"          R9,",
+						"          R9_Trans_Id,",
+						"          R10,",
+						"          R10_Trans_Id,",
+						"          R11,",
+						"          R11_Trans_Id,",
+						"          R12,",
+						"          R12_Trans_Id,",
+						"          R13,",
+						"          R13_Trans_Id,",
+						"          R14,",
+						"          R14_Trans_Id,",
+						"          R15,",
+						"          R15_Trans_Id,",
+						"          R16,",
+						"          R16_Trans_Id,",
+						"          R17,",
+						"          R17_Trans_Id,",
+						"          R18,",
+						"          R18_Trans_Id,",
+						"          R19,",
+						"          R19_Trans_Id,",
+						"          R20,",
+						"          R20_Trans_Id,",
+						"          R21,",
+						"          R21_Trans_Id,",
+						"          R22,",
+						"          R22_Trans_Id,",
+						"          R23,",
+						"          R23_Trans_Id,",
+						"          R24,",
+						"          R24_Trans_Id,",
+						"          R25,",
+						"          R25_Trans_Id,",
+						"          Update_Date = Upload_Date,",
+						"          LoadDateTime,",
+						"          Project_Identifier = PROJECT_IDENTIFIER",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_FIRELIFTLOBBY')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_FIRELIFTLOBBY_MAP_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_FIRELIFTLOBBY_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          PROJECT_ID as integer,",
+						"          LEVEL_ID as integer,",
+						"          PROJECT_IDENTIFIER as string,",
+						"          SBU_ID as integer,",
+						"          TOWER as string,",
+						"          ACTIVITY_ID as integer,",
+						"          Level as string,",
+						"          Sclicer as string,",
+						"          VALUE as string,",
+						"          TYPE_OF_WORK as string,",
+						"          CATEGORY as string,",
+						"          UPLOAD_DATE as date",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: '\\nSELECT \\n    P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n    P.PROJECT_IDENTIFIER ,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n    F.TOWER,\\n    F.ACTIVITY_ID,\\n    F.Level,\\n    \\'Fire Lift Lobby\\' as Sclicer,\\n    CASE \\n        WHEN F.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE F.VALUE\\n    END AS VALUE,\\n    F.TYPE_OF_WORK,\\n    F.CATEGORY,\\n    F.UPLOAD_DATE\\n     from (\\n        SELECT CAST(FR.upload_time as DATE) AS Upload_Date,\\n        FR.project_id,\\n        FR.tower,\\n        FR.Level,\\n        Column_Name.*,\\n        FM.ACTIVITY_ID,\\n        FM.SBU_ID,\\n        FM.CATEGORY,\\n        DENSE_RANK () OVER     (PARTITION BY  project_id\\n                            ORDER BY  CAST(upload_time as DATE) DESC\\n                            )     DRANK\\n    FROM STG.O_PLN_FIRELIFTLOBBY_RAW_STG FR\\n    CROSS apply (\\n                        SELECT    MEP_Marking_for_Builders_Work    ,    \\'MEP Marking for Builders Work\\'\\n                        UNION ALL SELECT    Cutting_and_Chasing_of_Blockwork    ,    \\'Cutting & Chasing of Blockwork\\'\\n                        UNION ALL SELECT    MEP_Services_Installation    ,    \\'MEP Services Installation\\'\\n                        UNION ALL SELECT    Wall_MEP_Services_Packing    ,    \\'Wall MEP Services Packing\\'\\n                        UNION ALL SELECT    Plaster    ,    \\'Plaster\\'\\n                        UNION ALL SELECT    Screed    ,    \\'Screed\\'\\n                        UNION ALL SELECT    Lift_Door_Installation_and_Jamb_Installation    ,    \\'Lift Door Installation & Jamb Installation\\'\\n                        UNION ALL SELECT    Beside_Lift_Door_Blockwork    ,    \\'Beside Lift Door Blockwork\\'\\n                        UNION ALL SELECT    Beside_Lift_Door_Plaster    ,    \\'Beside Lift Door Plaster\\'\\n                        UNION ALL SELECT    MEP_High_Level_Works    ,    \\'MEP High Level Works\\'\\n                        UNION ALL SELECT    FC_Framing    ,    \\'FC Framing\\'\\n                        UNION ALL SELECT    MEP_Boarding_Clearance    ,    \\'MEP Boarding Clearance\\'\\n                        UNION ALL SELECT    FC_Boarding    ,    \\'FC Boarding\\'\\n                        UNION ALL SELECT    Joint_Taping_and_Sanding    ,    \\'Joint Taping and Sanding\\'\\n                        UNION ALL SELECT    Ceiling_Primer    ,    \\'Ceiling Primer\\'\\n                        UNION ALL SELECT    Ceiling_Stucco_1st_and_2nd_Coat    ,    \\'Ceiling Stucco 1st and 2nd Coat\\'\\n                        UNION ALL SELECT    Ceiling_First_Coat_Paint    ,    \\'Ceiling First Coat Paint\\'\\n                        UNION ALL SELECT    Wall_Primer    ,    \\'Wall Primer\\'\\n                        UNION ALL SELECT    Wall_Stucco_1st_and_2nd_Coat    ,    \\'Wall Stucco 1st and 2nd Coat\\'\\n                        UNION ALL SELECT    Wall_First_Coat_Paint    ,    \\'Wall First Coat Paint\\'\\n                        UNION ALL SELECT    Floor_Tile    ,    \\'Floor Tile\\'\\n                        UNION ALL SELECT    Door_Frame_Installation    ,    \\'Door-Frame Installation\\'\\n                        UNION ALL SELECT    Door_Architrave_Installation    ,    \\'Door-Architrave Installation\\'\\n                        UNION ALL SELECT    Door_Shutter_Installation    ,    \\'Door-Shutter Installation\\'\\n                        UNION ALL SELECT    Door_Ironmongery_Installation    ,    \\'Door-Ironmongery Installation\\'\\n                        UNION ALL SELECT    Door_Silicone    ,    \\'Door-Silicone\\'\\n                        UNION ALL SELECT    Epoxy_Grinding    ,    \\'Epoxy Grinding\\'\\n                        UNION ALL SELECT    Epoxy_Bug_Fill    ,    \\'Epoxy Bug Fill\\'\\n                        UNION ALL SELECT    Epoxy_Primer    ,    \\'Epoxy Primer\\'\\n                        UNION ALL SELECT    Epoxy_First_Coat    ,    \\'Epoxy First Coat\\'\\n                        UNION ALL SELECT    Epoxy_Final_Coat    ,    \\'Epoxy Final Coat\\'\\n                        UNION ALL SELECT    Skirting    ,    \\'Skirting\\'\\n                        UNION ALL SELECT    Grout    ,    \\'Grout\\'\\n                        UNION ALL SELECT    Silicone    ,    \\'Silicone\\'\\n                        UNION ALL SELECT    Signage    ,    \\'Signage\\'\\n                        UNION ALL SELECT    MEP_Final_Fixtures    ,    \\'MEP Final Fixtures\\'\\n                        UNION ALL SELECT    Final_Coat    ,    \\'Final Coat\\'\\n                        )as Column_Name(value,Type_of_work)\\n    INNER JOIN STG.O_PLN_FIRELIFTLOBBY_MAP_STG FM\\n    ON Column_Name.Type_of_work = FM.ACTIVITY_SEQUENCE\\n    WHERE VALUE IS NOT NULL\\n       ) F\\nLEFT JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          F.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          F.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          F.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          F.DRANK = 1\\n',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_Id as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(Id = SurrogateKey_Id+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Id as integer,",
+						"          Project_Id as integer,",
+						"          Project_Identifier as string,",
+						"          SBU_ID as integer,",
+						"          Level_Id as integer,",
+						"          Tower as string,",
+						"          Level as string,",
+						"          Sclicer as string,",
+						"          Activity_ID as integer,",
+						"          Value as string,",
+						"          Type_of_work as string,",
+						"          Category as string,",
+						"          Upload_Date as date,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['Truncate Table [DWH].[PLN_FIRELIFTLOBBY_FACT]'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Id,",
+						"          Project_Id = PROJECT_ID,",
+						"          Project_Identifier = PROJECT_IDENTIFIER,",
+						"          SBU_ID,",
+						"          Level_Id = LEVEL_ID,",
+						"          Tower = TOWER,",
+						"          Level,",
+						"          Sclicer,",
+						"          Activity_ID = ACTIVITY_ID,",
+						"          Value = VALUE,",
+						"          Type_of_work = TYPE_OF_WORK,",
+						"          Category = CATEGORY,",
+						"          Upload_Date = UPLOAD_DATE,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_FLATFINISHES')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_FLATFINISHES_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_FLATFINISHES_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          Update_Date as date,",
+						"          Project_ID as integer,",
+						"          Project_Identifier as string,",
+						"          Level_ID as integer,",
+						"          Sbu_Id as integer,",
+						"          Tower as string,",
+						"          Sclicer as string,",
+						"          Flat as integer,",
+						"          Level as string,",
+						"          value as decimal(24,6),",
+						"          Type_of_work as string,",
+						"          Activity_ID as integer,",
+						"          Category as string,",
+						"          Category_Sort as integer,",
+						"          Sort_Type_Of_Work as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: ' SELECT  \\n A.Update_Date,\\nP.Sort_ID as Project_ID,\\nP.Project_Identifier,\\nOLMA.Level_MAP_ID AS Level_ID,\\nA.Sbu_Id,\\n A.Tower,\\n A.Sclicer,\\n A.Flat,\\n A.Level,\\n TRY_CAST(REPLACE(A.value,\\'%\\',\\'\\') AS DECIMAL)/100 AS value,\\n A.Type_of_work,\\n A.Activity_ID,\\n A.Category,\\n               CASE \\n WHEN TRIM(Category) = (\\'MEP\\') THEN 1\\n WHEN TRIM(Category) = (\\'Blockwork\\') THEN 2\\n WHEN TRIM(Category) = (\\'Plaster\\') THEN 3\\n WHEN TRIM(Category) = (\\'Builders Work\\') THEN 4\\n WHEN TRIM(Category) = (\\'Facade\\') THEN 5\\n WHEN TRIM(Category) = (\\'Tile\\') THEN 6\\n WHEN TRIM(Category) = (\\'Screed\\') THEN 7\\n WHEN TRIM(Category) = (\\'Paint\\') THEN 8\\n WHEN TRIM(Category) = (\\'Gypsum\\') THEN 9\\n WHEN TRIM(Category) = (\\'Marble\\') THEN 10\\n WHEN TRIM(Category) = (\\'Silicone\\') THEN 11\\n WHEN TRIM(Category) = (\\'Joinery\\') THEN 12\\n WHEN TRIM(Category) = (\\'SBU1\\') THEN 13\\n WHEN TRIM(Category) = (\\'Waterproofing\\') THEN 14\\n WHEN TRIM(Category) = (\\'Fa�ade\\') THEN 15\\n WHEN TRIM(Category) = (\\'EIFS\\') THEN 16\\n WHEN TRIM(Category) = (\\'SFD\\') THEN 17\\n WHEN TRIM(Category) = (\\'Water Proofing\\') THEN 18\\n WHEN TRIM(Category) = (\\'Appliances\\') THEN 19\\n       END AS Category_Sort ,\\n       CONCAT(A.ACTIVITY_ID,\\' \\', A.Type_of_work) AS Sort_Type_Of_Work \\n \\nfrom(          \\n          SELECT * FROM [DWH].[PLN_DRYAREA_FACT]\\n UNION ALL\\n SELECT * FROM [DWH].[PLN_WETAREA_FACT]\\n UNION ALL\\n SELECT * FROM [DWH].[PLN_BALCONYAREA_FACT]\\n UNION ALL\\n SELECT  * FROM [DWH].[PLN_KITCHENAREA_FACT]\\n          ) A\\nLEFT JOIN   [DWH].[PLN_LEVEL_MAP_ALL_DIM] OLMA\\n               ON A.Level_ID = OLMA.[Level_Map_ID]\\n     LEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n  ON  A.PROJECT_ID=P.Sort_ID\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_Id as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(Id = SurrogateKey_Id+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Id as integer,",
+						"          Upload_Date as date,",
+						"          project_id as integer,",
+						"          Project_Identifier as string,",
+						"          Level_Id as integer,",
+						"          SBU_ID as integer,",
+						"          Tower as string,",
+						"          Level as string,",
+						"          Flat as integer,",
+						"          Sclicer as string,",
+						"          ACTIVITY_ID as integer,",
+						"          value as decimal(14,4),",
+						"          Type_of_work as string,",
+						"          Category as string,",
+						"          sort_type_of_work as string,",
+						"          Category_Sort as integer,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['Truncate table [DWH].[PLN_FLATFINISHES_FACT]'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Id,",
+						"          Upload_Date = Update_Date,",
+						"          project_id = Project_ID,",
+						"          Project_Identifier,",
+						"          Level_Id = Level_ID,",
+						"          SBU_ID = Sbu_Id,",
+						"          Tower,",
+						"          Level,",
+						"          Flat,",
+						"          Sclicer,",
+						"          ACTIVITY_ID = Activity_ID,",
+						"          value,",
+						"          Type_of_work,",
+						"          Category,",
+						"          sort_type_of_work = Sort_Type_Of_Work,",
+						"          Category_Sort,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_GARBAGEROOM')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_GARBAGEROOM_RAW_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1",
+							"description": "Import data from DS_O_PLN_GARBAGEROOM_RAW_STG_TRG"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_GARBAGEROOM_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"description": "Export data to DS_PLN_GARBAGEROOM_TRG"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          PROJECT_ID as integer,",
+						"          LEVEL_ID as integer,",
+						"          SBU_ID as integer,",
+						"          TOWER as string,",
+						"          PROJECT_IDENTIFIER as string,",
+						"          LEVEL as string,",
+						"          Sclicer as string,",
+						"          ACTIVITY_ID as integer,",
+						"          VALUE as string,",
+						"          TYPE_OF_WORK as string,",
+						"          CATEGORY as string,",
+						"          UPLOAD_DATE as date",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT \\n     P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n    GAR.TOWER    ,\\n    P.PROJECT_IDENTIFIER ,\\n    GAR.[LEVEL]    ,\\n    \\'Garbage Room\\' as Sclicer,\\n      GAR.ACTIVITY_ID    ,\\n    CASE \\n        WHEN GAR.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE GAR.VALUE\\n    END AS VALUE,\\n    GAR.TYPE_OF_WORK    ,\\n    GAR.CATEGORY   ,\\n     GAR.UPLOAD_DATE  \\n   \\nFROM \\n\\n(\\n        SELECT CAST(GR.UPLOAD_TIME AS DATE) AS UPLOAD_DATE,\\n        GR.PROJECT_ID,\\n        GR.TOWER,\\n        GR.LEVEL,\\n        COLUMN_NAME.*,\\n        GM.ACTIVITY_ID,\\n        GM.SBU_ID,\\n        GM.CATEGORY,\\n        DENSE_RANK () OVER     (PARTITION BY  PROJECT_ID\\n                            ORDER BY  CAST(UPLOAD_TIME AS DATE) DESC\\n                            )     DRANK\\n    FROM STG.O_PLN_GARBAGEROOM_RAW_STG  GR\\n    CROSS APPLY  (\\n         SELECT    [OUTER_WALL_BLOCKWORK]     ,  \\'OUTER WALL BLOCKWORK\\'\\nUNION ALL SELECT   [GARBAGE_CHUTE_WORKS]     ,  \\'GARBAGE CHUTE WORKS\\'\\nUNION ALL SELECT   [MEP_PIPING_WORKS]     ,  \\'MEP PIPING WORKS\\'\\nUNION ALL SELECT   [MEP_PRESSURE_TEST_AND_CLEARANCE]     ,  \\'MEP PRESSURE TEST & CLEARANCE\\'\\nUNION ALL SELECT   [INNER_WALL_BLOCKWORK]     ,  \\'INNER WALL BLOCKWORK\\'\\nUNION ALL SELECT   [MEP_MARKING_FOR_BUILDERS_WORK]     ,  \\'MEP MARKING FOR BUILDERS WORK\\'\\nUNION ALL SELECT   [CUTTING_AND_CHASING_OF_BLOCKWORK]     ,  \\'CUTTING & CHASING OF BLOCKWORK\\'\\nUNION ALL SELECT   [MEP_SERVICES_INSTALLATION]     ,  \\'MEP SERVICES INSTALLATION\\'\\nUNION ALL SELECT   [WALL_MEP_SERVICES_PACKING]     ,  \\'WALL MEP SERVICES PACKING\\'\\nUNION ALL SELECT   [PLASTER]     ,  \\'PLASTER\\'\\nUNION ALL SELECT   [CORE_CUTTING_AND_CHIPPING]     ,  \\'CORE CUTTING & CHIPPING\\'\\nUNION ALL SELECT   [MEP_SLEEVE_INSTALLATION]     ,  \\'MEP SLEEVE INSTALLATION\\'\\nUNION ALL SELECT   [BORE_PACKING]     ,  \\'BORE PACKING\\'\\nUNION ALL SELECT   [UNDER_SCREED_WATER_PROOFING]     ,  \\'UNDER SCREED WATER PROOFING\\'\\nUNION ALL SELECT   [SCREED]     ,  \\'SCREED\\'\\nUNION ALL SELECT   [WALL_TILE]     ,  \\'WALL TILE\\'\\nUNION ALL SELECT   [MEP_FRAMING_CLEARANCE]     ,  \\'MEP FRAMING CLEARANCE\\'\\nUNION ALL SELECT   [FALSE_CEILING_FRAMING]     ,  \\'FALSE CEILING FRAMING\\'\\nUNION ALL SELECT   [MEP_BOARDING_CLEARANCE]     ,  \\'MEP BOARDING CLEARANCE\\'\\nUNION ALL SELECT   [FALSE_CEILING_BOARDING]     ,  \\'FALSE CEILING BOARDING\\'\\nUNION ALL SELECT   [CEILING_PRIMER]     ,  \\'CEILING PRIMER\\'\\nUNION ALL SELECT   [CEILING_STUCCO_1ST_AND_2ND_COAT]     ,  \\'CEILING STUCCO (1ST AND 2ND COAT)\\'\\nUNION ALL SELECT   [CEILING_FIRST_COAT_PAINT]     ,  \\'CEILING FIRST COAT PAINT\\'\\nUNION ALL SELECT   [UNDER_TILE_WATER_PROOFING]     ,  \\'UNDER TILE WATER PROOFING\\'\\nUNION ALL SELECT   [THRESHOLD]     ,  \\'THRESHOLD\\'\\nUNION ALL SELECT   [FLOOR_TILE]     ,  \\'FLOOR TILE\\'\\nUNION ALL SELECT   [SKIRTING]     ,  \\'SKIRTING\\'\\nUNION ALL SELECT   [GROUTING]     ,  \\'GROUTING\\'\\nUNION ALL SELECT   [SILICONE]     ,  \\'SILICONE\\'\\nUNION ALL SELECT   [HOPPER_DOOR]     ,  \\'HOPPER DOOR\\'\\nUNION ALL SELECT   [DOOR_FRAME_INSTALLATION]     ,  \\'DOOR-FRAME INSTALLATION\\'\\nUNION ALL SELECT   [DOOR_ARCHITRAVE_INSTALLATION]     ,  \\'DOOR-ARCHITRAVE INSTALLATION\\'\\nUNION ALL SELECT   [DOOR_SHUTTER_INSTALLATION]     ,  \\'DOOR-SHUTTER INSTALLATION\\'\\nUNION ALL SELECT   [DOOR_IRONMONGERY_INSTALLATION]     ,  \\'DOOR-IRONMONGERY INSTALLATION\\'\\nUNION ALL SELECT   [DOOR_SILICONE]     ,  \\'DOOR-SILICONE\\'\\nUNION ALL SELECT   [SIGNAGE]     ,  \\'SIGNAGE\\'\\nUNION ALL SELECT   [MEP_FINAL_FIXTURES]     ,  \\'MEP FINAL FIXTURES\\'\\nUNION ALL SELECT   [FINAL_COAT_PAINT]     ,  \\'FINAL COAT PAINT\\'\\n\\n                        )AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n    INNER JOIN STG.O_PLN_GARBAGEROOM_MAP_STG  GM\\n    ON COLUMN_NAME.TYPE_OF_WORK = GM.ACTIVITY_SEQUENCE\\n    WHERE VALUE IS NOT NULL\\n     ) GAR\\nINNER JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          GAR.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          GAR.PROJECT_ID=P.PROJECT_IDENTIFIER\\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          GAR.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          GAR.DRANK = 1',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Project_ID as integer,",
+						"          Project_Identifier as string,",
+						"          SBU_ID as integer,",
+						"          Level_ID as integer,",
+						"          Tower as string,",
+						"          Level as string,",
+						"          Sclicer as string,",
+						"          Activity_ID as integer,",
+						"          Value as string,",
+						"          Type_of_work as string,",
+						"          Category as string,",
+						"          Update_Date as date,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_GARBAGEROOM_FACT];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Project_ID = PROJECT_ID,",
+						"          Project_Identifier = PROJECT_IDENTIFIER,",
+						"          SBU_ID,",
+						"          Level_ID = LEVEL_ID,",
+						"          Tower = TOWER,",
+						"          Level = LEVEL,",
+						"          Sclicer,",
+						"          Activity_ID = ACTIVITY_ID,",
+						"          Value = VALUE,",
+						"          Type_of_work = TYPE_OF_WORK,",
+						"          Category = CATEGORY,",
+						"          Update_Date = UPLOAD_DATE,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_KEEPOUT')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_KEEPOUT_RAW_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_KEEPOUT_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          Upload_Date as date,",
+						"          Project_ID as integer,",
+						"          Sbu_ID as integer,",
+						"          Level_ID as integer,",
+						"          Tower as string,",
+						"          PROJECT_IDENTIFIER as string,",
+						"          Flat as string,",
+						"          Level as string,",
+						"          Type_of_work as string,",
+						"          Category as string,",
+						"          Activity_ID as integer,",
+						"          Real_Value as string,",
+						"          value as integer,",
+						"          Category_Sort as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'select\\n        Upload_Date,\\n        P.Sort_ID AS Project_ID,\\n        SM.SBU_Map_ID AS Sbu_ID,\\n        LM.LEVEL_MAP_ID AS Level_ID,\\n        KO.Tower,\\n        P.PROJECT_IDENTIFIER ,\\n        KO.Flat,\\n        KO.Level,\\n        KO.Type_of_work,\\n        KO.Category,\\n        KO.Activity_ID,\\n       Format(cast(NULLIF(KO.Value,\\'\\') AS DATE ),\\'dd-MM-yyy\\')AS Real_Value,\\n        CASE\\n            WHEN TRIM(KO.value) IN (\\'\\',\\'-\\',\\'0%\\',\\'00%\\') THEN 0\\n            WHEN KO.value IS NOT NULL AND TRIM(KO.value) NOT IN (\\'\\',\\'-\\',\\'0%\\',\\'00%\\') THEN 1\\n            ELSE 0\\n        END AS value,\\n        \\n        CASE \\n            WHEN TRIM(KO.Category) IN(\\'Paint\\') THEN  1\\n            WHEN TRIM(KO.Category) IN(\\'Facade\\') THEN  2\\n            WHEN TRIM(KO.Category) IN(\\'MEP\\') THEN  3\\n            WHEN TRIM(KO.Category) IN(\\'PMT\\') THEN  4\\n            WHEN TRIM(KO.Category) IN(\\'Consultant\\') THEN  5\\n            WHEN TRIM(KO.Category) IN(\\'Client\\') THEN  6\\n            ELSE 20\\n        END AS Category_Sort\\n    FROM (\\n    SELECT\\n        cast(OPKOR.upload_time AS DATE) AS Upload_Date,\\n        OPKOR.project_id,\\n        OPKOR.tower,\\n        OPKOR.sbu_id ,\\n        OPKOR.Level,\\n        OPKOR.Flat,\\n        Column_Name.*,\\n        OPKOM.ACTIVITY_ID,\\n        OPKOM.SBU_ID AS SBU_Filter,\\n        OPKOM.Category,\\n        DENSE_RANK() OVER(PARTITION BY OPKOR.project_id ORDER BY CAST(OPKOR.upload_time AS DATE) DESC) AS DRanker\\n    FROM STG.O_PLN_KEEPOUT_RAW_STG OPKOR\\n    CROSS Apply (\\n                        SELECT Final_Coat_Paint_Dry_Area , \\'Final Coat Paint - Dry Area\\'\\n                    UNION ALL SELECT Final_Coat_Paint_Wet_Area , \\'Final Coat Paint - Wet Area\\'\\n                    UNION ALL SELECT Facade_Stamp , \\'Facade Stamp\\'\\n                    UNION ALL SELECT Bathroom_Stamp_MEP_L8 , \\'Bathroom Stamp - MEP (L8)\\'\\n                    UNION ALL SELECT Bathroom_Stamp_Civil_L9 , \\'Bathroom Stamp - Civil (L9)\\'\\n                    UNION ALL SELECT Kitchen_Stamp_MEP_I8 , \\'Kitchen Stamp - MEP (I8)\\'\\n                    UNION ALL SELECT Kitchen_Stamp_Civil_I9 , \\'Kitchen Stamp - Civil (I9)\\'\\n                    UNION ALL SELECT Dry_Area_Stamp_Civil_F7 , \\'Dry Area Stamp - Civil (F7)\\'\\n                    UNION ALL SELECT Dry_Area_Stamp_MEP_F8 , \\'Dry Area Stamp - MEP (F8)\\'\\n                    UNION ALL SELECT MEP_NOC , \\'MEP NOC\\'\\n                    UNION ALL SELECT Civil_NOC , \\'Civil NOC\\'\\n                    UNION ALL SELECT MEP_Field_Report_1ST_Insp , \\'MEP Field Report 1ST Insp\\'\\n                    UNION ALL SELECT MEP_Field_Report_2nd_Insp , \\'MEP Field Report 2nd Insp\\'\\n                    UNION ALL SELECT Facade_Field_Report_1st_Insp , \\'Facade Field Report 1st Insp\\'\\n                    UNION ALL SELECT Facade_Field_Report_2nd_Insp , \\'Facade Field Report 2nd Insp\\'\\n                    UNION ALL SELECT Civil_Field_Report_1st_Insp , \\'Civil Field Report 1st Insp\\'\\n                    UNION ALL SELECT Civil_Field_Report_2nd_Insp , \\'Civil Field Report 2nd Insp\\'\\n                    UNION ALL SELECT SCL_Signoff , \\'SCL Signoff\\'\\n                    UNION ALL SELECT PNCA_Signoff , \\'PNCA Signoff\\'\\n                    UNION ALL SELECT Keep_Out_QT , \\'Keep Out (QT)\\'\\n                        ) AS Column_Name(value,Type_of_work)\\n    JOIN STG.O_PLN_KEEPOUT_MAP_STG OPKOM\\n    ON Column_Name.Type_of_work = OPKOM.ACTIVITY_SEQUENCE\\n        WHERE value IS NOT NULL) KO   \\nINNER JOIN    DWH.PLN_LEVEL_MAP_ALL_DIM LM \\n    ON        KO.LEVEL = LM.LEVEL \\nLEFT JOIN    [DWH].[PROJECTS_NEW_DIM] P\\n    ON        KO.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN    [DWH].[PLN_SBU_MAPPING_DIM] SM\\n    ON      KO.SBU_ID=SM.SBU_IDENTIFIER\\n     WHERE       KO.DRANKER = 1\\n   \\n\\n  ',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Upload_Date as date,",
+						"          Project_ID as integer,",
+						"          Project_Identifier as string,",
+						"          Sbu_ID as integer,",
+						"          Level_Id as integer,",
+						"          Tower as string,",
+						"          Flat as string,",
+						"          Level as string,",
+						"          Category as string,",
+						"          Type_of_work as string,",
+						"          Activity_ID as integer,",
+						"          Real_Value as date,",
+						"          Value as decimal(14,4),",
+						"          CATEGORY_SORT as integer,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['Truncate table [DWH].[PLN_KEEPOUT_FACT]'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Upload_Date,",
+						"          Project_ID,",
+						"          Project_Identifier = PROJECT_IDENTIFIER,",
+						"          Sbu_ID,",
+						"          Level_Id = Level_ID,",
+						"          Tower,",
+						"          Flat,",
+						"          Level,",
+						"          Category,",
+						"          Type_of_work,",
+						"          Activity_ID,",
+						"          Real_Value,",
+						"          Value = value,",
+						"          CATEGORY_SORT = Category_Sort,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_KEEPOUT2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_KEEPOUT_DETAILED_RAW_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1",
+							"description": "Import data from DS_O_PLN_DOOR_DELIVERY_RAW_STG_TRG"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_KEEPOUT2_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"description": "Export data to DS_DOOR_DELIVERY_M_TRG"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          Date as date,",
+						"          project_id as integer,",
+						"          PROJECT_IDENTIFIER as string,",
+						"          Tower as string,",
+						"          Level as string,",
+						"          Flat_No as string,",
+						"          SBU_ID as integer,",
+						"          Apartment_Type as string,",
+						"          ACTIVITY_ID as integer,",
+						"          Engineer_Responsible as string,",
+						"          Activity as string,",
+						"          delay_pln as date,",
+						"          Plan as date,",
+						"          Count_Pln as integer,",
+						"          Predecessor_Plan as date,",
+						"          Predecessor_Plan_Work_Front as date,",
+						"          Predecessor as string,",
+						"          delay_act as date,",
+						"          Actual as date,",
+						"          Count_act as integer,",
+						"          Predecessor_Actual as date,",
+						"          Predecessor_Actual_Work_Front as date,",
+						"          SLA_Planned as integer,",
+						"          SLA_Actual as integer,",
+						"          SLA as string,",
+						"          Actual_SLA_Title as string",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT \\n    Upload_Date AS Date,\\n    P.Sort_ID as project_id,\\n    P.PROJECT_IDENTIFIER ,\\n    tower AS Tower,\\n    Level,\\n    Flat_No,\\n    SM.[SBU_Map_ID] as SBU_ID,\\n    Apartment_Type,\\n    ACTIVITY_ID,\\n    ENGINEER_RESPONSIBLE AS Engineer_Responsible,\\n    Types_of_Activities AS Activity,\\n    delay_pln\\n       ,value_plan AS [Plan]\\n       ,Count_Pln,\\n    Predes_value_plan AS Predecessor_Plan,\\n    CASE \\n        WHEN TRIM(Predecessor_Activities) IN (\\'FROM CTE 1\\',\\'FROM CTE 2\\') AND Count_Pln = 1 THEN value_plan \\n        WHEN TRIM(Predecessor_Activities) IN (\\'FROM CTE 1\\',\\'FROM CTE 2\\') AND Count_Pln != 1 THEN NULL\\n        ELSE Predes_value_plan\\n    END AS Predecessor_Plan_Work_Front,\\n    Predecessor_Activities AS Predecessor,\\n    delay_act,\\n    value_act AS Actual,\\n    Count_act,\\n    Predes_value_act AS [Predecessor_Actual],\\n    CASE\\n        WHEN TRIM(Predecessor_Activities) IN (\\'FROM CTE 1\\',\\'FROM CTE 2\\') AND Count_Act = 1 THEN value_act\\n        WHEN TRIM(Predecessor_Activities) IN (\\'FROM CTE 1\\',\\'FROM CTE 2\\') AND Count_Act != 1 THEN NULL\\n        ELSE Predes_value_act\\n    END AS [Predecessor_Actual_Work_Front],\\n    CASE WHEN Planned_SLA <= 0 THEN 0 ELSE Planned_SLA END AS SLA_Planned,\\n    CASE WHEN Actual_SLA <= 0 THEN 0 ELSE Actual_SLA END AS SLA_Actual,\\n    Given_SLA AS SLA,\\n     CASE \\n            WHEN Actual_SLA <= 0 THEN     \\'<= 0\\'\\n            WHEN Actual_SLA = 1 THEN     \\'= 1\\'\\n            WHEN Actual_SLA = 2 THEN     \\'= 2\\'\\n            WHEN Actual_SLA = 3 THEN     \\'= 3\\'\\n            WHEN Actual_SLA = 4 THEN     \\'= 4\\'\\n            WHEN Actual_SLA = 5 THEN     \\'= 5\\'\\n            WHEN Actual_SLA = 6 THEN     \\'= 6\\'\\n            WHEN Actual_SLA = 7 THEN     \\'= 7\\'\\n            WHEN Actual_SLA > 7 THEN     \\'> 7\\'\\n            ELSE NULL\\n        END AS Actual_SLA_Title\\nFROM [DWH].[PLN_VALIDATION_DATA_OUTPUT_FINAL_B_VIEW] PP\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          PP.Project_id=P.PROJECT_IDENTIFIER \\n     LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          PP.SBU_ID=SM.SBU_IDENTIFIER\\n\\n',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Id as integer,",
+						"          Date as date,",
+						"          project_id as integer,",
+						"          Project_Identifier as string,",
+						"          Tower as string,",
+						"          Level as string,",
+						"          Flat_No as string,",
+						"          SBU_ID as integer,",
+						"          Apartment_Type as string,",
+						"          ACTIVITY_ID as integer,",
+						"          Engineer_Responsible as string,",
+						"          Activity as string,",
+						"          delay_pln as date,",
+						"          Plan as date,",
+						"          Count_Pln as integer,",
+						"          Predecessor_Plan as date,",
+						"          Predecessor_Plan_Work_Front as date,",
+						"          Predecessor as string,",
+						"          delay_act as date,",
+						"          Actual as date,",
+						"          Count_Act as integer,",
+						"          Predecessor_Actual as date,",
+						"          Predecessor_Actual_Work_Front as date,",
+						"          SLA_Planned as integer,",
+						"          SLA_Actual as integer,",
+						"          SLA as string,",
+						"          Actual_SLA_Title as string,",
+						"          LoadDateTime as date",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE  DWH.PLN_KEEPOUT_2_FACT '],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Id = ID,",
+						"          Date,",
+						"          project_id,",
+						"          Project_Identifier = PROJECT_IDENTIFIER,",
+						"          Tower,",
+						"          Level,",
+						"          Flat_No,",
+						"          SBU_ID,",
+						"          Apartment_Type,",
+						"          ACTIVITY_ID,",
+						"          Engineer_Responsible,",
+						"          Activity,",
+						"          delay_pln,",
+						"          Plan,",
+						"          Count_Pln,",
+						"          Predecessor_Plan,",
+						"          Predecessor_Plan_Work_Front,",
+						"          Predecessor,",
+						"          delay_act,",
+						"          Actual,",
+						"          Count_Act = Count_act,",
+						"          Predecessor_Actual,",
+						"          Predecessor_Actual_Work_Front,",
+						"          SLA_Planned,",
+						"          SLA_Actual,",
+						"          SLA,",
+						"          Actual_SLA_Title,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_KITCHENAREA')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_KITCHENAREA_RAW_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_KITCHENAREA_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          PROJECT_ID as integer,",
+						"          LEVEL_ID as integer,",
+						"          SBU_ID as integer,",
+						"          TOWER as string,",
+						"          PROJECT_IDENTIFIER as string,",
+						"          Sclicer as string,",
+						"          FLAT as string,",
+						"          LEVEL as string,",
+						"          ACTIVITY_ID as integer,",
+						"          VALUE as string,",
+						"          TYPE_OF_WORK as string,",
+						"          CATEGORY as string,",
+						"          UPLOAD_DATE as timestamp",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT \\n    P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n     SM.SBU_MAP_ID AS SBU_ID,\\n    KA.TOWER,\\n    P.PROJECT_IDENTIFIER ,\\n    \\'Kitchen Area\\' as Sclicer,\\n    KA.FLAT,\\n    KA.[LEVEL],\\n     KA.ACTIVITY_ID,\\n    CASE \\n        WHEN KA.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE KA.VALUE\\n    END AS VALUE,\\n    KA.TYPE_OF_WORK,\\n    KA.CATEGORY,\\n     KA.UPLOAD_DATE\\nFROM (\\n          SELECT \\n               KR.UPLOAD_TIME AS UPLOAD_DATE,\\n               KR.PROJECT_ID,\\n               KR.TOWER,\\n               KR.[LEVEL],\\n               KR.FLAT,\\n               COLUMN_NAME.*,\\n               KM.ACTIVITY_ID,\\n               KM.SBU_ID,\\n               KM.CATEGORY,\\n               DENSE_RANK () OVER (PARTITION BY  PROJECT_ID ORDER BY  UPLOAD_TIME DESC )DRANK\\n           FROM [STG].[O_PLN_KITCHENAREA_RAW_STG] KR\\n           CROSS APPLY (\\n                          SELECT [KITCHEN_AREA_PLASTER] , \\'KITCHEN AREA PLASTER\\'\\n                              UNION ALL SELECT [KITCHEN_UTILITY_FRAMING] , \\'KITCHEN / UTILITY FRAMING\\'\\n                              UNION ALL SELECT [KITCHEN_UTILITY_BOARDING] , \\'KITCHEN / UTILITY BOARDING\\'\\n                              UNION ALL SELECT [KITCHEN_WALL_TILE] , \\'KITCHEN WALL TILE\\'\\n                              UNION ALL SELECT [MEP_BOX_FIXING] , \\'MEP BOX FIXING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET] , \\'KITCHEN CABINET\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_PLYWOOD] , \\'KITCHEN COUNTER PLYWOOD\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_TOP] , \\'KITCHEN COUNTER TOP\\'\\n                              UNION ALL SELECT [KITCHEN_COUNTER_TOP_SKIRTING] , \\'KITCHEN COUNTER TOP SKIRTING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET_GROUTING] , \\'KITCHEN CABINET GROUTING\\'\\n                              UNION ALL SELECT [KITCHEN_CABINET_SILICONE] , \\'KITCHEN CABINET SILICONE\\'\\n                              UNION ALL SELECT [MEP_FIXTURES_FOR_KITCHEN_CABINET] , \\'MEP FIXTURES FOR KITCHEN CABINET\\'\\n                              UNION ALL SELECT [KITCHEN_APPLIANCES] , \\'KITCHEN APPLIANCES\\'\\n                         ) AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n               INNER JOIN  [STG].[O_PLN_KITCHENAREA_MAP_STG] KM\\n                    ON          COLUMN_NAME.TYPE_OF_WORK = KM.ACTIVITY_SEQUENCE\\n               WHERE          VALUE IS NOT NULL\\n     ) KA\\nINNER JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          KA.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          KA.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          KA.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          KA.DRANK = 1',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Project_ID as integer,",
+						"          Project_Identifier as string,",
+						"          SBU_ID as integer,",
+						"          Level_ID as integer,",
+						"          Tower as string,",
+						"          Level as string,",
+						"          Flat as integer,",
+						"          Sclicer as string,",
+						"          Activity_ID as integer,",
+						"          Value as string,",
+						"          Type_of_work as string,",
+						"          Category as string,",
+						"          Update_Date as date,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_KITCHENAREA_FACT];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Project_ID = PROJECT_ID,",
+						"          Project_Identifier = PROJECT_IDENTIFIER,",
+						"          SBU_ID,",
+						"          Level_ID = LEVEL_ID,",
+						"          Tower = TOWER,",
+						"          Level = LEVEL,",
+						"          Flat = FLAT,",
+						"          Sclicer,",
+						"          Activity_ID = ACTIVITY_ID,",
+						"          Value = VALUE,",
+						"          Type_of_work = TYPE_OF_WORK,",
+						"          Category = CATEGORY,",
+						"          Update_Date = UPLOAD_DATE,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_LEVEL_MAP_ALL')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_LEVEL_MAP_ALL_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_LEVEL_MAP_ALL_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          LEVEL_MAP_ID as integer,",
+						"          LEVEL as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Level_Map_ID as integer,",
+						"          Level as string,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_LEVEL_MAP_ALL_DIM];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Level_Map_ID = LEVEL_MAP_ID,",
+						"          Level = LEVEL,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_MILESTONE_ACTUALS_TEMP')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_MILESTONE_ACTUALS_TEMP_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1",
+							"description": "Import data from DS_O_PLN_MILESTONE_ACTUALS_TEMP_STG_TRG"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_MILESTONE_ACTUALS_TEMP_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"description": "Export data to DS_PLN_MILESTONE_ACTUALS_TEMP_TRG"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          Project_ID as integer,",
+						"          SBU_Map_ID as integer,",
+						"          Milestone_Actuals_Temp_Id as integer,",
+						"          Upload_time as timestamp,",
+						"          Tower as string,",
+						"          Group as string,",
+						"          Activity as string,",
+						"          Actual_Percentage as string",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'select \\n     \\n     p. Sort_ID as [Project_ID] ,\\n     sm.[SBU_Map_ID] ,\\n     [Milestone_Actuals_Temp_Id] ,\\n     [Upload_time] ,\\n     --[Project_ID] [nvarchar](1000)  NULL,\\n     [Tower] ,\\n     --[Sbu_ID] [nvarchar](1000)  NULL,\\n     [Group] ,\\n     [Activity] ,\\n     [Actual_Percentage] \\n\\nFROM [STG].[O_PLN_MILESTONE_ACTUALS_TEMP_STG] PP\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          PP.[Project_ID]=P.PROJECT_IDENTIFIER \\n     LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          PP.SBU_id=SM.SBU_IDENTIFIER\\n\\n\\n',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Project_ID as integer,",
+						"          SBU_ID as integer,",
+						"          Milestone_Actuals_Temp_Id as integer,",
+						"          Upload_time as timestamp,",
+						"          Tower as string,",
+						"          Group as string,",
+						"          Activity as string,",
+						"          Actual_Percentage as string,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_MILESTONE_ACTUALS_TEMP_FACT];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Project_ID,",
+						"          SBU_ID = SBU_Map_ID,",
+						"          Milestone_Actuals_Temp_Id,",
+						"          Upload_time,",
+						"          Tower,",
+						"          Group,",
+						"          Activity,",
+						"          Actual_Percentage,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_PROCUREMENT')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_PROCUREMENT_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_PROCUREMENT_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAXID as integer (0)",
+						"}",
+						"source(output(",
+						"          UPLOAD_DATE as date,",
+						"          PROJECT_ID as integer,",
+						"          PROJECT_IDENTIFIER as string,",
+						"          TOWER as string,",
+						"          SBU_ID as integer,",
+						"          SBU as string,",
+						"          CLASSIFICATION as string,",
+						"          DESCRIPTION as string,",
+						"          CATEGORY as string,",
+						"          ISSUANCE_OF_DRAWINGS_PLAN as date,",
+						"          ISSUANCE_OF_DRAWINGS_ACTUAL as date,",
+						"          PR_PLAN as date,",
+						"          PR_ACTUAL as date,",
+						"          VENDOR_FINALIZATION_PLAN as date,",
+						"          VENDOR_FINALIZATION_ACTUAL as date,",
+						"          REQUIRED_AT_SITE_BY as date,",
+						"          ACTUAL_DELIVERY_AT_SITE as date",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT \\n     UPLOAD_DATE,\\n    P.Sort_ID as PROJECT_ID,\\n    P.PROJECT_IDENTIFIER,\\n     --PR.PROJECT_ID AS PROJECT_NAME,\\n    TOWER,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n    SBU,\\n    CLASSIFICATION,\\n    DESCRIPTION,\\n    CATEGORY,\\n    CASE     WHEN ISDATE(ISSUANCE_OF_DRAWINGS_PLAN)=0\\n               THEN CAST(ISSUANCE_OF_DRAWINGS_ACTUAL AS DATE)\\n               ELSE CAST(ISSUANCE_OF_DRAWINGS_PLAN AS DATE) \\n     END          AS ISSUANCE_OF_DRAWINGS_PLAN\\n    ,CAST(ISSUANCE_OF_DRAWINGS_ACTUAL AS DATE) AS ISSUANCE_OF_DRAWINGS_ACTUAL\\n    ,CASE     WHEN ISDATE(PR_PLAN)=0\\n               THEN CAST(PR_ACTUAL AS DATE)\\n               ELSE CAST(PR_PLAN AS DATE) \\n     END AS PR_PLAN\\n    ,CAST(PR_ACTUAL  AS DATE) AS PR_ACTUAL\\n    ,CASE     WHEN ISDATE(VENDOR_FINALIZATION_PLAN) =0\\n               THEN CAST(VENDOR_FINALIZATION_ACTUAL AS DATE)\\n               ELSE CAST(VENDOR_FINALIZATION_PLAN AS DATE) \\n      END AS VENDOR_FINALIZATION_PLAN\\n    ,CAST(VENDOR_FINALIZATION_ACTUAL  AS DATE) AS VENDOR_FINALIZATION_ACTUAL\\n    ,CASE     WHEN ISDATE(REQUIRED_AT_SITE_BY) =0\\n               THEN CAST(ACTUAL_DELIVERY_AT_SITE AS DATE)\\n               ELSE CAST(REQUIRED_AT_SITE_BY AS DATE) \\n     END AS REQUIRED_AT_SITE_BY\\n    ,CAST(ACTUAL_DELIVERY_AT_SITE AS DATE) AS ACTUAL_DELIVERY_AT_SITE\\nFROM(\\n     SELECT\\n               CAST(UPLOAD_TIME AS DATE) AS UPLOAD_DATE,\\n               PROJECT_ID,\\n               TOWER,\\n               SBU_ID,\\n               SBU,\\n               CLASSIFICATION,\\n               DESCRIPTION,\\n               CATEGORY,\\n               CASE \\n                   WHEN          ISDATE(ISSUANCE_OF_DRAWINGS_PLAN)= 1 \\n                                   Then          FORMAT(CAST(ISSUANCE_OF_DRAWINGS_PLAN AS DATE),\\'dd-MMM-yy\\') \\n                                   ELSE     UPLOAD_TIME \\n                    END     AS ISSUANCE_OF_DRAWINGS_PLAN,\\n               CASE \\n                   WHEN          ISDATE(ISSUANCE_OF_DRAWINGS_ACTUAL)= 1  \\n                            THEN FORMAT(CAST(ISSUANCE_OF_DRAWINGS_ACTUAL AS DATE),\\'dd-MMM-yy\\') \\n                            ELSE UPLOAD_TIME \\n                         END     AS ISSUANCE_OF_DRAWINGS_ACTUAL,\\n               CASE \\n                   WHEN ISDATE(PR_PLAN)= 1  \\n                              THEN FORMAT(CAST(PR_PLAN AS DATE),\\'dd-MMM-yy\\') \\n                              ELSE UPLOAD_TIME \\n                    END AS PR_PLAN,\\n               CASE \\n                   WHEN ISDATE(PR_ACTUAL)= 1   \\n                              THEN FORMAT(CAST(PR_ACTUAL AS DATE),\\'dd-MMM-yy\\') \\n                              ELSE UPLOAD_TIME \\n                    END AS PR_ACTUAL,\\n               CASE \\n                   WHEN ISDATE(VENDOR_FINALIZATION_PLAN)= 1    \\n                              THEN FORMAT(CAST(VENDOR_FINALIZATION_PLAN AS DATE),\\'dd-MMM-yy\\') \\n                              ELSE UPLOAD_TIME \\n                    END AS VENDOR_FINALIZATION_PLAN,\\n               CASE \\n                   WHEN  ISDATE(VENDOR_FINALIZATION_ACTUAL)= 1 \\n                              THEN FORMAT(CAST(VENDOR_FINALIZATION_ACTUAL AS DATE),\\'dd-MMM-yy\\') \\n                              ELSE UPLOAD_TIME \\n                    END AS VENDOR_FINALIZATION_ACTUAL,\\n               CASE \\n                   WHEN ISDATE(REQUIRED_AT_SITE_BY)= 1  \\n                              THEN FORMAT(CAST(REQUIRED_AT_SITE_BY AS DATE),\\'dd-MMM-yy\\') \\n                              ELSE UPLOAD_TIME \\n                    END AS REQUIRED_AT_SITE_BY,\\n               CASE \\n                   WHEN ISDATE(ACTUAL_DELIVERY_AT_SITE)= 1 \\n                              THEN FORMAT(CAST(ACTUAL_DELIVERY_AT_SITE AS DATE),\\'dd-MMM-yy\\') \\n                              ELSE UPLOAD_TIME \\n                    END AS ACTUAL_DELIVERY_AT_SITE,\\n               DENSE_RANK() OVER ( PARTITION BY PROJECT_ID ORDER BY CAST(UPLOAD_TIME AS DATE) DESC) DRANK\\n FROM     [STG].[O_PLN_PROCUREMENT_STG])PR\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON         PR.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM]\\nSM\\n     ON          PR.SBU=SM.SBU_Shorts\\n      where DRANK=1',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAXID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Project_ID as string,",
+						"          Project_Identifier as string,",
+						"          Tower as string,",
+						"          SBU_ID as string,",
+						"          SBU as string,",
+						"          Classification as string,",
+						"          Description as string,",
+						"          Category as string,",
+						"          Issuance_of_Drawings_Plan as date,",
+						"          Issuance_of_Drawings_Actual as date,",
+						"          PR_Plan as date,",
+						"          PR_Actual as date,",
+						"          Vendor_Finalization_Plan as date,",
+						"          Vendor_Finalization_Actual as date,",
+						"          Required_at_site_by as date,",
+						"          Actual_delivery_at_site as date,",
+						"          Upload_Date as date,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_PROCUREMENT_FACT]'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Project_ID = PROJECT_ID,",
+						"          Project_Identifier = PROJECT_IDENTIFIER,",
+						"          Tower = TOWER,",
+						"          SBU_ID,",
+						"          SBU,",
+						"          Classification = CLASSIFICATION,",
+						"          Description = DESCRIPTION,",
+						"          Category = CATEGORY,",
+						"          Issuance_of_Drawings_Plan = ISSUANCE_OF_DRAWINGS_PLAN,",
+						"          Issuance_of_Drawings_Actual = ISSUANCE_OF_DRAWINGS_ACTUAL,",
+						"          PR_Plan = PR_PLAN,",
+						"          PR_Actual = PR_ACTUAL,",
+						"          Vendor_Finalization_Plan = VENDOR_FINALIZATION_PLAN,",
+						"          Vendor_Finalization_Actual = VENDOR_FINALIZATION_ACTUAL,",
+						"          Required_at_site_by = REQUIRED_AT_SITE_BY,",
+						"          Actual_delivery_at_site = ACTUAL_DELIVERY_AT_SITE,",
+						"          Upload_Date = UPLOAD_DATE,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_PROJECTION')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_F_PLN_PROJECTION_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1",
+							"description": "Import data from DS_F_PLN_PROJECTION_STG_TRG"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_PROJECTION_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"description": "Export data to DS_PLN_PROJECTION_TRG"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          Upload_Date as timestamp,",
+						"          PROJECT_IDENTIFIER as string,",
+						"          Project_ID as integer,",
+						"          SBU_Map_ID as integer,",
+						"          Area as string,",
+						"          Category as string,",
+						"          Activity_Description as string,",
+						"          Projection_for_the_month as decimal(15,2),",
+						"          Yesterday as timestamp,",
+						"          Plan_Yesterday as decimal(15,2),",
+						"          Plan_as_on_date as decimal(15,2),",
+						"          Actual_Yesterday as decimal(15,2),",
+						"          Actual_as_on_date as decimal(15,2),",
+						"          Shortfall_Reasons as string,",
+						"          SBU_Custom_Sort as integer,",
+						"          Achived as decimal(15,2),",
+						"          Achived_90 as decimal(15,2)",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'select \\n     [Upload_Date]  ,\\n   P.PROJECT_IDENTIFIER  ,\\n     --, [SBU] \\n     Sort_ID as [Project_ID] ,\\n     SM.[SBU_Map_ID] \\n     , [Area] \\n     , [Category] \\n     , [Activity_Description] \\n     , [Projection_for_the_month]  \\n     , [Yesterday]  \\n     , [Plan_Yesterday]  \\n     , [Plan_as_on_date] \\n     , [Actual_Yesterday] \\n     , [Actual_as_on_date] \\n     , [Shortfall_Reasons]  \\n     , [SBU_Custom_Sort] \\n     , [Achived] \\n     , [Achived_90] \\n FROM [STG].[F_PLN_PROJECTION_STG] PP\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          PP.Project_Sclicer=P.PROJECT_IDENTIFIER \\n     LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          PP.SBU=SM.SBU_IDENTIFIER',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Project_ID as integer,",
+						"          Project_Identifier as string,",
+						"          SBU_ID as integer,",
+						"          Area as string,",
+						"          Category as string,",
+						"          Activity_Description as string,",
+						"          Projection_for_the_month as decimal(15,2),",
+						"          Yesterday as timestamp,",
+						"          Plan_Yesterday as decimal(15,2),",
+						"          Plan_as_on_date as decimal(15,2),",
+						"          Actual_Yesterday as decimal(15,2),",
+						"          Actual_as_on_date as decimal(15,2),",
+						"          Shortfall_Reasons as string,",
+						"          SBU_Custom_Sort as integer,",
+						"          Achived as decimal(15,2),",
+						"          Achived_90 as decimal(15,2),",
+						"          Update_Date as timestamp,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_PROJECTION_FACT];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Project_ID,",
+						"          Project_Identifier = PROJECT_IDENTIFIER,",
+						"          SBU_ID = SBU_Map_ID,",
+						"          Area,",
+						"          Category,",
+						"          Activity_Description,",
+						"          Projection_for_the_month,",
+						"          Yesterday,",
+						"          Plan_Yesterday,",
+						"          Plan_as_on_date,",
+						"          Actual_Yesterday,",
+						"          Actual_as_on_date,",
+						"          Shortfall_Reasons,",
+						"          SBU_Custom_Sort,",
+						"          Achived,",
+						"          Achived_90,",
+						"          Update_Date = Upload_Date,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_PROJECTS')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_PROJECTS_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_PROJECTS_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          Project_ID as integer,",
+						"          Project_Identifier as string,",
+						"          Project_Short as string,",
+						"          Flat_Count as integer,",
+						"          Total_Floors as integer,",
+						"          Total_Podiums as integer,",
+						"          Total_Typical_Floor as integer,",
+						"          Typical_Floor_Slab as integer,",
+						"          Podium_Slab as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Project_ID as integer,",
+						"          Project_Identifier as string,",
+						"          Project_Short as string,",
+						"          Flat_Count as integer,",
+						"          Total_Floors as integer,",
+						"          Total_Podiums as integer,",
+						"          Total_Typical_Floor as integer,",
+						"          Typical_Floor_Slab as integer,",
+						"          Podium_Slab as integer,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_PROJECTS_DIM];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Project_ID,",
+						"          Project_Identifier,",
+						"          Project_Short,",
+						"          Flat_Count,",
+						"          Total_Floors,",
+						"          Total_Podiums,",
+						"          Total_Typical_Floor,",
+						"          Typical_Floor_Slab,",
+						"          Podium_Slab,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_PROJECT_PROGRESS_SUMMARY')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_DRYAREA_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1",
+							"description": "Import data from DS_O_PLN_DOOR_DELIVERY_RAW_STG_TRG"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_PROJECT_PROGRESS_SUMMARY_FACT",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"description": "Export data to DS_DOOR_DELIVERY_M_TRG"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          Upload_Date as date,",
+						"          Project as string,",
+						"          Tower as string,",
+						"          ACTIVITY_ID as integer,",
+						"          SBU_ID as string,",
+						"          Area as string,",
+						"          Progress_Type as string,",
+						"          CATEGORY as string,",
+						"          ACTIVITY_SEQUENCE as string,",
+						"          Flats as integer,",
+						"          Total_Floors as integer,",
+						"          Scheduled_Activities as integer,",
+						"          Yet_TO_Start as decimal(38,6),",
+						"          Completed as decimal(38,4),",
+						"          In_Progress as integer,",
+						"          Average_Achived as decimal(38,4),",
+						"          SUM_Achived as decimal(38,4),",
+						"          Count_Achived as decimal(38,4),",
+						"          SORT_MAIN as integer,",
+						"          Yet_To_Start_Manual as decimal(38,4)",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: ' SELECT \\n\\n      ff. Upload_Date,\\n        Unionall.Project,\\n        ff.Tower,\\n        ff.ACTIVITY_ID,\\n        unionall.SBU_ID,\\n        unionall.Area,\\n        \\'Flatwise Progress\\' AS Progress_Type,\\n        unionall.CATEGORY,\\n        unionall.ACTIVITY_SEQUENCE,\\n        unionall.Flats,\\n       unionall.Total_Floors,\\n        unionall.Scheduled_Activities,\\n           sum(case \\n               when ff.value=0 then 1 else null\\n          End) as Yet_TO_Start,\\n\\n           sum(CASE WHEN ff.value = 1 THEN 1 ELSE NULL\\n           END )AS Completed,\\n\\n           sum(CASE WHEN value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL \\n           END) AS In_Progress,\\n\\n            AVG(ff.value) AS Average_Achived,\\n         SUM(ff.value) AS SUM_Achived,\\n         COUNT(ff.value) AS Count_Achived,\\n           2 as SORT_MAIN, \\n       ABS((ISNULL( unionall.Scheduled_Activities,0)-(ISNULL(sum(CASE WHEN ff.value = 1 THEN 1 ELSE NULL\\n           END ),0)+ISNULL(sum(CASE WHEN value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL \\n           END) ,0)))) AS Yet_To_Start_Manual\\n           \\n           FROM(SELECT \\n            Flat_count.Project_Identifier AS Project,\\n            a.ACTIVITY_ID,\\n            a.SBU_ID,\\n            a.Area,\\n            a.CATEGORY,\\n            a.ACTIVITY_SEQUENCE,\\n            Flat_count.Flats,\\n            Flat_count.Total_Floors,\\n            Flat_count.Scheduled_Activities\\n        FROM (\\n          SELECT *, \\'Dry Area\\' AS Area FROM STG.O_PLN_DRYAREA_MAP_STG\\n        UNION ALL\\n        SELECT *, \\'Wet Area\\' AS Area FROM STG.O_PLN_WETAREA_MAP_STG\\n        UNION ALL\\n        SELECT *, \\'Kitchen Area\\' AS Area FROM STG.O_PLN_KITCHENAREA_MAP_STG\\n        UNION ALL\\n        SELECT *, \\'Balcony Area\\' AS Area FROM STG.O_PLN_BALCONYAREA_MAP_STG) a\\n          CROSS Apply (SELECT \\n                                           Project_Identifier,\\n                                           FLAT_COUNT AS Scheduled_Activities,\\n                                           FLAT_COUNT AS Flats,\\n                                           Total_Floors AS Total_Floors\\n                                       FROM [STG].[PROJECTS_NEW_STG]\\n                                                WHERE Project_Identifier !=\\'Creek Vista Grande\\') AS Flat_count) Unionall\\n\\n                                                Join DWH.PLN_FLATFINISHES_FACT ff \\n                                                on unionall.Activity_Id=ff.Activity_ID\\n                                      group by   ff. Upload_Date,\\n       Unionall.Project,\\n        ff.Tower,\\n        ff.ACTIVITY_ID,\\n        unionall.SBU_ID,\\n        unionall.Area,\\n        unionall.CATEGORY,\\n        unionall.ACTIVITY_SEQUENCE,\\n        unionall.Flats,\\n       unionall.Total_Floors,\\n        unionall.Scheduled_Activities\\n          \\n          --ff.Yet_To_Start_Manual,\\n\\n     UNION aLL\\n\\n     SELECT \\n        ff. Update_Date,\\n      Unionall.Project,\\n        ff.Tower,\\n        ff.ACTIVITY_ID,\\n        unionall.SBU_ID,\\n        unionall.Area,\\n       \\'Service Room Progress\\' AS Progress_Type,\\n        unionall.CATEGORY,\\n        unionall.ACTIVITY_SEQUENCE,\\n        unionall.Flats,\\n       unionall.Total_Floors,\\n        unionall.Scheduled_Activities,\\n           sum(case \\n               when ff.value=0 then 1 else null\\n          End) as Yet_TO_Start,\\n\\n           sum(CASE WHEN ff.value = 1 THEN 1 ELSE NULL\\n           END )AS Completed,\\n\\n           sum(CASE WHEN value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL \\n           END) AS In_Progress,\\n\\n            AVG(ff.value) AS Average_Achived,\\n         SUM(ff.value) AS SUM_Achived,\\n         COUNT(ff.value) AS Count_Achived,\\n           4 as SORT_MAIN ,\\n         ABS((ISNULL( unionall.Scheduled_Activities,0)-(ISNULL(sum(CASE WHEN ff.value = 1 THEN 1 ELSE NULL\\n           END ),0)+ISNULL(sum(CASE WHEN value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL \\n           END) ,0)))) AS Yet_To_Start_Manual\\n           FROM (\\n     SELECT \\n            Flat_count.Project_Identifier AS Project,\\n               a.ACTIVITY_ID,\\n            a.SBU_ID,\\n            a.Area,\\n            a.CATEGORY,\\n            a.ACTIVITY_SEQUENCE,\\n            Flat_count.*\\n           FROM \\n             (SELECT *, \\'Water Room\\' AS Area FROM [STG].[O_PLN_WATERROOM_MAP_STG]\\n    UNION ALL\\n    SELECT *, \\'Electrical Room\\' AS Area FROM [STG].[O_PLN_ELECTRICALROOM_MAP_STG]\\n    UNION ALL\\n    SELECT *, \\'Telephone Room\\' AS Area FROM [STG].[O_PLN_TELEPHONEROOM_MAP_STG]\\n    UNION ALL\\n    SELECT *, \\'Fire-Lift Lobby\\' AS Area FROM [STG].[O_PLN_FIRELIFTLOBBY_MAP_STG]\\n    UNION ALL\\n    SELECT *, \\'Garbage Room\\' AS Area FROM [STG].[O_PLN_GARBAGEROOM_MAP_STG])a\\nCROSS JOIN (SELECT \\n                                           Project_Identifier,\\n                                           Total_Floors AS Scheduled_Activities, \\n                                           FLAT_COUNT AS Flats,\\n                                           Total_Floors AS Total_Floors\\n                                       FROM [STG].[PROJECTS_NEW_STG]) AS Flat_count) Unionall\\n\\n                                                 Join [DWH].[PLN_SERVICEROOMS_FACT] ff \\n                                                on unionall.Activity_Id=ff.Activity_ID \\n                                                 group by   ff. Update_Date,\\n        Unionall.Project,\\n        ff.Tower,\\n        ff.ACTIVITY_ID,\\n        unionall.SBU_ID,\\n        unionall.Area,\\n        unionall.CATEGORY,\\n        unionall.ACTIVITY_SEQUENCE,\\n        unionall.Flats,\\n       unionall.Total_Floors,\\n        unionall.Scheduled_Activities\\n          --Yet_To_Start_Manual\\n     UNION ALL\\n\\n     \\nSELECT \\n        sf.Upload_Date,\\n        a.Project,\\n       \\'Overall\\' AS Tower,\\n        a.ACTIVITY_ID,\\n       \\'SBU 3\\' AS SBU_ID,\\n       \\'Slab\\' AS Area,\\n       \\'Structure Progress\\' AS Progress_Type,\\n        a.CATEGORY,\\n          ACTIVITY_SEQUENCE,\\n        COUNT(sf.Level) AS Completed,\\n        NULL AS In_Progress,\\n        NULL AS Yet_To_Start,\\n        a.Flats,\\n        a.Total_Floors,\\n        a.Scheduled_Activities,\\n          NULL AS Average_Achived,\\n        COUNT(Level) AS SUM_Achived,\\n         COUNT(Level) AS Count_Achived,\\n           1  as SORT_MAIN ,\\n       ABS((ISNULL(A.Scheduled_Activities,0)-(ISNULL( COUNT(sf.Level),0)+ISNULL( NULL,0)))) AS Yet_To_Start_Manual\\n    FROM (\\n     SELECT \\n    OPD.project_id AS Project,\\n    OPD.Sequence_of_Appearance AS ACTIVITY_ID,\\n      OPD.Sequence_of_Appearance,\\n    OPD.area AS CATEGORY,\\n    OPD.Pour_count AS ACTIVITY_SEQUENCE,\\n    Flat_count.Flats,\\n    Flat_count.Total_Floors,\\n    Flat_count.Scheduled_Activities\\n      FROM [STG].[O_PLN_STRUCTURES_POUR_MAP_STG] OPD \\nCROSS JOIN (SELECT \\n                                   0 AS Scheduled_Activities,\\n                                   NULL AS Flats,\\n                                   Total_Floors AS Total_Floors\\n                               FROM [STG].[PROJECTS_NEW_STG] WHERE Project_Identifier !=\\'Creek Vista Grande\\') AS Flat_count)a\\n\\n                                      join [DWH].[PLN_STRUCTURE_FACT] sf on\\n                                      a. Sequence_of_Appearance = sf.Sequence_of_Appearance\\n                                     WHERE sf.Pour LIKE (\\'slab%\\') \\n                                     GROUP BY sf.Upload_Date,\\n                                                \\n         a.Project,\\n        a.ACTIVITY_ID,\\n        a.CATEGORY,\\n          ACTIVITY_SEQUENCE,\\n        a.Flats,\\n        a.Total_Floors,\\n        a.Scheduled_Activities\\n-- select \\n-- COUNT(Level) AS Completed,\\n--Upload_Date,\\n--\\'SBU 3\\' AS SBU_ID,\\n-- NULL AS In_Progress,\\n-- COUNT(Level) AS SUM_Achived\\n\\n-- FROM [DWH].[PLN_STRUCTURE_FACT]  group by Upload_Date,SBU_ID\\nUNION ALL\\n SELECT \\n        PTF.Update_Date,\\n        a.Project,\\n        PTF.tower,\\n        a.ACTIVITY_ID,\\n        a.SBU_ID,\\n       \\'Corridor\\' AS Area,\\n       \\'Corridor Progress\\' AS Progress_Type,\\n        a.CATEGORY,\\n        a.ACTIVITY_SEQUENCE,\\n        a.Flats,\\n        a.Total_Floors,\\n        a.Scheduled_Activities,\\n       AVG(Try_CAST(PTF.value as decimal(15,4))) AS Average_Achived,\\n       SUM(Try_Cast(PTF.value as DECIMAL(15,4))) AS SUM_Achived,\\n       COUNT(Try_Cast(PTF.value As DECIMAL(15,4))) AS Count_Achived,\\n       SUM(TRY_CAST(CASE WHEN PTF.value = 1 THEN 1 ELSE NULL END as Decimal(15,4))) AS Completed,\\n        Sum(Try_CAST(CASE WHEN PTF.value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL END as Decimal(15,4))) AS In_Progress,\\n       sum(TRY_CAST(CASE WHEN PTF.value = 0 THEN 1 ELSE NULL END as Decimal(15,4))) AS Yet_To_Start,\\n        5 as SORT_MAIN ,\\n      ABS((ISNULL(a.Scheduled_Activities,0)-(ISNULL( SUM(TRY_CAST(CASE WHEN PTF.value = 1 THEN 1 ELSE NULL END as Decimal(15,4))),0)+\\n       ISNULL(Sum(Try_CAST(CASE WHEN PTF.value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL END as Decimal(15,4))),0)))) AS Yet_To_Start_Manual\\n          from\\n   (\\n        SELECT \\n            Flat_count.Project_Identifier AS Project,\\n            OPD.ACTIVITY_ID,\\n            OPD.SBU_ID,\\n           \\'Corridor\\' AS Area,\\n            \\'Corridor Progress\\' AS Progress_Type,\\n            OPD.CATEGORY,\\n            OPD.ACTIVITY_SEQUENCE,\\n            Flat_count.Flats,\\n            Flat_count.Total_Floors,\\n            Flat_count.Scheduled_Activities\\n   FROM STG.O_PLN_CORRIDOR_MAP_STG OPD\\n          CROSS apply (SELECT \\n                                           Project_Identifier,\\n                                           Total_Floors AS Scheduled_Activities,\\n                                           FLAT_COUNT AS Flats,\\n                                           Total_Floors AS Total_Floors\\n                                       FROM [STG].[PROJECTS_NEW_STG] WHERE Project_Identifier !=\\'Creek Vista Grande\\' )AS Flat_count)a\\n\\n                                                join[DWH].[PLN_CORRIDOR_FACT] PTF\\n                                               ON  a.Activity_Id=PTF.Activity_ID\\n                                               Group By PTF.Update_Date,\\n          a.Project,\\n        PTF.tower,\\n        a.ACTIVITY_ID,\\n        a.SBU_ID,\\n       Area,\\n        Progress_Type,\\n        a.CATEGORY,\\n        a.ACTIVITY_SEQUENCE,\\n        a.Flats,\\n        a.Total_Floors,\\n        a.Scheduled_Activities\\n   \\n   UNION ALL\\n\\n\\n   SELECT \\n        PTF.Upload_Date,\\n         a.Project,\\n        PTF.tower,\\n        a.ACTIVITY_ID,\\n        a.SBU_ID,\\n        \\'KeepOut Area\\' AS Area,\\n        \\'KeepOut Progress\\' AS Progress_Type,\\n        a.CATEGORY,\\n        a.ACTIVITY_SEQUENCE,\\n        a.Flats,\\n           a.Total_Floors,\\n           a.Scheduled_Activities,\\n       AVG(Try_CAST(PTF.value as decimal(15,4))) AS Average_Achived,\\n       SUM(Try_Cast(PTF.value as DECIMAL(15,4))) AS SUM_Achived,\\n       COUNT(Try_Cast(PTF.value As DECIMAL(15,4))) AS Count_Achived,\\n       SUM(TRY_CAST(CASE WHEN PTF.value = 1 THEN 1 ELSE NULL END as Decimal(15,4))) AS Completed,\\n        Sum(Try_CAST(CASE WHEN PTF.value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL END as Decimal(15,4))) AS In_Progress,\\n       sum(TRY_CAST(CASE WHEN PTF.value = 0 THEN 1 ELSE NULL END as Decimal(15,4))) AS Yet_To_Start,\\n      6 as SORT_MAIN ,\\n       ABS((ISNULL(a.Scheduled_Activities,0)-(ISNULL( SUM(TRY_CAST(CASE WHEN PTF.value = 1 THEN 1 ELSE NULL END as Decimal(15,4))),0)\\n        +ISNULL( Sum(Try_CAST(CASE WHEN PTF.value BETWEEN 0.01 AND 0.999 THEN 1 ELSE NULL END as Decimal(15,4))),0)))) AS Yet_To_Start_Manual\\n    FROM (\\n        SELECT \\n            Flat_count.Project_Identifier AS Project,\\n            OPD.ACTIVITY_ID,\\n            OPD.SBU_ID,\\n            OPD.CATEGORY,\\n            OPD.ACTIVITY_SEQUENCE,\\n            Flat_count.Flats,\\n            Flat_count.Total_Floors,\\n            Flat_count.Scheduled_Activities\\n     FROM STG.O_PLN_KEEPOUT_MAP_STG OPD CROSS JOIN (SELECT \\n                                           Project_Identifier,\\n                                           FLAT_COUNT AS Scheduled_Activities,\\n                                           FLAT_COUNT AS Flats,\\n                                           Total_Floors AS Total_Floors\\n                                       FROM [STG].[PROJECTS_NEW_STG] WHERE Project_Identifier !=\\'Creek Vista Grande\\') AS Flat_count)a\\n\\n                                                join DWH.PLN_KEEPOUT_FACT PTF\\n                                                ON a.Activity_Id=PTF.Activity_Id\\n                                                Group By PTF.Upload_Date,\\n         a.Project,\\n        PTF.tower,\\n        a.ACTIVITY_ID,\\n        a.SBU_ID,\\n        a.CATEGORY,\\n        a.ACTIVITY_SEQUENCE,\\n        a.Flats,\\n        a.Total_Floors,\\n        a.Scheduled_Activities\\n\\n\\n   \\n   \\n   ',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Id as integer,",
+						"          Upload_Date as date,",
+						"          Project as string,",
+						"          Tower as string,",
+						"          Activity_ID as integer,",
+						"          SBU_ID as string,",
+						"          Area as string,",
+						"          Progress_Type as string,",
+						"          Category as string,",
+						"          Activity_Sequence as string,",
+						"          Flats as string,",
+						"          Total_Floors as integer,",
+						"          Scheduled_Activities as integer,",
+						"          Sum_Achived as decimal(36,4),",
+						"          Count_Achived as integer,",
+						"          Average_Achived as decimal(38,3),",
+						"          Completed as decimal(23,0),",
+						"          In_Progress as decimal(38,3),",
+						"          Yet_To_Start as decimal(38,3),",
+						"          Yet_To_Start_Manual as decimal(25,0),",
+						"          Sort_Main as integer,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_PROJECT_PROGRESS_SUMMARY_FACT]'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Id = ID,",
+						"          Upload_Date,",
+						"          Project,",
+						"          Tower,",
+						"          Activity_ID = ACTIVITY_ID,",
+						"          SBU_ID,",
+						"          Area,",
+						"          Progress_Type,",
+						"          Category = CATEGORY,",
+						"          Activity_Sequence = ACTIVITY_SEQUENCE,",
+						"          Flats,",
+						"          Total_Floors,",
+						"          Scheduled_Activities,",
+						"          Sum_Achived = SUM_Achived,",
+						"          Count_Achived,",
+						"          Average_Achived,",
+						"          Completed,",
+						"          In_Progress,",
+						"          Yet_To_Start = Yet_TO_Start,",
+						"          Yet_To_Start_Manual,",
+						"          Sort_Main = SORT_MAIN,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_SBU_MAPPING')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_SBU_MAPPING_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_SBU_MAPPING_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          SBU_MAPPING_ID as integer,",
+						"          Mapping_Id as integer,",
+						"          Sbu_Identifier as string,",
+						"          Sbu_Shorts as string,",
+						"          Sbu_Description as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          SBU_Map_ID as integer,",
+						"          SBU_Identifier as string,",
+						"          SBU_Shorts as string,",
+						"          SBU_Description as string,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_SBU_MAPPING_DIM];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          SBU_Map_ID = SBU_MAPPING_ID,",
+						"          SBU_Identifier = Sbu_Identifier,",
+						"          SBU_Shorts = Sbu_Shorts,",
+						"          SBU_Description = Sbu_Description,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_SERVICEROOM')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_ELECTRICALROOM_MAP_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_SERVICEROOMS",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          Update_Date as date,",
+						"          project_id as integer,",
+						"          Project_Identifier as string,",
+						"          Level_Id as integer,",
+						"          Sbu_Id as integer,",
+						"          tower as string,",
+						"          Type_of_work as string,",
+						"          value as decimal(19,8),",
+						"          Activity_Id as integer,",
+						"          Category as string,",
+						"          Level as string,",
+						"          Sclicer as string,",
+						"          Category_Map as integer",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT  \\n        UNION_ALL.Update_Date,    \\n        P.Sort_ID as project_id,\\n          p.Project_Identifier,\\n        LM.Level_Map_ID as Level_Id,\\n          SM.Sbu_Map_id as Sbu_Id,\\n            \\n        UNION_ALL.tower,\\n          \\n        CASE\\n            WHEN Type_of_work = \\'Blockwork\\' THEN \\'Blockwork ER\\'\\n            WHEN Type_of_work = \\'Blockwork Layout\\' THEN \\'Blockwork Layout ER\\'\\n            WHEN Type_of_work = \\'Bore Packing\\' THEN \\'Bore Packing ER\\'\\n            WHEN Type_of_work = \\'Bus bar with Tap off Box completion\\' THEN \\'Bus bar with Tap off Box completion ER\\'\\n            WHEN Type_of_work = \\'Cable laying and glanding works\\' THEN \\'Cable laying and glanding works ER\\'\\n            WHEN Type_of_work = \\'Ceiling First Coat Paint\\' THEN \\'Ceiling First Coat Paint ER\\'\\n            WHEN Type_of_work = \\'Ceiling Stucco (1st and 2nd Coat)\\' THEN \\'Ceiling Stucco (1st and 2nd Coat) ER\\'\\n            WHEN Type_of_work = \\'Core Cutting _and_ Chipping\\' THEN \\'Core Cutting _and_ Chipping ER\\'\\n            WHEN Type_of_work = \\'Cutting _and_ Chasing of Blockwork\\' THEN \\'Cutting _and_ Chasing of Blockwork ER\\'\\n            WHEN Type_of_work = \\'Door_Architrave Installation\\' THEN \\'Door_Architrave Installation ER\\'\\n            WHEN Type_of_work = \\'Door_Frame Installation\\' THEN \\'Door_Frame Installation ER\\'\\n            WHEN Type_of_work = \\'Door_Ironmongery Installation\\' THEN \\'Door_Ironmongery Installation ER\\'\\n            WHEN Type_of_work = \\'Door_Shutter Installation\\' THEN \\'Door_Shutter Installation ER\\'\\n            WHEN Type_of_work = \\'Door_Silicone\\' THEN \\'Door_Silicone ER\\'\\n            WHEN Type_of_work = \\'Epoxy Bug Fill\\' THEN \\'Epoxy Bug Fill ER\\'\\n            WHEN Type_of_work = \\'Epoxy Final Coat\\' THEN \\'Epoxy Final Coat ER\\'\\n            WHEN Type_of_work = \\'Epoxy First Coat\\' THEN \\'Epoxy First Coat ER\\'\\n            WHEN Type_of_work = \\'Epoxy Grinding\\' THEN \\'Epoxy Grinding ER\\'\\n            WHEN Type_of_work = \\'Epoxy Primer\\' THEN \\'Epoxy Primer ER\\'\\n            WHEN Type_of_work = \\'Final Coat Paint\\' THEN \\'Final Coat Paint ER\\'\\n            WHEN Type_of_work = \\'Fire Sealant Works\\' THEN \\'Fire Sealant Works ER\\'\\n            WHEN Type_of_work = \\'Floor Tile\\' THEN \\'Floor Tile ER\\'\\n            WHEN Type_of_work = \\'Grouting\\' THEN \\'Grouting ER\\'\\n            WHEN Type_of_work = \\'Installation of cable tray and trunking\\' THEN \\'Installation of cable tray and trunking ER\\'\\n            WHEN Type_of_work = \\'Installation of Panels\\' THEN \\'Installation of Panels ER\\'\\n            WHEN Type_of_work = \\'MEP Final Fixtures\\' THEN \\'MEP Final Fixtures ER\\'\\n            WHEN Type_of_work = \\'MEP Marking for Builders Work\\' THEN \\'MEP Marking for Builders Work ER\\'\\n            WHEN Type_of_work = \\'MEP Services Installation\\' THEN \\'MEP Services Installation ER\\'\\n            WHEN Type_of_work = \\'MEP Sleeve Installation\\' THEN \\'MEP Sleeve Installation ER\\'\\n            WHEN Type_of_work = \\'Plaster\\' THEN \\'Plaster ER\\'\\n            WHEN Type_of_work = \\'POP Works\\' THEN \\'POP Works ER\\'\\n            WHEN Type_of_work = \\'Screed\\' THEN \\'Screed ER\\'\\n            WHEN Type_of_work = \\'Signage\\' THEN \\'Signage ER\\'\\n            WHEN Type_of_work = \\'Silicone\\' THEN \\'Silicone ER\\'\\n            WHEN Type_of_work = \\'Skirting\\' THEN \\'Skirting ER\\'\\n            WHEN Type_of_work = \\'Threshold\\' THEN \\'Threshold ER\\'\\n            WHEN Type_of_work = \\'Wall First Coat Paint\\' THEN \\'Wall First Coat Paint ER\\'\\n            WHEN Type_of_work = \\'Wall MEP Services Packing\\' THEN \\'Wall MEP Services Packing ER\\'\\n            WHEN Type_of_work = \\'Wall Stucco (1st and 2nd Coat)\\' THEN \\'Wall Stucco (1st and 2nd Coat) ER\\'\\n            WHEN Type_of_work = \\'Ceiling First Coat Paint\\'  THEN \\'Ceiling First Coat Paint FLL\\'\\n            WHEN Type_of_work = \\'Ceiling Primer\\'  THEN \\'Ceiling Primer FLL\\'\\n            WHEN Type_of_work = \\'Cutting _and_ Chasing of Blockwork\\'  THEN \\'Cutting _and_ Chasing of Blockwork FLL\\'\\n            WHEN Type_of_work = \\'Door_Shutter Installation\\'THEN \\'Door_Shutter Installation TR\\'\\n            WHEN Type_of_work = \\'Epoxy Bug Fill\\'THEN \\'Epoxy Bug Fill TR\\'\\n            WHEN Type_of_work = \\'Epoxy Final Coat\\'THEN \\'Epoxy Final Coat TR\\'\\n            WHEN Type_of_work = \\'Epoxy First Coat\\'THEN \\'Epoxy First Coat TR\\'\\n            WHEN Type_of_work = \\'Epoxy Grinding\\'THEN \\'Epoxy Grinding TR\\'\\n            WHEN Type_of_work = \\'Epoxy Primer\\'THEN \\'Epoxy Primer TR\\'\\n            WHEN Type_of_work = \\'Final Coat Paint\\'THEN \\'Final Coat Paint TR\\'\\n            WHEN Type_of_work = \\'Floor Tile\\'THEN \\'Floor Tile TR\\'\\n            WHEN Type_of_work = \\'Grout\\'THEN \\'Grout TR\\'\\n            WHEN Type_of_work = \\'Installation of cable tray and trunking\\'THEN \\'Installation of cable tray and trunking TR\\'\\n            WHEN Type_of_work = \\'Installation of Panels\\'THEN \\'Installation of Panels TR\\'\\n            WHEN Type_of_work = \\'MEP Final Fixtures\\'THEN \\'MEP Final Fixtures TR\\'\\n            WHEN Type_of_work = \\'MEP Marking for Builders Work\\'THEN \\'MEP Marking for Builders Work TR\\'\\n            WHEN Type_of_work = \\'MEP Services Installation\\'THEN \\'MEP Services Installation TR\\'\\n            WHEN Type_of_work = \\'Plaster\\'THEN \\'Plaster TR\\'\\n            WHEN Type_of_work = \\'Screed\\'THEN \\'Screed TR\\'\\n            WHEN Type_of_work = \\'Signage\\'THEN \\'Signage TR\\'\\n            WHEN Type_of_work = \\'Skirting\\'THEN \\'Skirting TR\\'\\n            WHEN Type_of_work = \\'Threshold\\'THEN \\'Threshold TR\\'\\n            WHEN Type_of_work = \\'Wall First Coat Paint\\'THEN \\'Wall First Coat Paint TR\\'\\n            WHEN Type_of_work = \\'Wall MEP Services Packing\\'THEN \\'Wall MEP Services Packing TR\\'\\n            WHEN Type_of_work = \\'Wall Stucco (1st and 2nd Coat)\\'THEN \\'Wall Stucco (1st and 2nd Coat) TR\\'\\n            WHEN Type_of_work = \\'Blockwork\\'  THEN \\'Blockwork WMR\\'\\n            WHEN Type_of_work = \\'Blockwork Layout\\'  THEN \\'Blockwork Layout WMR\\'\\n            WHEN Type_of_work = \\'Bore Packing\\'  THEN \\'Bore Packing WMR\\'\\n            WHEN Type_of_work = \\'Ceiling Primer\\'  THEN \\'Ceiling Primer WMR\\'\\n            WHEN Type_of_work = \\'Ceiling Stucco (1st and 2nd Coat)\\'  THEN \\'Ceiling Stucco (1st and 2nd Coat) WMR\\'\\n            WHEN Type_of_work = \\'Core Cutting _and_ Chipping\\'  THEN \\'Core Cutting _and_ Chipping WMR\\'\\n            WHEN Type_of_work = \\'Cutting _and_ Chasing of Blockwork\\'  THEN \\'Cutting _and_ Chasing of Blockwork WMR\\'\\n            WHEN Type_of_work = \\'Door_Architrave Installation\\'  THEN \\'Door_Architrave Installation WMR\\'\\n            WHEN Type_of_work = \\'Door_Frame Installation\\'  THEN \\'Door_Frame Installation WMR\\'\\n            WHEN Type_of_work = \\'Door_Ironmongery Installation\\'  THEN \\'Door_Ironmongery Installation WMR\\'\\n            WHEN Type_of_work = \\'Door_Shutter Installation\\'  THEN \\'Door_Shutter Installation WMR\\'\\n            WHEN Type_of_work = \\'Door_Silicone\\'  THEN \\'Door_Silicone WMR\\'\\n            WHEN Type_of_work = \\'Epoxy Bug Fill\\'  THEN \\'Epoxy Bug Fill WMR\\'\\n            WHEN Type_of_work = \\'Epoxy Final Coat\\'  THEN \\'Epoxy Final Coat WMR\\'\\n            WHEN Type_of_work = \\'Epoxy First Coat\\'  THEN \\'Epoxy First Coat WMR\\'\\n            WHEN Type_of_work = \\'Epoxy Grinding\\'  THEN \\'Epoxy Grinding WMR\\'\\n            WHEN Type_of_work = \\'Epoxy Primer\\'  THEN \\'Epoxy Primer WMR\\'\\n            WHEN Type_of_work = \\'False Ceiling Boarding\\'  THEN \\'False Ceiling Boarding WMR\\'\\n            WHEN Type_of_work = \\'False Ceiling Framing\\'  THEN \\'False Ceiling Framing WMR\\'\\n            WHEN Type_of_work = \\'Fire Sealant Works\\'  THEN \\'Fire Sealant Works WMR\\'\\n            WHEN Type_of_work = \\'Floor Tile\\'  THEN \\'Floor Tile WMR\\'\\n            WHEN Type_of_work = \\'Grouting\\'  THEN \\'Grouting WMR\\'\\n            WHEN Type_of_work = \\'MEP Boarding Clearance\\'  THEN \\'MEP Boarding Clearance WMR\\'\\n            WHEN Type_of_work = \\'MEP Framing Clearance\\'  THEN \\'MEP Framing Clearance WMR\\'\\n            WHEN Type_of_work = \\'MEP Marking for Builders Work\\'  THEN \\'MEP Marking for Builders Work WMR\\'\\n            WHEN Type_of_work = \\'MEP Services Installation\\'  THEN \\'MEP Services Installation WMR\\'\\n            WHEN Type_of_work = \\'MEP Sleeve Installation\\'  THEN \\'MEP Sleeve Installation WMR\\'\\n            WHEN Type_of_work = \\'Plaster\\'  THEN \\'Plaster WMR\\'\\n            WHEN Type_of_work = \\'POP Works\\'  THEN \\'POP Works WMR\\'\\n            WHEN Type_of_work = \\'Screed\\'  THEN \\'Screed WMR\\'\\n            WHEN Type_of_work = \\'Skirting\\'  THEN \\'Skirting WMR\\'\\n            WHEN Type_of_work = \\'Threshold\\'  THEN \\'Threshold WMR\\'\\n            WHEN Type_of_work = \\'Wall First Coat Paint\\'  THEN \\'Wall First Coat Paint WMR\\'\\n            WHEN Type_of_work = \\'Wall MEP Services Packing\\'  THEN \\'Wall MEP Services Packing WMR\\'\\n            WHEN Type_of_work = \\'Wall Primer\\'  THEN \\'Wall Primer WMR\\'\\n            WHEN Type_of_work = \\'Wall Stucco (1st and 2nd Coat)\\'  THEN \\'Wall Stucco (1st and 2nd Coat) WMR\\'\\n             ELSE Type_of_work END AS Type_of_work,\\n          CAST(REPLACE(UNION_ALL.[value],\\'%\\',\\'\\') AS DECIMAL(15,4))/100 AS value,\\n        UNION_ALL.Activity_Id,\\n        UNION_ALL.Category,\\n          UNION_ALL.Level,\\n          UNION_ALL.Sclicer,\\n        CASE        \\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Blockwork\\') THEN  1\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Builders Work\\') THEN  2\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'MEP\\') THEN  16\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Plaster\\') THEN  3\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Screed\\') THEN  5\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Paint\\') THEN  8\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Gypsum\\') THEN  6\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Marble\\') THEN  10\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Tile\\') THEN  9\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Joinery\\') THEN  12\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Signage\\') THEN  7\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'SFD\\') THEN  15\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Epoxy\\') THEN  11\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Specialist Services\\') THEN  13\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Waterproofing\\')THEN  4\\n            WHEN TRIM(UNION_ALL.CATEGORY) IN(\\'Specialist System\\')THEN  14\\n            ELSE 20\\n        END AS Category_Map\\n    FROM (SELECT  * FROM [DWH].[PLN_WATERROOM_FACT]\\n            UNION ALL\\n        SELECT  * FROM [DWH].[PLN_ELECTRICROOM_FACT]\\n            UNION ALL\\n        SELECT  * FROM [DWH].[PLN_GARBAGEROOM_FACT]\\n            UNION ALL\\n        SELECT  * FROM [DWH].[PLN_TELEPHONEROOM_FACT]\\n            UNION ALL\\n        SELECT  * FROM [DWH].[PLN_FIRELIFTLOBBY_FACT])UNION_ALL\\n     \\n        LEFT JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] LM\\n          ON UNION_ALL.Level = LM.level\\n\\n          LEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON         UNION_ALL.PROJECT_ID=P.Sort_ID\\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          UNION_ALL.SBU_ID=SM.SBU_MAP_ID\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Id as integer,",
+						"          Update_Date as date,",
+						"          Project_Identifier as string,",
+						"          Project_Id as integer,",
+						"          Level_Id as integer,",
+						"          Sbu_ID as integer,",
+						"          Tower as string,",
+						"          Type_of_work as string,",
+						"          Level as string,",
+						"          Sclicer as string,",
+						"          Value as decimal(14,4),",
+						"          Activity_Id as integer,",
+						"          Category as string,",
+						"          Category_Map as integer,",
+						"          Load_Date_Time as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_SERVICEROOMS_FACT]'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Id = ID,",
+						"          Update_Date,",
+						"          Project_Identifier,",
+						"          Project_Id = project_id,",
+						"          Level_Id,",
+						"          Sbu_ID = Sbu_Id,",
+						"          Tower = tower,",
+						"          Type_of_work,",
+						"          Level,",
+						"          Sclicer,",
+						"          Value = value,",
+						"          Activity_Id,",
+						"          Category,",
+						"          Category_Map,",
+						"          Load_Date_Time = LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_STAIRCASE')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_STAIRCASE_RAW_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_STAIRCASE_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAP_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          PROJECT_ID as integer,",
+						"          LEVEL_ID as integer,",
+						"          SBU_ID as integer,",
+						"          TOWER as string,",
+						"          LEVEL as string,",
+						"          STAIR_CASE_NO as string,",
+						"          sclicer as string,",
+						"          ACTIVITY_ID as integer,",
+						"          VALUE as string,",
+						"          TYPE_OF_WORK as string,",
+						"          CATEGORY as string,",
+						"          UPLOAD_DATE as date,",
+						"          CATEGORY_SORT as integer",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: '    SELECT \\n     P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n     SM.SBU_MAP_ID AS SBU_ID,\\n    S.TOWER,\\n    S.LEVEL,\\n        S.STAIR_CASE_NO,\\n        \\'Staircase Area\\' AS sclicer,\\n     S.ACTIVITY_ID,\\n    CASE \\n        WHEN S.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE S.VALUE\\n    END AS VALUE,\\n    S.TYPE_OF_WORK,\\n    S.CATEGORY,\\n     S.UPLOAD_DATE,\\n    CASE \\n        WHEN TRIM(S.CATEGORY) IN(\\'MEP\\') THEN  8\\n        WHEN TRIM(S.CATEGORY) IN(\\'BUILDERS WORK\\') THEN  2\\n        WHEN TRIM(S.CATEGORY) IN(\\'PLASTER\\') THEN  3\\n        WHEN TRIM(S.CATEGORY) IN(\\'PAINT\\') THEN  9\\n        WHEN TRIM(S.CATEGORY) IN(\\'HANDRAIL\\') THEN  4\\n        WHEN TRIM(S.CATEGORY) IN(\\'MARBLE\\') THEN  5\\n        WHEN TRIM(S.CATEGORY) IN(\\'JOINERY\\') THEN  6\\n        WHEN TRIM(S.CATEGORY) IN(\\'SIGNAGE\\') THEN  7\\n        WHEN TRIM(S.CATEGORY) IN(\\'PMT\\') THEN  1\\n        ELSE 10\\n    END AS CATEGORY_SORT\\nFROM\\n(\\n     SELECT\\n        CAST(OPSR.UPLOAD_TIME AS DATE) AS UPLOAD_DATE, \\n        OPSR.PROJECT_ID,\\n        OPSR.TOWER,\\n        OPSR.LEVEL,\\n        OPSR.STAIR_CASE_NO,\\n        COLUMN_NAME.*,\\n        OPSM.ACTIVITY_ID,\\n        OPSM.SBU_ID,\\n        OPSM.CATEGORY,\\n        DENSE_RANK () OVER (PARTITION BY  OPSR.PROJECT_ID ORDER BY  CAST(OPSR.UPLOAD_TIME AS DATE) DESC) DRANK\\n  FROM STG.O_PLN_STAIRCASE_RAW_STG OPSR\\n    CROSS APPLY (\\n                SELECT     MEP_CONDUIT_MARKING     ,     \\'MEP CONDUIT MARKING\\'\\n                    UNION ALL SELECT     CUTTING_AND_CHASING     ,     \\'CUTTING AND CHASING\\'\\n                    UNION ALL SELECT     MEP_CONDUIT_FIXTURES     ,     \\'MEP CONDUIT FIXTURES\\'\\n                    UNION ALL SELECT     WALL_PACKING     ,     \\'WALL PACKING\\'\\n                    UNION ALL SELECT     PLASTER     ,     \\'PLASTER\\'\\n                    UNION ALL SELECT     GRINDING     ,     \\'GRINDING\\'\\n                    UNION ALL SELECT     POP     ,     \\'POP\\'\\n                    UNION ALL SELECT     MEDIUM_COAT_CEILING_SPRAY_PLASTER     ,     \\'MEDIUM COAT CEILING SPRAY PLASTER\\'\\n                    UNION ALL SELECT     TWO_COAT_FINE_CEILING_SPRAY_PLASTER     ,     \\'TWO COAT FINE CEILING SPRAY PLASTER\\'\\n                    UNION ALL SELECT     CEILING_PRIMER     ,     \\'CEILING PRIMER\\'\\n                    UNION ALL SELECT     CEILING_TEXTURE     ,     \\'CEILING TEXTURE\\'\\n                    UNION ALL SELECT     WALL_PRIMER     ,     \\'WALL PRIMER\\'\\n                    UNION ALL SELECT     WALL_STUCCO_BANDING     ,     \\'WALL STUCCO BANDING\\'\\n                    UNION ALL SELECT     [WALL_STUCCO_(1ST_AND_2ND_COAT)]     ,     \\'WALL STUCCO (1ST AND 2ND COAT)\\'\\n                    UNION ALL SELECT     MEP_CLEARANCE_FOR_PRESSURIZATION_SHAFT     ,     \\'MEP CLEARANCE FOR PRESSURIZATION SHAFT\\'\\n                    UNION ALL SELECT     SANDING     ,     \\'SANDING\\'\\n                    UNION ALL SELECT     WALL_FIRST_COAT_PAINT     ,     \\'WALL FIRST COAT PAINT\\'\\n                    UNION ALL SELECT     CEILING_FIRST_COAT_PAINT     ,     \\'CEILING FIRST COAT PAINT\\'\\n                    UNION ALL SELECT     HANDRAIL_FLOOR_MOUNTED     ,     \\'HANDRAIL FLOOR MOUNTED\\'\\n                    UNION ALL SELECT     HANDRAIL_WALL_MOUNTED     ,     \\'HANDRAIL WALL MOUNTED\\'\\n                    UNION ALL SELECT     EPOXY_GRINDING     ,     \\'EPOXY GRINDING\\'\\n                    UNION ALL SELECT     EPOXY_BUG_FILL     ,     \\'EPOXY BUG FILL\\'\\n                    UNION ALL SELECT     EPOXY_PRIMER     ,     \\'EPOXY PRIMER\\'\\n                    UNION ALL SELECT     EPOXY_BASE_COAT     ,     \\'EPOXY BASE COAT\\'\\n                    UNION ALL SELECT     EPOXY_FINAL_COAT     ,     \\'EPOXY FINAL COAT\\'\\n                    UNION ALL SELECT     THRESHOLD_INSTALLATION     ,     \\'THRESHOLD INSTALLATION\\'\\n                    UNION ALL SELECT     DOOR_FRAME_INSTALLATION     ,     \\'DOOR - FRAME INSTALLATION\\'\\n                    UNION ALL SELECT     DOOR_ARCHITRAVE_INSTALLATION     ,     \\'DOOR - ARCHITRAVE INSTALLATION\\'\\n                    UNION ALL SELECT     DOOR_SHUTTER_INSTALLATION     ,     \\'DOOR - SHUTTER INSTALLATION\\'\\n                    UNION ALL SELECT     DOOR_IRONMONGERY_INSTALLATION     ,     \\'DOOR - IRONMONGERY INSTALLATION\\'\\n                    UNION ALL SELECT     DOOR_SILICONE_WORKS     ,     \\'DOOR - SILICONE WORKS\\'\\n                    UNION ALL SELECT     SIGNAGE     ,     \\'SIGNAGE\\'\\n                    UNION ALL SELECT     NOSING_INSTALLATION     ,     \\'NOSING INSTALLATION\\'\\n                    UNION ALL SELECT     HANDRAIL_PAINTING     ,     \\'HANDRAIL PAINTING\\'\\n                    UNION ALL SELECT     PREPARATION_FOR_FINAL_COAT_PAINT     ,     \\'PREPARATION FOR FINAL COAT PAINT\\'\\n                    UNION ALL SELECT     MEP_FINAL_FIXTURES_INSTALLATION     ,     \\'MEP FINAL FIXTURES INSTALLATION\\'\\n                    UNION ALL SELECT     FINAL_COAT_PAINT     ,     \\'FINAL COAT PAINT\\'\\n                    UNION ALL SELECT     STAIRCASE_PRESSURIZATION     ,     \\'STAIRCASE PRESSURIZATION\\'\\n        )\\n        AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n    INNER JOIN \\n     STG.O_PLN_STAIRCASE_MAP_STG OPSM\\n    ON COLUMN_NAME.TYPE_OF_WORK = OPSM.ACTIVITY_SEQUENCE\\n    WHERE COLUMN_NAME.VALUE IS NOT NULL AND (TRIM(OPSR.LEVEL) NOT IN (\\'\\') AND OPSR.LEVEL IS NOT NULL)\\n        ) S\\nLEFT JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          S.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN  [DWH].[PROJECTS_NEW_DIM] P\\n      ON          S.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          S.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          S.DRANK = 1\\n',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAP_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ID as integer,",
+						"          Project_ID as integer,",
+						"          SBU_ID as integer,",
+						"          Level_ID as integer,",
+						"          Tower as string,",
+						"          Level as string,",
+						"          Stair_Case_No as string,",
+						"          Sclicer as string,",
+						"          Activity_ID as integer,",
+						"          Value as string,",
+						"          Type_of_work as string,",
+						"          Category as string,",
+						"          Category_Sort as string,",
+						"          Update_Date as date,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_STAIRCASE_FACT]'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID,",
+						"          Project_ID = PROJECT_ID,",
+						"          SBU_ID,",
+						"          Level_ID = LEVEL_ID,",
+						"          Tower = TOWER,",
+						"          Level = LEVEL,",
+						"          Stair_Case_No = STAIR_CASE_NO,",
+						"          Sclicer = sclicer,",
+						"          Activity_ID = ACTIVITY_ID,",
+						"          Value = VALUE,",
+						"          Type_of_work = TYPE_OF_WORK,",
+						"          Category = CATEGORY,",
+						"          Category_Sort = CATEGORY_SORT,",
+						"          Update_Date = UPLOAD_DATE,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_STRUCTURE')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_STRUCTURE_POURING_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_STRACTURE_FACT_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          UPLOAD_DATE as timestamp,",
+						"          PROJECT_Id as integer,",
+						"          AREA as string,",
+						"          Project_Identifier as string,",
+						"          LEVEL_ID as integer,",
+						"          SBU_ID as integer,",
+						"          LEVEL as string,",
+						"          POUR_COUNT as string,",
+						"          POUR as string,",
+						"          SEQUENCE_OF_APPEARANCE as integer,",
+						"          VALUE as string,",
+						"          NEXT_DATE as string,",
+						"          AVG_DAYS as integer,",
+						"          VIEW_MAP as integer,",
+						"          VALUE_AVERAGE as integer",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'SELECT\\n       KA.UPLOAD_DATE,\\n      P.Sort_ID as PROJECT_Id,\\n       KA.AREA,\\n      KA. Project_Id as Project_Identifier,\\n       \\n       LM.LEVEL_MAP_ID AS LEVEL_ID,\\n       SM.SBU_MAP_ID AS SBU_ID,\\n       KA.LEVEL,\\n       KA.POUR_COUNT,\\n       KA.POUR,\\n       KA.SEQUENCE_OF_APPEARANCE,\\n       KA.VALUE,\\n       LAG(KA.VALUE) OVER(PARTITION BY KA.PROJECT_ID,KA.POUR ORDER BY KA.POUR,VALUE) AS NEXT_DATE,\\n       DATEDIFF(YEAR,KA.VALUE,LAG(KA.VALUE) OVER(PARTITION BY KA.PROJECT_ID,KA.POUR ORDER BY KA.POUR,KA.VALUE)) AS AVG_DAYS,\\n       CASE \\n           WHEN KA.AREA = \\'TOWER\\' THEN     1\\n           WHEN KA.AREA = \\'PODIUM\\' THEN     2\\n           WHEN KA.AREA = \\'PODIUM-TA\\' THEN 3\\n           WHEN KA.AREA = \\'TOWER A\\' THEN     4\\n           WHEN KA.AREA = \\'PODIUM-TB\\' THEN 5\\n           WHEN KA.AREA = \\'TOWER B\\' THEN     6\\n           WHEN KA.AREA = \\'TOWER C\\' THEN     7\\n           WHEN KA.AREA = \\'TOWER D\\' THEN     8\\n       ELSE NULL\\n       END AS VIEW_MAP,\\n       CASE \\n           WHEN KA.VALUE < GETDATE() THEN 1\\n           ELSE 0\\n       END AS VALUE_AVERAGE\\nFROM(\\n        SELECT\\n            SP.UPLOAD_TIME AS UPLOAD_DATE,\\n            SP.PROJECT_ID,\\n            SP.LEVEL,\\n            SP.SBU_ID,\\n            OPSPM.POUR_COUNT, \\n            OPSPM.SEQUENCE_OF_APPEARANCE, \\n            OPSPM.AREA, \\n            COLUMN_NAME.*,\\n            DENSE_RANK() OVER(PARTITION BY SP.PROJECT_ID ORDER BY UPLOAD_TIME  DESC) AS DRANK \\n        FROM STG.O_PLN_STRUCTURE_POURING_STG SP\\n        CROSS APPLY (\\n                    SELECT Core_Wall_1 , \\'Core Wall 1\\'\\n                    UNION ALL SELECT Core_Wall_2 , \\'Core Wall 2\\'\\n                    UNION ALL SELECT Core_Wall_3 , \\'Core Wall 3\\'\\n                    UNION ALL SELECT Core_Wall_4 , \\'Core Wall 4\\'\\n                    UNION ALL SELECT Core_Wall_5 , \\'Core Wall 5\\'\\n                    UNION ALL SELECT Core_Wall_6 , \\'Core Wall 6\\'\\n                    UNION ALL SELECT Core_Wall_7 , \\'Core Wall 7\\'\\n                    UNION ALL SELECT Core_Wall_8 , \\'Core Wall 8\\'\\n                    UNION ALL SELECT Core_Wall_9 , \\'Core Wall 9\\'\\n                    UNION ALL SELECT Core_Wall_10 , \\'Core Wall 10\\'\\n                    UNION ALL SELECT Core_Wall_11 , \\'Core Wall 11\\'\\n                    UNION ALL SELECT Core_Wall_12 , \\'Core Wall 12\\'\\n                    UNION ALL SELECT Core_Wall_13 , \\'Core Wall 13\\'\\n                    UNION ALL SELECT Core_Wall_14 , \\'Core Wall 14\\'\\n                    UNION ALL SELECT Core_Wall_15 , \\'Core Wall 15\\'\\n                    UNION ALL SELECT Core_Wall_16 , \\'Core Wall 16\\'\\n                    UNION ALL SELECT Core_Wall_17 , \\'Core Wall 17\\'\\n                    UNION ALL SELECT Core_Wall_18 , \\'Core Wall 18\\'\\n                    UNION ALL SELECT Core_Wall_19 , \\'Core Wall 19\\'\\n                    UNION ALL SELECT Core_Wall_20 , \\'Core Wall 20\\'\\n                    UNION ALL SELECT Slab_1 , \\'Slab 1\\'\\n                    UNION ALL SELECT Slab_2 , \\'Slab 2\\'\\n                    UNION ALL SELECT Slab_3 , \\'Slab 3\\'\\n                    UNION ALL SELECT Slab_4 , \\'Slab 4\\'\\n                    UNION ALL SELECT Slab_5 , \\'Slab 5\\'\\n                    UNION ALL SELECT Slab_6 , \\'Slab 6\\'\\n                    UNION ALL SELECT Slab_7 , \\'Slab 7\\'\\n                    UNION ALL SELECT Slab_8 , \\'Slab 8\\'\\n                    UNION ALL SELECT Slab_9 , \\'Slab 9\\'\\n                    UNION ALL SELECT Slab_10 , \\'Slab 10\\'\\n                    UNION ALL SELECT Slab_11 , \\'Slab 11\\'\\n                    UNION ALL SELECT Slab_12 , \\'Slab 12\\'\\n                    UNION ALL SELECT Slab_13 , \\'Slab 13\\'\\n                    UNION ALL SELECT Slab_14 , \\'Slab 14\\'\\n                    UNION ALL SELECT Slab_15 , \\'Slab 15\\'\\n                    UNION ALL SELECT Slab_16 , \\'Slab 16\\'\\n                    UNION ALL SELECT Slab_17 , \\'Slab 17\\'\\n                    UNION ALL SELECT Slab_18 , \\'Slab 18\\'\\n                    UNION ALL SELECT Slab_19 , \\'Slab 19\\'\\n                    UNION ALL SELECT Slab_20 , \\'Slab 20\\'\\n                    UNION ALL SELECT Staircase_1 , \\'Staircase 1\\'\\n                    UNION ALL SELECT Staircase_2 , \\'Staircase 2\\'\\n                    UNION ALL SELECT Staircase_3 , \\'Staircase 3\\'\\n                    UNION ALL SELECT Staircase_4 , \\'Staircase 4\\'\\n                    UNION ALL SELECT Staircase_5 , \\'Staircase 5\\'\\n                    UNION ALL SELECT Staircase_6 , \\'Staircase 6\\'\\n                    UNION ALL SELECT Staircase_7 , \\'Staircase 7\\'\\n                    UNION ALL SELECT Staircase_8 , \\'Staircase 8\\'\\n                    UNION ALL SELECT Staircase_9 , \\'Staircase 9\\'\\n                    UNION ALL SELECT Staircase_10 , \\'Staircase 10\\'\\n                    UNION ALL SELECT Staircase_11 , \\'Staircase 11\\'\\n                    UNION ALL SELECT Staircase_13 , \\'Staircase 13\\'\\n                    UNION ALL SELECT Staircase_14 , \\'Staircase 14\\'\\n                    UNION ALL SELECT Staircase_15 , \\'Staircase 15\\'\\n                    UNION ALL SELECT Staircase_16 , \\'Staircase 16\\'\\n                    UNION ALL SELECT Staircase_17 , \\'Staircase 17\\'\\n                    UNION ALL SELECT Staircase_18 , \\'Staircase 18\\'\\n                    UNION ALL SELECT Staircase_19 , \\'Staircase 19\\'\\n                    UNION ALL SELECT Staircase_20 , \\'Staircase 20\\'\\n                   )AS COLUMN_NAME(VALUE,POUR) \\n         INNER JOIN   \\n      STG.O_PLN_STRUCTURES_POUR_MAP_STG  OPSPM \\n             ON        COLUMN_NAME.POUR = OPSPM.TYPE_OF_POUR \\n         WHERE        VALUE IS NOT NULL AND Lower(COLUMN_NAME.POUR)  like \\'slab%\\'  AND SP.LEVEL NOT LIKE \\'grade%\\' AND TRIM(COLUMN_NAME.VALUE) NOT IN (\\'\\')) KA \\nleft JOIN    DWH.PLN_LEVEL_MAP_ALL_DIM LM \\n    ON        KA.LEVEL = LM.LEVEL \\nleft JOIN    [DWH].[PROJECTS_NEW_DIM] P\\n   ON        KA.PROJECT_ID=P.PROJECT_Identifier\\nLEFT JOIN    [DWH].[PLN_SBU_MAPPING_DIM] SM\\n    ON      KA.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE       KA.DRANK = 1',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Id as integer,",
+						"          Upload_Date as date,",
+						"          Project_Identifier as string,",
+						"          Project_Id as string,",
+						"          Level_Id as integer,",
+						"          Sbu_id as integer,",
+						"          Area as string,",
+						"          Level as string,",
+						"          Pour_count as string,",
+						"          Pour as string,",
+						"          Sequence_of_Appearance as integer,",
+						"          value as string,",
+						"          Next_Date as string,",
+						"          Avg_days as integer,",
+						"          View_Map as integer,",
+						"          value_Average as integer,",
+						"          LoadDateTime as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_STRUCTURE_FACT];'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Id = ID,",
+						"          Upload_Date = UPLOAD_DATE,",
+						"          Project_Identifier,",
+						"          Project_Id = PROJECT_Id,",
+						"          Level_Id = LEVEL_ID,",
+						"          Sbu_id = SBU_ID,",
+						"          Area = AREA,",
+						"          Level = LEVEL,",
+						"          Pour_count = POUR_COUNT,",
+						"          Pour = POUR,",
+						"          Sequence_of_Appearance = SEQUENCE_OF_APPEARANCE,",
+						"          value = VALUE,",
+						"          Next_Date = NEXT_DATE,",
+						"          Avg_days = AVG_DAYS,",
+						"          View_Map = VIEW_MAP,",
+						"          value_Average = VALUE_AVERAGE,",
+						"          LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_PLN_SUBCONTRACT_MANPOWER')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_O_PLN_SUBCONTRACTOR_MANPOWER_STG_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "source1",
+							"description": "Import data from DS_O_PLN_DOOR_DELIVERY_RAW_STG_TRG"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_PLN_SUBCONTRACT_MANPOWER_TRG",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"description": "Export data to DS_DOOR_DELIVERY_M_TRG"
+						}
+					],
+					"transformations": [
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"parameters{",
+						"     MAX_ID as integer (0)",
+						"}",
+						"source(output(",
+						"          Id_ as integer,",
+						"          upload_time as timestamp,",
+						"          tower as string,",
+						"          project_id as integer,",
+						"          sbu_id as integer,",
+						"          SBU as string,",
+						"          Project as string,",
+						"          type as string,",
+						"          Sub_Contractor as string,",
+						"          Activity as string,",
+						"          SCL_Engineer as string,",
+						"          Shift as string,",
+						"          Count as string,",
+						"          Trade as string",
+						"     ),",
+						"     allowSchemaDrift: false,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     query: 'select \\n        GAR.Id_,\\n          GAR.upload_time,  \\n          GAR.tower, \\n          p.Sort_ID as project_id,\\n          sm.Sbu_Map_Id as sbu_id,\\n          RTRIM(GAR.SBU) as SBU,\\n          RTRIM(GAR.Project) as Project, \\n          RTRIM(GAR.type) as type,\\n          GAR.Sub_Contractor,\\n          GAR.Activity,\\n          GAR.SCL_Engineer,\\n          GAR.Shift, \\n          GAR.Count,\\n          GAR. Trade\\nfrom(\\nselect\\n          s.Id_,\\n          s.upload_time,  \\n          s.tower, \\n          RTRIM(s.SBU) as SBU,\\n          RTRIM(s.Project) as Project, \\n          RTRIM(s.type) as type,\\n          s.Sub_Contractor,\\n          s.Activity,\\n          s.SCL_Engineer,\\n          column_name.Trade_uncleaned as Trade,\\n          case when column_name.Trade_uncleaned like \\'%D\\' then \\'Day\\'\\n                when column_name.Trade_uncleaned like \\'%N\\' then \\'Night\\'\\n                when column_name.Trade_uncleaned like \\'%D/N\\' then \\'Day_Night\\'\\n                else \\'Error\\'\\n                end as Shift, \\n          column_name.Count\\nfrom STG.O_PLN_SUBCONTRACTOR_MANPOWER_STG s\\ncross Apply (\\n                         SELECT     PM_And_Engineers_D     ,     \\'PM & Engineers_D\\'\\n                         UNION ALL SELECT     PM_And_Engineers_N     ,     \\'PM & Engineers_N\\'\\n                         UNION ALL SELECT     PM_And_Engineers_D_N     ,     \\'PM_And_Engineers_D/N\\'\\n                         UNION ALL SELECT     Supervisor_D     ,     \\'Supervisor_D\\'\\n                         UNION ALL SELECT     Supervisor_N     ,     \\'Supervisor_N\\'\\n                         UNION ALL SELECT     Supervisor_D_N     ,     \\'Supervisor_D/N\\'\\n                         UNION ALL SELECT     Foreman_Staff_D     ,     \\'Foreman / Staff_D\\'\\n                         UNION ALL SELECT     Foreman_Staff_N     ,     \\'Foreman / Staff_N\\'\\n                         UNION ALL SELECT     Foreman_Staff_D_N     ,     \\'Foreman / Staff_D/N\\'\\n                         UNION ALL SELECT     Chargehand_D     ,     \\'Chargehand_D\\'\\n                         UNION ALL SELECT     Chargehand_N     ,     \\'Chargehand_N\\'\\n                         UNION ALL SELECT     Chargehand_D_N     ,     \\'Chargehand_D/N\\'\\n                         UNION ALL SELECT     Carpenter_D     ,     \\'Carpenter_D\\'\\n                         UNION ALL SELECT     Carpenter_N     ,     \\'Carpenter_N\\'\\n                         UNION ALL SELECT     Carpenter_D_N     ,     \\'Carpenter_D/N\\'\\n                         UNION ALL SELECT     Mason_D     ,     \\'Mason_D\\'\\n                         UNION ALL SELECT     Mason_N     ,     \\'Mason_N\\'\\n                         UNION ALL SELECT     Mason_D_N     ,     \\'Mason_D/N\\'\\n                         UNION ALL SELECT     Steel_Fitter_D     ,     \\'Steel Fitter_D\\'\\n                         UNION ALL SELECT     Steel_Fitter_N     ,     \\'Steel Fitter_N\\'\\n                         UNION ALL SELECT     Steel_Fitter_D_N     ,     \\'Steel Fitter_D/N\\'\\n                         UNION ALL SELECT     Scaffolder_D     ,     \\'Scaffolder_D\\'\\n                         UNION ALL SELECT     Scaffolder_N     ,     \\'Scaffolder_N\\'\\n                         UNION ALL SELECT     Scaffolder_D_N     ,     \\'Scaffolder_D/N\\'\\n                         UNION ALL SELECT     Operator_D     ,     \\'Operator_D\\'\\n                         UNION ALL SELECT     Operator_N     ,     \\'Operator_N\\'\\n                         UNION ALL SELECT     Operator_D_N     ,     \\'Operator_D/N\\'\\n                         UNION ALL SELECT     Security_D     ,     \\'Security_D\\'\\n                         UNION ALL SELECT     Security_N     ,     \\'Security_N\\'\\n                         UNION ALL SELECT     Security_D_N     ,     \\'Security_D/N\\'\\n                         UNION ALL SELECT     Helper_D     ,     \\'Helper_D\\'\\n                         UNION ALL SELECT     Helper_N     ,     \\'Helper_N\\'\\n                         UNION ALL SELECT     Helper_D_N     ,     \\'Helper_D/N\\'\\n                         UNION ALL SELECT     Steel_Fixers_D     ,     \\'Steel Fixers_D\\'\\n                         UNION ALL SELECT     Steel_Fixers_N     ,     \\'Steel Fixers_N\\'\\n                         UNION ALL SELECT     Steel_Fixers_D_N     ,     \\'Steel Fixers_D/N\\'\\n                         UNION ALL SELECT     Masons_D     ,     \\'Masons_D\\'\\n                         UNION ALL SELECT     Masons_N     ,     \\'Masons_N\\'\\n                         UNION ALL SELECT     Masons_D_N     ,     \\'Masons_D/N\\'\\n                         UNION ALL SELECT     Welder_D     ,     \\'Welder_D\\'\\n                         UNION ALL SELECT     Welder_N     ,     \\'Welder_N\\'\\n                         UNION ALL SELECT     Welder_D_N     ,     \\'Welder_D/N\\'\\n                         UNION ALL SELECT     Rigger_D     ,     \\'Rigger_D\\'\\n                         UNION ALL SELECT     Rigger_N     ,     \\'Rigger_N\\'\\n                         UNION ALL SELECT     Rigger_D_N     ,     \\'Rigger_D/N\\'\\n                         UNION ALL SELECT     Painter_D     ,     \\'Painter_D\\'\\n                         UNION ALL SELECT     Painter_N     ,     \\'Painter_N\\'\\n                         UNION ALL SELECT     Painter_D_N     ,     \\'Painter_D/N\\'\\n                         UNION ALL SELECT     Tile_Mason_D     ,     \\'Tile Mason_D\\'\\n                         UNION ALL SELECT     Tile_Mason_N     ,     \\'Tile Mason_N\\'\\n                         UNION ALL SELECT     Tile_Mason_D_N     ,     \\'Tile Mason_D/N\\'\\n                         UNION ALL SELECT     Gypsum_Carpenter_D     ,     \\'Gypsum Carpenter_D\\'\\n                         UNION ALL SELECT     Gypsum_Carpenter_N     ,     \\'Gypsum Carpenter_N\\'\\n                         UNION ALL SELECT     Gypsum_Carpenter_D_N     ,     \\'Gypsum Carpenter_D/N\\'\\n                         UNION ALL SELECT     Joinery_Carpenter_D     ,     \\'Joinery Carpenter_D\\'\\n                         UNION ALL SELECT     Joinery_Carpenter_N     ,     \\'Joinery Carpenter_N\\'\\n                         UNION ALL SELECT     Joinery_Carpenter_D_N     ,     \\'Joinery Carpenter_D/N\\'\\n                         UNION ALL SELECT     Screed_Mason_D     ,     \\'Screed Mason_D\\'\\n                         UNION ALL SELECT     Screed_Mason_N     ,     \\'Screed Mason_N\\'\\n                         UNION ALL SELECT     Screed_Mason_D_N     ,     \\'Screed Mason_D/N\\'\\n                         UNION ALL SELECT     Marble_Stone_Mason_D     ,     \\'Marble / Stone Mason_D\\'\\n                         UNION ALL SELECT     Marble_Stone_Mason_N     ,     \\'Marble / Stone Mason_N\\'\\n                         UNION ALL SELECT     Marble_Stone_Mason_D_N     ,     \\'Marble / Stone Mason_D/N\\'\\n                         UNION ALL SELECT     Electrician_D     ,     \\'Electrician_D\\'\\n                         UNION ALL SELECT     Electrician_N     ,     \\'Electrician_N\\'\\n                         UNION ALL SELECT     Electrician_D_N     ,     \\'Electrician_D/N\\'\\n                         UNION ALL SELECT     Plumber_D     ,     \\'Plumber_D\\'\\n                         UNION ALL SELECT     Plumber_N     ,     \\'Plumber_N\\'\\n                         UNION ALL SELECT     Plumber_D_N     ,     \\'Plumber_D/N\\'\\n                         UNION ALL SELECT     HVAC_D     ,     \\'HVAC_D\\'\\n                         UNION ALL SELECT     HVAC_N     ,     \\'HVAC_N\\'\\n                         UNION ALL SELECT     HVAC_D_N     ,     \\'HVAC_D/N\\'\\n                         UNION ALL SELECT     Sub_Contractor_D     ,     \\'Sub Contractor_D\\'\\n                         UNION ALL SELECT     Sub_Contractor_N     ,     \\'Sub Contractor_N\\'\\n                         UNION ALL SELECT     Sub_Contractor_D_N     ,     \\'Sub Contractor_D/N\\'\\n                         UNION ALL SELECT     Facade_Technicians_D     ,     \\'Facade Technicians_D\\'\\n                         UNION ALL SELECT     Facade_Technicians_N     ,     \\'Facade Technicians_N\\'\\n                         UNION ALL SELECT     Facade_Technicians_D_N     ,     \\'Facade Technicians_D/N\\'\\n                         UNION ALL SELECT     POP_Mason_D     ,     \\'POP Mason_D\\'\\n                         UNION ALL SELECT     POP_Mason_N     ,     \\'POP Mason_N\\'\\n                         UNION ALL SELECT     POP_Mason_D_N     ,     \\'POP Mason_D/N\\'\\n                         UNION ALL SELECT     Joinery_Polisher_D     ,     \\'Joinery Polisher_D\\'\\n                         UNION ALL SELECT     Joinery_Polisher_N     ,     \\'Joinery Polisher_N\\'\\n                         UNION ALL SELECT     Joinery_Polisher_D_N     ,     \\'Joinery Polisher_D/N\\'\\n                         UNION ALL SELECT     Fitter_D     ,     \\'Fitter_D\\'\\n                         UNION ALL SELECT     Fitter_N     ,     \\'Fitter_N\\'\\n                         UNION ALL SELECT     Fitter_D_N     ,     \\'Fitter_D/N\\'\\n                         UNION ALL SELECT     Deep_Cleaning_D     ,     \\'Deep Cleaning_D\\'\\n                         UNION ALL SELECT     Deep_Cleaning_N     ,     \\'Deep Cleaning_N\\'\\n                         UNION ALL SELECT     Deep_Cleaning_D_N     ,     \\'Deep Cleaning_D/N\\'\\n                         UNION ALL SELECT     Others_D     ,     \\'Others_D\\'\\n                         UNION ALL SELECT     Others_N     ,     \\'Others_N\\'\\n                         UNION ALL SELECT     Others_D_N     ,     \\'Others_D/N\\'\\n                         )as column_name(Count,Trade_uncleaned)\\n                         where \\n                         Count not in (\\'\\',\\' - \\',\\'D/N\\',\\'N\\',\\'D\\',\\'Total\\',\\'SCL Engineer\\',\\'Activity\\',\\'Sub Total\\',\\'Others\\',\\'Deep Cleaning\\',\\'Fitter\\',\\'Joinery Polisher\\',\\'POP Mason\\',\\'Facade Technicians\\',\\'Sub Contractor\\'\\n                         ,\\'HVAC\\',\\'Plumber\\',\\'Electrician\\',\\'Steel Fixer\\',\\'Marble / Stone Mason\\',\\'Screed Mason\\',\\'Joinery Carpenter\\',\\'Gypsum Carpenter\\',\\'Tile Mason\\',\\n                         \\'Painter\\',\\'Rigger\\',\\'Welder\\',\\'Masons\\',\\'Steel Fixers\\',\\'Carpenters\\',\\'Helper\\',\\'Security\\',\\'Operator\\',\\'Scaffolder\\',\\'Steel Fitter\\',\\'Mason\\',\\n                         \\'Carpenter\\',\\'Chargehand\\',\\'Foreman / Staff\\',\\'Supervisor\\',\\'PM_And_Engineers\\',\\'Supervisor\\')\\n                         and Project not in (\\'\\')\\n                         ) as GAR\\n                    LEFT JOIN  [DWH].[PROJECTS_NEW_DIM] P\\n                         ON  GAR.PROJECT=P.PROJECT_IDENTIFIER\\n              LEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n                         ON   GAR.SBU=SM.SBU_IDENTIFIER\\n                    \\n\\n                    \\n\\n                    ',",
+						"     format: 'query',",
+						"     staged: true) ~> source1",
+						"source1 keyGenerate(output(SurrogateKey_ID as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 derive(LoadDateTime = currentUTC()) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Id as integer,",
+						"          Upload_Time as timestamp,",
+						"          Project_Id as integer,",
+						"          Tower as string,",
+						"          Sbu_Id as integer,",
+						"          SBU as string,",
+						"          Project as string,",
+						"          Type as string,",
+						"          Sub_Contractor as string,",
+						"          Activity as string,",
+						"          SCL_Engineer as string,",
+						"          Trade as string,",
+						"          Shift as string,",
+						"          Count as string,",
+						"          LoadDate_time as timestamp",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_SUBCONTRACTOR_MANPOWER_FACT]'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Id = Id_,",
+						"          Upload_Time = upload_time,",
+						"          Project_Id = project_id,",
+						"          Tower = tower,",
+						"          Sbu_Id = sbu_id,",
+						"          SBU,",
+						"          Project,",
+						"          Type = type,",
+						"          Sub_Contractor,",
+						"          Activity,",
+						"          SCL_Engineer,",
+						"          Trade,",
+						"          Shift,",
+						"          Count,",
+						"          LoadDate_time = LoadDateTime",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

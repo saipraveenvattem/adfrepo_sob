@@ -1,0 +1,2299 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "datafactory-sobha-prod-uaen-001"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Task_Report_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Sobha_PG_DB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Project_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Task_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Stamp",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Title",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Description",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Status",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sheet",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Location",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Root_Cause",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Created_By",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Assigned_To",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Watchers",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Photos",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Archived",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Start_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Due_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Cost_Impact",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cost_Impact_Amount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "Schedule_Impact",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Schedule_Impact_Amount_Days",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Last_Updated_On",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Closed_on",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Task_Refresh_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Task_Ref_No",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Task_Report"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Task_Report_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Project_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Task_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Stamp",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Title",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Description",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Status",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sheet",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Location",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Root_Cause",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Created_By",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Assigned_To",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Watchers",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Photos",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Archived",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Start_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Due_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Cost_Impact",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cost_Impact_Amount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "Schedule_Impact",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Schedule_Impact_Amount_Days",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Last_Updated_On",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Closed_on",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Task_Refresh_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Task_Ref_No",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "PG_Task_Report_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_BALCONYAREA_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Level_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Flat",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Sclicer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Value",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type_of_work",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Update_Date",
+						"type": "date"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_BALCONYAREA_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_BUSINESS_PLAN_1_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Upload_date",
+						"type": "date"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "project_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Month",
+						"type": "nvarchar"
+					},
+					{
+						"name": "value",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DENSE_RANK",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "sbu_sort",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "month_sort",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "year_sort",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "Cummulative",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_BUSINESS_PLAN_1_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_BUSINESS_PLAN_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Upload_Date",
+						"type": "date"
+					},
+					{
+						"name": "project_id",
+						"type": "varchar"
+					},
+					{
+						"name": "Sbu_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "SBU",
+						"type": "varchar"
+					},
+					{
+						"name": "SBU_Custom_Sort",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Month",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDER_Month",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "value",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 0
+					},
+					{
+						"name": "Cummulative",
+						"type": "decimal",
+						"precision": 32,
+						"scale": 0
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_BUSINESS_PLAN_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_CORRIDOR_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Level_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Scilicer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Value",
+						"type": "decimal",
+						"precision": 14,
+						"scale": 4
+					},
+					{
+						"name": "Type_of_work",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category_Sort",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Update_Date",
+						"type": "date"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_CORRIDOR_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_CRITICAL_ISSUE_TRACKER_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Reference_Number",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PR_PO_Other_Ref_No",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Pending_With",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Issue_Description",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Current_Status",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Impact_On",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Status",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Raised_On",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Actual_Closure_Date",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Target_Closure_Date",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ageing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Agetub",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Agetub_sort",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Update_Date",
+						"type": "date"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_CRITICAL_ISSUE_TRACKER_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_DRYAREA_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Level_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Flat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sclicer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Value",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type_of_work",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Update_Date",
+						"type": "date"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_DRYAREA_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_ELECTRICROOM_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Indentifer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Level_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sclicer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Value",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type_of_work",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Update_date",
+						"type": "date"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_ELECTRICROOM_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_ENGINEERING_DRAWING_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Villa_Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Drawing_Number",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Drawing_Title",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Scheduled_Date",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PNCA_commitment",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R0",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R0_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R1_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R2_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R3",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R3_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R4",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R4_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R5",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R5_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R6",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R6_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R7",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R7_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R8",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R8_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R9",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R9_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R10",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R10_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R11",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R11_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R12",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R12_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R13",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R13_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R14",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R14_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R15",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R15_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R16",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R16_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R17",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R17_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R18",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R18_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R19",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R19_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R20",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R20_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R21",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R21_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R22",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R22_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R23",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R23_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R24",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R24_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R25",
+						"type": "nvarchar"
+					},
+					{
+						"name": "R25_Trans_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Update_Date",
+						"type": "date"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_ENGINEERING_DRAWING_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_FIRELIFTLOBBY_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Level_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sclicer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Value",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type_of_work",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Upload_Date",
+						"type": "date"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_FIRELIFTLOBBY_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_FLATFINISHES_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Upload_Date",
+						"type": "date"
+					},
+					{
+						"name": "project_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "varchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Flat",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Sclicer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "value",
+						"type": "decimal",
+						"precision": 14,
+						"scale": 4
+					},
+					{
+						"name": "Type_of_work",
+						"type": "varchar"
+					},
+					{
+						"name": "Category",
+						"type": "varchar"
+					},
+					{
+						"name": "sort_type_of_work",
+						"type": "varchar"
+					},
+					{
+						"name": "Category_Sort",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_FLATFINISHES_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_GARBAGEROOM_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Level_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sclicer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Value",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type_of_work",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Update_Date",
+						"type": "date"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_GARBAGEROOM_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_KEEPOUT2_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Date",
+						"type": "date"
+					},
+					{
+						"name": "project_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Flat_No",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Apartment_Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Engineer_Responsible",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity",
+						"type": "nvarchar"
+					},
+					{
+						"name": "delay_pln",
+						"type": "date"
+					},
+					{
+						"name": "Plan",
+						"type": "date"
+					},
+					{
+						"name": "Count_Pln",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Predecessor_Plan",
+						"type": "date"
+					},
+					{
+						"name": "Predecessor_Plan_Work_Front",
+						"type": "date"
+					},
+					{
+						"name": "Predecessor",
+						"type": "nvarchar"
+					},
+					{
+						"name": "delay_act",
+						"type": "date"
+					},
+					{
+						"name": "Actual",
+						"type": "date"
+					},
+					{
+						"name": "Count_Act",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Predecessor_Actual",
+						"type": "date"
+					},
+					{
+						"name": "Predecessor_Actual_Work_Front",
+						"type": "date"
+					},
+					{
+						"name": "SLA_Planned",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SLA_Actual",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SLA",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Actual_SLA_Title",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_KEEPOUT_2_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_KEEPOUT_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Upload_Date",
+						"type": "date"
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Sbu_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Level_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Flat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type_of_work",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Real_Value",
+						"type": "date"
+					},
+					{
+						"name": "Value",
+						"type": "decimal",
+						"precision": 14,
+						"scale": 4
+					},
+					{
+						"name": "CATEGORY_SORT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_KEEPOUT_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_KITCHENAREA_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Level_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Flat",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Sclicer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Value",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type_of_work",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Update_Date",
+						"type": "date"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_KITCHENAREA_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_LEVEL_MAP_ALL_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Level_Map_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_LEVEL_MAP_ALL_DIM"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_MANPOWER_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "SL_NO",
+						"type": "nvarchar"
+					},
+					{
+						"name": "EMP_ID_NO",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TECHNICIAN_NAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ACTUAL_DOJ",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TRADE_AS_PER_ADMIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TRADE_GROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WORK_STATUS_COST_HEAD",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UNIT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WORK_STATUS",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SHIFT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "COMPANY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOURCE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Emp_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Login_Time",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_MANPOWER_MERGE_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_MILESTONE_ACTUALS_TEMP_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Milestone_Actuals_Temp_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Upload_time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Group",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Actual_Percentage",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_MILESTONE_ACTUALS_TEMP_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_PROCUREMENT_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "project_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "tower",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "sbu_id",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Classification",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Description",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Category",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Issuance of Drawings_Plan",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Issuance of Drawings_Actual",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "PR_Plan",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "PR_Actual",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Vendor Finalization_Plan",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Vendor Finalization_Actual",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Prequalification Submission_Plan",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Prequalification Submission_Actual",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Prequalification Approval_Plan",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Prequalification Approval_Actual",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Release of contract documents_Plan",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Release of contract documents_Actual",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Drawing/Technical Submission_Plan",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Drawing/Technical Submission_Actual",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Drawing/Technical Submission Approval_Plan",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Drawing/Technical Submission Approval_Actual",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Required at site by",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Actual delivery at site",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tempcol1",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tempcol2",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tempcol3",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tempcol4",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tempcol5",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tempcol6",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tempcol7",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tempcol8",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tempcol9",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Tempcol10",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_procurement_raw"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

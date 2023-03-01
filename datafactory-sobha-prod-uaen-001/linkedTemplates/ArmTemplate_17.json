@@ -1,0 +1,1203 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "datafactory-sobha-prod-uaen-001"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_PLN_SERVICEROOM_FACT')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SERVICE ROOM",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_PLN_SERVICEROOM",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAX_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-10T12:49:47Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_PLN_STAIRCASE')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Stair Case",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_PLN_STAIRCASE",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAP_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-08T13:40:47Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_PLN_STRUCTURE')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "STRUCTURE",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_PLN_STRUCTURE",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAX_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-08T21:24:58Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_PLN_SUBCONTRACTOR_MANPOWER')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Sub Contractor",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_PLN_SUBCONTRACT_MANPOWER",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAX_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-14T09:41:26Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_PLN_TELEPHONEROOM')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Telephone Room",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_PLN_TELEPHONEROOM",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAX_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-04T12:34:12Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_PLN_WATERROOM')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Water Room",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_PLN_WATERROOM",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAX_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-05T12:01:42Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_PLN_WETAREA')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Wet Area",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_PLN_WETAREA",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAX_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-05T11:15:15Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_PROJECTS_NEW')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "PROJECTS_NEW",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_PROJECTS_NEW",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAX_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 16,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-03T11:06:01Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_Pln_Daily_Except_Sunday')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "FlatWise",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_Pln_Flatwise_Template",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Service Room",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_Pln_Service_Room",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Projection and Daily Revenue Template",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "TRUNCATE TABLE f_pln_projection;\r\nINSERT INTO  f_pln_projection\r\nWITH PROJECTION_RAW AS (\r\n    SELECT\r\n        DATE(OPP.upload_time) AS Upload_Date,\r\n        OPP.project_id AS `Project Sclicer`,\r\n        OPP.tower,\r\n        OPP.sbu_id AS `SBU Sclicer`,\r\n        OPP.SBU,\r\n        OPP.Area,\r\n        CASE\r\n            WHEN TRIM(OPP.Category) = '' THEN 'Not Available'\r\n            ELSE OPP.Category\r\n        END AS Category,\r\n        OPP.`Activity Description`,\r\n        CASE\r\n            WHEN TRIM(OPP.`Projection for the month`) IN ('-','') THEN '0'\r\n            ELSE REPLACE(OPP.`Projection for the month`, ',', '')\r\n        END AS `Projection for the month`,\r\n        CASE\r\n            WHEN TRIM(OPP.`Plan as on date`) IN ('-','') THEN '0'\r\n            ELSE REPLACE(OPP.`Plan as on date`, ',', '')\r\n        END AS `Plan as on date`,\r\n        CASE    \r\n            WHEN TRIM(OPP.`Actual as on date`) IN ('-','') THEN '0'\r\n            ELSE REPLACE(OPP.`Actual as on date`, ',', '')\r\n        END AS `Actual as on date`,\r\n        CASE\r\n            WHEN TRIM(OPP.`Shortfall Reasons`) IN ('-','') THEN NULL\r\n            ELSE `Shortfall Reasons`\r\n        END AS `Shortfall Reasons`,\r\n        CASE\r\n            WHEN OPP.SBU = 'SBU 1' THEN 1\r\n            WHEN OPP.SBU = 'SBU 2' THEN 2\r\n            WHEN OPP.SBU = 'SBU 3' THEN 3\r\n            WHEN OPP.SBU = 'SBU 4' THEN 4\r\n            WHEN OPP.SBU = 'SBU 5' THEN 5\r\n            ELSE 6\r\n        END AS SBU_Custom_Sort,\r\n    DENSE_RANK() OVER(PARTITION BY OPP.project_id ORDER BY DATE(OPP.upload_time) DESC) AS Dense_Ranker\r\n    FROM O_PLN_PROJECTION_RAW OPP\r\n        WHERE TRIM(`Activity Description`) NOT IN ('',' ','Total')\r\n        ),\r\nPROJECTION_STAGGING AS (\r\n    SELECT\r\n        PR.Upload_Date,\r\n        PR.`Project Sclicer`,\r\n        PR.tower,\r\n        PR.`SBU Sclicer`,\r\n        PR.SBU,\r\n        PR.Area,\r\n        PR.Category,\r\n        PR.`Activity Description`,\r\n        CAST(PR.`Projection for the month` AS DECIMAL) AS `Projection for the month`,\r\n        CAST(PR.`Plan as on date` AS DECIMAL) AS `Plan as on date`,\r\n        CAST(PR.`Actual as on date` AS DECIMAL) AS `Actual as on date`,\r\n        PR.`Shortfall Reasons`,\r\n        PR.SBU_Custom_Sort,\r\n        PR.Dense_Ranker\r\n    FROM PROJECTION_RAW PR WHERE Dense_Ranker = 1),\r\nPROJECTION_STAGGING2 AS (\r\n    SELECT\r\n        PR.Upload_Date,\r\n        PR.`Project Sclicer`,\r\n        PR.tower,\r\n        PR.`SBU Sclicer`,\r\n        PR.SBU,\r\n        PR.Area,\r\n        PR.Category,\r\n        PR.`Activity Description`,\r\n        CAST(PR.`Projection for the month` AS DECIMAL) AS `Projection for the month`,\r\n        CAST(PR.`Plan as on date` AS DECIMAL) AS `Plan as on date`,\r\n        CAST(PR.`Actual as on date` AS DECIMAL) AS `Actual as on date`,\r\n        PR.`Shortfall Reasons`,\r\n        PR.SBU_Custom_Sort,\r\n        PR.Dense_Ranker\r\n    FROM PROJECTION_RAW PR WHERE Dense_Ranker = 2 AND PR.`Activity Description` IN (SELECT DISTINCT(`Activity Description`) FROM PROJECTION_STAGGING))\r\n    SELECT \r\n        PS.Upload_Date,\r\n        PS.`Project Sclicer`,\r\n        CASE \r\n            WHEN TRIM(PS.SBU) = 'SBU4' THEN 'SBU 4'\r\n            WHEN TRIM(PS.SBU) = 'SBU5' THEN 'SBU 5'\r\n            WHEN TRIM(PS.SBU) = 'SBU 6' THEN 'SBU 5'\r\n            WHEN TRIM(PS.SBU) = '' THEN 'OH,M & C'\r\n            ELSE TRIM(PS.SBU)\r\n        END AS SBU,\r\n        PS.Area,\r\n        PS.Category,\r\n        PS.`Activity Description`,\r\n        PS.`Projection for the month`,\r\n        PS2.Upload_Date AS Yesterday,\r\n        PS2.`Plan as on date` AS Plan_Yesterday,\r\n        PS.`Plan as on date`,\r\n        PS2.`Actual as on date` AS Actual_Yesterday,\r\n        PS.`Actual as on date`,\r\n        PS.`Shortfall Reasons`,\r\n        PS.SBU_Custom_Sort,\r\n\t\tCASE WHEN PS.`Plan as on date`= 0 #and PS.`Actual as on date`!=0\r\n        THEN NULL ELSE PS.`Actual as on date`DIV PS.`Plan as on date` END\r\n          AS Achived,\r\n        CASE WHEN PS.`Plan as on date`=0 THEN NULL\r\n           WHEN nullif((PS.`Actual as on date` DIV PS.`Plan as on date`),0) >= 1.0 THEN (PS.`Actual as on date`DIV PS.`Plan as on date`)\r\n            ELSE NULL\r\n        END \r\n         AS Achived_90\r\n    FROM PROJECTION_STAGGING PS LEFT JOIN PROJECTION_STAGGING2 PS2\r\n        ON PS.`Project Sclicer` = PS2.`Project Sclicer`\r\n         AND PS.SBU = PS2.SBU\r\n         AND PS.Category = PS2.Category\r\n         AND PS.`Activity Description` = PS2.`Activity Description`;\r\n\r\n    /**/\r\n\r\n    SELECT 1;",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "DS_MySQL_Data_Loads_DB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Staircase Template",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "TRUNCATE TABLE f_pln_staircase;\r\nINSERT INTO f_pln_staircase\r\nWITH CLEANING_DATA AS (\r\n    SELECT\r\n        DATE(OPSR.upload_time) AS Upload_Date, \r\n        OPSR.project_id,\r\n        OPSR.tower,\r\n        OPSR.`Level`,\r\n        OPSR.`Stair Case No`,\r\n        'Staircase Area' AS sclicer,\r\n        Column_Name.*,\r\n        OPSM.ACTIVITY_ID,\r\n        OPSM.SBU_ID,\r\n        OPSM.Category,\r\n        DENSE_RANK () OVER (PARTITION BY  OPSR.project_id ORDER BY  DATE(OPSR.upload_time) DESC) Project_Udate_DRANK\r\n    from O_PLN_STAIRCASE_RAW OPSR\r\n    CROSS JOIN LATERAL (\r\n                SELECT\t`MEP Conduit Marking`\t,\t'MEP Conduit Marking'\r\n\t\t\t\tUNION ALL SELECT\t`Cutting and Chasing`\t,\t'Cutting and Chasing'\r\n\t\t\t\tUNION ALL SELECT\t`MEP Conduit Fixtures`\t,\t'MEP Conduit Fixtures'\r\n\t\t\t\tUNION ALL SELECT\t`Wall Packing`\t,\t'Wall Packing'\r\n\t\t\t\tUNION ALL SELECT\t`Plaster`\t,\t'Plaster'\r\n\t\t\t\tUNION ALL SELECT\t`Grinding`\t,\t'Grinding'\r\n\t\t\t\tUNION ALL SELECT\t`POP`\t,\t'POP'\r\n\t\t\t\tUNION ALL SELECT\t`Medium Coat Ceiling Spray Plaster`\t,\t'Medium Coat Ceiling Spray Plaster'\r\n\t\t\t\tUNION ALL SELECT\t`Two Coat Fine Ceiling Spray Plaster`\t,\t'Two Coat Fine Ceiling Spray Plaster'\r\n\t\t\t\tUNION ALL SELECT\t`Ceiling Primer`\t,\t'Ceiling Primer'\r\n\t\t\t\tUNION ALL SELECT\t`Ceiling Texture`\t,\t'Ceiling Texture'\r\n\t\t\t\tUNION ALL SELECT\t`Wall Primer`\t,\t'Wall Primer'\r\n\t\t\t\tUNION ALL SELECT\t`Wall Stucco banding`\t,\t'Wall Stucco banding'\r\n\t\t\t\tUNION ALL SELECT\t`Wall Stucco (1st and 2nd Coat)`\t,\t'Wall Stucco (1st and 2nd Coat)'\r\n\t\t\t\tUNION ALL SELECT\t`MEP Clearance for Pressurization Shaft`\t,\t'MEP Clearance for Pressurization Shaft'\r\n\t\t\t\tUNION ALL SELECT\t`Sanding`\t,\t'Sanding'\r\n\t\t\t\tUNION ALL SELECT\t`Wall First Coat Paint`\t,\t'Wall First Coat Paint'\r\n\t\t\t\tUNION ALL SELECT\t`Ceiling First Coat Paint`\t,\t'Ceiling First Coat Paint'\r\n\t\t\t\tUNION ALL SELECT\t`Handrail Floor Mounted`\t,\t'Handrail Floor Mounted'\r\n\t\t\t\tUNION ALL SELECT\t`Handrail Wall Mounted`\t,\t'Handrail Wall Mounted'\r\n\t\t\t\tUNION ALL SELECT\t`Epoxy Grinding`\t,\t'Epoxy Grinding'\r\n\t\t\t\tUNION ALL SELECT\t`Epoxy Bug Fill`\t,\t'Epoxy Bug Fill'\r\n\t\t\t\tUNION ALL SELECT\t`Epoxy Primer`\t,\t'Epoxy Primer'\r\n\t\t\t\tUNION ALL SELECT\t`Epoxy Base Coat`\t,\t'Epoxy Base Coat'\r\n\t\t\t\tUNION ALL SELECT\t`Epoxy Final Coat`\t,\t'Epoxy Final Coat'\r\n\t\t\t\tUNION ALL SELECT\t`Threshold Installation`\t,\t'Threshold Installation'\r\n\t\t\t\tUNION ALL SELECT\t`Door - Frame Installation`\t,\t'Door - Frame Installation'\r\n\t\t\t\tUNION ALL SELECT\t`Door - Architrave Installation`\t,\t'Door - Architrave Installation'\r\n\t\t\t\tUNION ALL SELECT\t`Door - Shutter Installation`\t,\t'Door - Shutter Installation'\r\n\t\t\t\tUNION ALL SELECT\t`Door - Ironmongery Installation`\t,\t'Door - Ironmongery Installation'\r\n\t\t\t\tUNION ALL SELECT\t`Door - Silicone Works`\t,\t'Door - Silicone Works'\r\n\t\t\t\tUNION ALL SELECT\t`Signage`\t,\t'Signage'\r\n\t\t\t\tUNION ALL SELECT\t`Nosing Installation`\t,\t'Nosing Installation'\r\n\t\t\t\tUNION ALL SELECT\t`Handrail Painting`\t,\t'Handrail Painting'\r\n\t\t\t\tUNION ALL SELECT\t`Preparation for Final Coat Paint`\t,\t'Preparation for Final Coat Paint'\r\n\t\t\t\tUNION ALL SELECT\t`MEP Final Fixtures Installation`\t,\t'MEP Final Fixtures Installation'\r\n\t\t\t\tUNION ALL SELECT\t`Final Coat Paint`\t,\t'Final Coat Paint'\r\n\t\t\t\tUNION ALL SELECT\t`Staircase Pressurization`\t,\t'Staircase Pressurization'\r\n        )\r\n        as Column_Name(value,Type_of_work)\r\n    JOIN O_PLN_STAIRCASE_MAP OPSM\r\n    ON Column_Name.Type_of_work = OPSM.ACTIVITY_SEQUENCE\r\n    WHERE Column_Name.value IS NOT NULL AND (TRIM(OPSR.`Level`) NOT IN ('') AND OPSR.`Level` IS NOT NULL)\r\n        ),\r\nSTAGGING AS (\r\n    SELECT \r\n        CD.Upload_Date,\r\n        CD.project_id,\r\n        CD.tower,\r\n        CD.`Level`,\r\n        CD.`Stair Case No`,\r\n        CD.sclicer,\r\n        CASE \r\n            WHEN TRIM(CD.value) IN ('','NA') THEN '0%'\r\n            ELSE CD.value\r\n        END AS value,\r\n        CD.Type_of_work,\r\n        CD.ACTIVITY_ID,\r\n        CD.SBU_ID,\r\n        CD.Category,\r\n        OLMA.level_map\r\n    FROM CLEANING_DATA CD \r\n        LEFT JOIN O_LEVEL_MAP_ALL OLMA\r\n            ON CD.`Level` = OLMA.`level`\r\n    WHERE CD.Project_Udate_DRANK = 1\r\n)\r\nSELECT \r\n    CD.Upload_Date,\r\n    CD.project_id,\r\n    CD.tower,\r\n    CD.`Level`,\r\n    CD.`Stair Case No`,\r\n    CD.sclicer,\r\n    CAST(REPLACE(CD.value,'%','') AS DECIMAL(4,0))/100 AS value,\r\n    CD.Type_of_work,\r\n    CD.ACTIVITY_ID,\r\n    CD.SBU_ID,\r\n    CD.Category,\r\n    CD.level_map,\r\n    CASE \r\n        WHEN TRIM(CD.CATEGORY) IN('MEP') THEN  8\r\n        WHEN TRIM(CD.CATEGORY) IN('Builders Work') THEN  2\r\n        WHEN TRIM(CD.CATEGORY) IN('Plaster') THEN  3\r\n        WHEN TRIM(CD.CATEGORY) IN('Paint') THEN  9\r\n        WHEN TRIM(CD.CATEGORY) IN('Handrail') THEN  4\r\n        WHEN TRIM(CD.CATEGORY) IN('Marble') THEN  5\r\n        WHEN TRIM(CD.CATEGORY) IN('Joinery') THEN  6\r\n        WHEN TRIM(CD.CATEGORY) IN('Signage') THEN  7\r\n        WHEN TRIM(CD.CATEGORY) IN('PMT') THEN  1\r\n        ELSE 10\r\n    END AS CATEGORY_SORT\r\nFROM STAGGING CD ;\r\n\r\n/**/\r\n\r\nSELECT 1;",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "DS_MySQL_Data_Loads_DB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Keep Out",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "TRUNCATE TABLE f_pln_keepout;\r\nINSERT INTO f_pln_keepout\r\nWITH KEEPOUT_RAW AS (\r\n    SELECT\r\n        DATE(OPKOR.upload_time) AS Upload_date,\r\n        OPKOR.project_id,\r\n        OPKOR.tower,\r\n        OPKOR.sbu_id ,\r\n        OPKOR.`Level`,\r\n        OPKOR.Flat,\r\n        Column_Name.*,\r\n        OPKOM.ACTIVITY_ID,\r\n        OPKOM.SBU_ID AS SBU_Filter,\r\n        OPKOM.Category,\r\n        DENSE_RANK() OVER(PARTITION BY OPKOR.project_id ORDER BY DATE(OPKOR.upload_time) DESC) AS Dense_Ranker\r\n    FROM O_PLN_KEEPOUT_RAW OPKOR\r\n    CROSS JOIN LATERAL (\r\n                        SELECT `Final Coat Paint - Dry Area` , 'Final Coat Paint - Dry Area'\r\n                    UNION ALL SELECT `Final Coat Paint - Wet Area` , 'Final Coat Paint - Wet Area'\r\n                    UNION ALL SELECT `Facade Stamp` , 'Facade Stamp'\r\n                    UNION ALL SELECT `Bathroom Stamp - MEP (L8)` , 'Bathroom Stamp - MEP (L8)'\r\n                    UNION ALL SELECT `Bathroom Stamp - Civil (L9)` , 'Bathroom Stamp - Civil (L9)'\r\n                    UNION ALL SELECT `Kitchen Stamp - MEP (I8)` , 'Kitchen Stamp - MEP (I8)'\r\n                    UNION ALL SELECT `Kitchen Stamp - Civil (I9)` , 'Kitchen Stamp - Civil (I9)'\r\n                    UNION ALL SELECT `Dry Area Stamp - Civil (F7)` , 'Dry Area Stamp - Civil (F7)'\r\n                    UNION ALL SELECT `Dry Area Stamp - MEP (F8)` , 'Dry Area Stamp - MEP (F8)'\r\n                    UNION ALL SELECT `MEP NOC` , 'MEP NOC'\r\n                    UNION ALL SELECT `Civil NOC` , 'Civil NOC'\r\n                    UNION ALL SELECT `MEP Field Report 1ST Insp` , 'MEP Field Report 1ST Insp'\r\n                    UNION ALL SELECT `MEP Field Report 2nd Insp` , 'MEP Field Report 2nd Insp'\r\n                    UNION ALL SELECT `Facade Field Report 1st Insp` , 'Facade Field Report 1st Insp'\r\n                    UNION ALL SELECT `Facade Field Report 2nd Insp` , 'Facade Field Report 2nd Insp'\r\n                    UNION ALL SELECT `Civil Field Report 1st Insp` , 'Civil Field Report 1st Insp'\r\n                    UNION ALL SELECT `Civil Field Report 2nd Insp` , 'Civil Field Report 2nd Insp'\r\n                    UNION ALL SELECT `SCL Signoff` , 'SCL Signoff'\r\n                    UNION ALL SELECT `PNCA Signoff` , 'PNCA Signoff'\r\n                    UNION ALL SELECT `Keep Out (QT)` , 'Keep Out (QT)'\r\n                        ) AS Column_Name(value,Type_of_work)\r\n    JOIN O_PLN_KEEPOUT_MAP OPKOM\r\n    ON Column_Name.Type_of_work = OPKOM.ACTIVITY_SEQUENCE\r\n        WHERE value IS NOT NULL),\r\nFinal_Raw AS (\r\n    SELECT\r\n        KOR.Upload_date,\r\n        KOR.project_id,\r\n        KOR.tower,\r\n        KOR.sbu_id,\r\n        KOR.SBU_Filter,\r\n        KOR.`Level`,\r\n        KOR.Flat,\r\n        KOR.Type_of_work,\r\n        KOR.ACTIVITY_ID,\r\n        KOR.Category,\r\n        REPLACE(KOR.value,'/','-') AS Real_Value,\r\n        CASE\r\n            WHEN TRIM(KOR.value) IN ('','-','0%','00%') THEN 0\r\n            WHEN KOR.value IS NOT NULL AND TRIM(KOR.value) NOT IN ('','-','0%','00%') THEN 1\r\n            ELSE 0\r\n        END AS value,\r\n        OLMA.level_map\r\n    FROM KEEPOUT_RAW KOR\r\n        LEFT JOIN O_LEVEL_MAP_ALL OLMA ON KOR.`Level` = OLMA.`level`\r\n            WHERE KOR.Dense_Ranker = 1)\r\n    SELECT \r\n        Upload_date,\r\n        project_id,\r\n        tower,\r\n        SBU_Filter,\r\n        `Level`,\r\n        Flat,\r\n        Type_of_work,\r\n        Category,\r\n        ACTIVITY_ID,\r\n        STR_TO_DATE(NULLIF(Real_Value,'') ,'%d-%b-%y')AS \r\n        Real_Value,\r\n        value,\r\n        level_map,\r\n        CASE \r\n            WHEN TRIM(Category) IN('Paint') THEN  1\r\n            WHEN TRIM(Category) IN('Facade') THEN  2\r\n            WHEN TRIM(Category) IN('MEP') THEN  3\r\n            WHEN TRIM(Category) IN('PMT') THEN  4\r\n            WHEN TRIM(Category) IN('Consultant') THEN  5\r\n            WHEN TRIM(Category) IN('Client') THEN  6\r\n            ELSE 20\r\n        END AS CATEGORY_SORT\r\n    FROM Final_Raw ORDER BY 2,3,4,5,6,7,9;\r\n\r\n    /**/\r\n\r\n    SELECT 1;\r\n\r\n    /**/\r\n\r\n    SELECT 1;",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "DS_MySQL_Data_Loads_DB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-16T23:05:04Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_SA_DIM_USERINFO')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SA_DIM_USERINFO",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_SA_DIM_USERINFO",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAX_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 16,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-23T10:27:32Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_SA_FACT_CHECKINOUT')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SA_FACT_CHECKINOUT",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_SA_FACT_CHECKINOUT",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAX_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-23T10:57:19Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_SA_MANPOWER_MASTER')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SA_MANPOWER_MASTER",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_SA_MANPOWER_MASTER",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAX_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 16,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Dimensions"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-27T05:47:09Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_WOODEN_DOOR')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "WOODEN DOOR",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_WOODEN_DOOR",
+								"type": "DataFlowReference",
+								"parameters": {
+									"MAX_ID": "0"
+								},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "LS_AzureDataLakeStorage",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "sobhasyndatafs01/Staging_Folder"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-20T19:06:09Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TRG_ADHOC_Daily')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Pln_Daily",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Week",
+						"interval": 1,
+						"startTime": "2023-01-16T23:02:00",
+						"timeZone": "Arabian Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								23
+							],
+							"weekDays": [
+								"Sunday",
+								"Monday",
+								"Tuesday",
+								"Wednesday",
+								"Thursday",
+								"Friday",
+								"Saturday"
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TRG_ADHOC_Weekly')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Pln_Weekly",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Week",
+						"interval": 1,
+						"startTime": "2023-01-16T22:25:00",
+						"timeZone": "Arabian Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								22
+							],
+							"weekDays": [
+								"Sunday"
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TRG_ADHOC_WeeklyTwice')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Pln_WeeklyTwice",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Week",
+						"interval": 1,
+						"startTime": "2023-01-16T21:56:00",
+						"timeZone": "Arabian Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								22
+							],
+							"weekDays": [
+								"Sunday",
+								"Wednesday"
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BusinessPlan_Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "O_PLN_BUSSINESS_PLAN_1_STG",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_O_PLN_BUSSINESS_PLAN_1_STG",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "BusinessPlan_Fact",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "O_PLN_BUSSINESS_PLAN_1_STG",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_PLN_BUSINESS_PLN_1",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Master"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-22T10:47:16Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Checkinout_Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CHECKINOUT_STG",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_SA_FACT_CHECKINOUT_STG",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "CHECKINOUT_FACT",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "CHECKINOUT_STG",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_SA_FACT_CHECKINOUT",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Master"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-15T04:19:48Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PL_SA_FACT_CHECKINOUT')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Corridor_Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Corridore_Map_Stg",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_O_PLN_CORRIDOR_MAP_STG",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Corridore_Raw_STG",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Corridore_Map_Stg",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_O_PLN_CORRIDOR_RAW_STG",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Corridore_Fact",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Corridore_Raw_STG",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_PLN_CORRIDOR",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Project_Progress_summary",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Corridore_Fact",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_PLN_PROJECT_PROGRESS_SUMMARY_FACT",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Master"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-13T10:05:52Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Critical_Issue_Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "O_PLN_CRITICAL_ISSUE_TRACKER_STG",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_O_PLN_CRITICAL_ISSUE_TRACKER_STG",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PLN_CRITICAL_ISSUE_TRACKER_FACT",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "O_PLN_CRITICAL_ISSUE_TRACKER_STG",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_PLN_CRITICAL_ISSUE_TRACKER",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Master"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-13T08:37:07Z"
+			},
+			"dependsOn": []
+		}
+	]
+}
