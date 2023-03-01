@@ -296,7 +296,7 @@
 							},
 							{
 								"source": {
-									"name": "Left Over Screed (If any)",
+									"name": "Balcony Screed",
 									"type": "String",
 									"physicalType": "varchar"
 								},
@@ -368,6 +368,18 @@
 							},
 							{
 								"source": {
+									"name": "Balustrade - Internal Flashing",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Balustrade_Internal_Flashing",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
 									"name": "Balcony Skirting",
 									"type": "String",
 									"physicalType": "varchar"
@@ -397,7 +409,7 @@
 									"physicalType": "varchar"
 								},
 								"sink": {
-									"name": "Ceiling_Texture",
+									"name": "Balcony_Ceiling_Texture",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -445,7 +457,7 @@
 									"physicalType": "varchar"
 								},
 								"sink": {
-									"name": "MEP_Final_Fixtures",
+									"name": "Balcony_MEP_Final_Fixtures",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -458,6 +470,30 @@
 								},
 								"sink": {
 									"name": "Balcony_Final_Coat_Paint",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Balcony Drain Cover Supply",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Balcony_Drain_Cover_Supply",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Cover fixing for balcony drain",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Cover_Fixing_For_Balcony_Drain",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
