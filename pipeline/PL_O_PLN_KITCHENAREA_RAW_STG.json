@@ -93,8 +93,7 @@
 							{
 								"source": {
 									"name": "Level",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "String"
 								},
 								"sink": {
 									"name": "Level",
@@ -105,8 +104,7 @@
 							{
 								"source": {
 									"name": "Flat",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "String"
 								},
 								"sink": {
 									"name": "Flat",
@@ -128,7 +126,7 @@
 							},
 							{
 								"source": {
-									"name": "Kitchen / Utility Framing Clearance",
+									"name": "Kitchen / Utility Framing",
 									"type": "String",
 									"physicalType": "varchar"
 								},
@@ -140,12 +138,36 @@
 							},
 							{
 								"source": {
-									"name": "Kitchen / Utility Framing",
+									"name": "Kitchen / Utility Framing Clearance",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Kitchen_Utility_Framing_Clearance",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Kitchen / Utility Boarding",
 									"type": "String",
 									"physicalType": "varchar"
 								},
 								"sink": {
 									"name": "Kitchen_Utility_Boarding",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Kitchen / Utility Boarding Clearance",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Kitchen_Utility_Boarding_Clearance",
 									"type": "String",
 									"physicalType": "varchar"
 								}
