@@ -45,7 +45,7 @@
 				"          PROJECT_IDENTIFIER as string,",
 				"          LEVEL as string,",
 				"          Scilicer as string,",
-				"          value as integer,",
+				"          value as decimal(24,6),",
 				"          TYPE_OF_WORK as string,",
 				"          CATEGORY as string,",
 				"          CATEGORY_SORT as integer,",
