@@ -67,6 +67,10 @@
 				"type": "datetime",
 				"precision": 23,
 				"scale": 3
+			},
+			{
+				"name": "MIN_ASA_DELIVERED",
+				"type": "nvarchar"
 			}
 		],
 		"typeProperties": {
