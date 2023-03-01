@@ -60,7 +60,19 @@
 				"scale": 0
 			},
 			{
+				"name": "Kitchen / Utility Framing Clearance",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
 				"name": "Kitchen / Utility Framing",
+				"type": "varchar",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "Kitchen / Utility Boarding Clearance",
 				"type": "varchar",
 				"precision": 0,
 				"scale": 0
