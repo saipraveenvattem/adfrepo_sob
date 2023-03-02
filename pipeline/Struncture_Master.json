@@ -40,9 +40,9 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "O_PLN_STRUCTURE_POURING_STG",
+						"activity": "O_PLN_STRUCTURE_SP_TEMPTABLE",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
@@ -53,6 +53,33 @@
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "O_PLN_STRUCTURE_SP_TEMPTABLE",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "O_PLN_STRUCTURE_POURING_STG",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[DWH].[O_PLN_STRUCTURE]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
