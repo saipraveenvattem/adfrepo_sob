@@ -13,6 +13,148 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_O_PLN_WATERROOM_MAP_STG')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "O_PLN_WATERROOM_MAP",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"preCopyScript": "TRUNCATE TABLE [STG].[O_PLN_WATERROOM_MAP_STG];",
+								"writeBehavior": "Insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id_",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "O_PLN_WATERROOM_MAP_id",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "ACTIVITY_ID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "ACTIVITY_ID",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "SBU_SHORT",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SBU_SHORT",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SBU_ID",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SBU_ID",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "CATEGORY",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "CATEGORY",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACTIVITY_SEQUENCE",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "ACTIVITY_SEQUENCE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_O_PLN_WATERROOM_MAP_STG_SRC",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_O_PLN_WATERROOM_MAP_STG_TRG",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-12-21T14:03:59Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_O_PLN_WATERROOM_RAW_STG')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -4738,47 +4880,6 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-01-16T23:08:27Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_Pln_WeeklyTwice')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Critical Issues",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "TRUNCATE TABLE f_pln_criticalissue_tracker;\r\nINSERT INTO f_pln_criticalissue_tracker\r\nWITH CRITICAL_CLEANING AS (\r\nSELECT\r\n            DATE(OPCIT.upload_time) AS `Upload Time`,\r\n            OPCIT.`Reference Number`,\r\n            OPCIT.`PR / PO / Other Ref No`,\r\n            OPCIT.`Raised On`,\r\n            CASE\r\n                WHEN OPCIT.`SBU (Issue Raised by)` LIKE '%SBU 1%' THEN 'SBU 1'\r\n        WHEN OPCIT.`SBU (Issue Raised by)` LIKE '%SBU 2%' THEN 'SBU 2'\r\n        WHEN OPCIT.`SBU (Issue Raised by)` LIKE '%SBU 3%' THEN 'SBU 3'\r\n        WHEN OPCIT.`SBU (Issue Raised by)` LIKE '%SBU 4%' THEN 'SBU 4'\r\n        WHEN OPCIT.`SBU (Issue Raised by)` LIKE '%SBU 5%' THEN 'SBU 5'\r\n        ELSE 'UNKNOWN'\r\n    END AS SBU_SCLICER,\r\n            CASE\r\n                WHEN OPCIT.`Pending With` IS NULL\r\n        OR TRIM(OPCIT.`Pending With`) = '' THEN 'Not Available'\r\n        ELSE OPCIT.`Pending With`\r\n    END AS `Pending With`,\r\n            OPCIT.`Issue Description`,\r\n            OPCIT.`Current Status`,\r\n            OPCIT.`Impact On`,\r\n            OPCIT.`Target Closure Date`,\r\n            OPCIT.`Status`,\r\n            OPCIT.`Actual Closure Date`,\r\n            OPCIT.`Project`,\r\n            PROJECTS.Project_Identifier\r\nFROM\r\n        O_PLN_CRITICAL_ISSUE_TRACKER OPCIT\r\n    LEFT JOIN PROJECTS ON\r\n        OPCIT.Project = PROJECTS.Project_Short\r\nWHERE\r\n        TRIM(OPCIT.`Issue Description`) NOT IN ('')),\r\nAPPLYING_RANK AS (\r\nSELECT\r\n        *,\r\n        DENSE_RANK() OVER (PARTITION BY CRITICAL_CLEANING.SBU_SCLICER\r\nORDER BY\r\n        CRITICAL_CLEANING.`Upload Time` DESC) AS DENSER_RANK\r\nFROM\r\n        CRITICAL_CLEANING\r\nORDER BY\r\n        2\r\n),\r\nSTAGGING AS (\r\nSELECT\r\n        OPCIT.`Upload Time`,\r\n        OPCIT.`Reference Number`,\r\n        OPCIT.`PR / PO / Other Ref No`,\r\n        CASE \r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%jan%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'jan','01')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%feb%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'feb','02')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%mar%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'mar','03')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%apr%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'apr','04')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%may%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'may','05')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%jun%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'jun','06')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%jul%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'jul','07')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%aug%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'aug','08')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%sep%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'sep','09')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%oct%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'oct','10')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%nov%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'nov','11')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%dec%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'dec','12') \r\n            ELSE OPCIT.`Raised On`\r\n        END AS `Raised On`,\r\n        OPCIT.SBU_SCLICER,\r\n        CASE \r\n            WHEN OPCIT.SBU_SCLICER = 'SBU 1' THEN 1\r\n            WHEN OPCIT.SBU_SCLICER = 'SBU 2' THEN 2\r\n            WHEN OPCIT.SBU_SCLICER = 'SBU 3' THEN 3\r\n            WHEN OPCIT.SBU_SCLICER = 'SBU 4' THEN 4\r\n            WHEN OPCIT.SBU_SCLICER = 'SBU 5' THEN 5\r\n            ELSE 6\r\n        END AS SBU_SORT,        \r\n        OPCIT.`Pending With`,\r\n        OPCIT.`Issue Description`,\r\n        OPCIT.`Current Status`,\r\n        OPCIT.`Impact On`,\r\n        CASE\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%jan%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'jan','01')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%feb%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'feb','02')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%mar%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'mar','03')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%apr%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'apr','04')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%may%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'may','05')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%jun%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'jun','06')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%jul%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'jul','07')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%aug%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'aug','08')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%sep%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'sep','09')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%oct%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'oct','10')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%nov%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'nov','11')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%dec%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'dec','12')\r\n            ELSE OPCIT.`Target Closure Date`\r\n        END AS `Target Closure Date`,\r\n        OPCIT.Status,\r\n        CASE \r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%jan%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'jan','01')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%feb%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'feb','02')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%mar%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'mar','03')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%apr%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'apr','04')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%may%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'may','05')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%jun%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'jun','06')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%jul%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'jul','07')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%aug%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'aug','08')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%sep%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'sep','09')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%oct%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'oct','10')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%nov%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'nov','11')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%dec%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'dec','12')\r\n            ELSE OPCIT.`Actual Closure Date`    \r\n        END AS `Actual Closure Date`,\r\n        OPCIT.Project,\r\n        OPCIT.Project_Identifier\r\nFROM\r\n        APPLYING_RANK OPCIT \r\nWHERE\r\n        DENSER_RANK = 1),\r\nSTAGGING2 AS ( \r\n    SELECT     \r\n        ST.`Upload Time`,\r\n        ST.`Reference Number`,\r\n        ST.`PR / PO / Other Ref No`, \r\n        ST.SBU_SCLICER,\r\n        ST.SBU_SORT,\r\n        ST.`Pending With`,\r\n        ST.`Issue Description`,\r\n        ST.`Current Status`,\r\n        ST.`Impact On`,\r\n        ST.Status,\r\n        ST.Project,\r\n        ST.Project_Identifier,\r\n        CASE \r\n            WHEN ST.`Raised On` IS NOT NULL AND TRIM(ST.`Raised On`) NOT IN ('','-')  THEN STR_TO_DATE(ST.`Raised On`,'%d-%c-%y') \r\n            ELSE NULL \r\n        END AS `Raised On`,\r\n        CASE \r\n            WHEN ST.`Actual Closure Date` IS NOT NULL AND TRIM(ST.`Actual Closure Date`) NOT IN ('','-')  THEN STR_TO_DATE(ST.`Actual Closure Date`,'%d-%c-%y') \r\n            ELSE NULL \r\n        END AS `Actual Closure Date`,\r\n        CASE \r\n            WHEN ST.`Target Closure Date` IS NOT NULL AND TRIM(ST.`Target Closure Date`) NOT IN ('','-')  THEN STR_TO_DATE(ST.`Target Closure Date`,'%d-%c-%y') \r\n            ELSE NULL \r\n        END AS `Target Closure Date`\r\n    FROM STAGGING ST),\r\nFINAL_OUTPUT AS (\r\n    SELECT \r\n        ST2.*,\r\n        CASE \r\n            WHEN TRIM(LOWER(ST2.Status)) = 'open' THEN DATEDIFF(CURRENT_DATE(),DATE(ST2.`Raised On`))\r\n            WHEN TRIM(LOWER(ST2.Status)) = 'closed' AND ST2.`Actual Closure Date` IS NOT NULL THEN  DATEDIFF(ST2.`Actual Closure Date`,ST2.`Raised On`)\r\n        ELSE NULL \r\n    END AS Ageing        \r\n    FROM STAGGING2 ST2)\r\n    SELECT \r\n        FO.*,\r\n        CASE \r\n            WHEN FO.Ageing <=7  THEN  '(0-7)'\r\n            WHEN FO.Ageing <= 14 THEN '(8-14)'\r\n            WHEN FO.Ageing <= 21 THEN '(15-21)'\r\n            WHEN FO.Ageing <= 30 THEN '(22-30)'\r\n            WHEN FO.Ageing IS NULL THEN NULL\r\n            ELSE '>30'\r\n        END AS Agetub,\r\n        CASE \r\n            WHEN FO.Ageing <=7  THEN 1\r\n            WHEN FO.Ageing <=14 THEN 2\r\n            WHEN FO.Ageing <=21 THEN 3\r\n            WHEN FO.Ageing <=30 THEN 4\r\n            WHEN FO.Ageing IS NULL THEN NULL\r\n            ELSE 5\r\n        END AS Agetub_sort        \r\n    FROM FINAL_OUTPUT FO ;\r\n    \r\n    /**/\r\n\r\n    SELECT 1;",
-								"queryTimeout": "02:00:00"
-							},
-							"dataset": {
-								"referenceName": "DS_MySQL_Data_Loads_DB",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-01-16T21:49:34Z"
 			},
 			"dependsOn": []
 		}

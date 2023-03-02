@@ -13,6 +13,47 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_Pln_WeeklyTwice')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Critical Issues",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"query": "TRUNCATE TABLE f_pln_criticalissue_tracker;\r\nINSERT INTO f_pln_criticalissue_tracker\r\nWITH CRITICAL_CLEANING AS (\r\nSELECT\r\n            DATE(OPCIT.upload_time) AS `Upload Time`,\r\n            OPCIT.`Reference Number`,\r\n            OPCIT.`PR / PO / Other Ref No`,\r\n            OPCIT.`Raised On`,\r\n            CASE\r\n                WHEN OPCIT.`SBU (Issue Raised by)` LIKE '%SBU 1%' THEN 'SBU 1'\r\n        WHEN OPCIT.`SBU (Issue Raised by)` LIKE '%SBU 2%' THEN 'SBU 2'\r\n        WHEN OPCIT.`SBU (Issue Raised by)` LIKE '%SBU 3%' THEN 'SBU 3'\r\n        WHEN OPCIT.`SBU (Issue Raised by)` LIKE '%SBU 4%' THEN 'SBU 4'\r\n        WHEN OPCIT.`SBU (Issue Raised by)` LIKE '%SBU 5%' THEN 'SBU 5'\r\n        ELSE 'UNKNOWN'\r\n    END AS SBU_SCLICER,\r\n            CASE\r\n                WHEN OPCIT.`Pending With` IS NULL\r\n        OR TRIM(OPCIT.`Pending With`) = '' THEN 'Not Available'\r\n        ELSE OPCIT.`Pending With`\r\n    END AS `Pending With`,\r\n            OPCIT.`Issue Description`,\r\n            OPCIT.`Current Status`,\r\n            OPCIT.`Impact On`,\r\n            OPCIT.`Target Closure Date`,\r\n            OPCIT.`Status`,\r\n            OPCIT.`Actual Closure Date`,\r\n            OPCIT.`Project`,\r\n            PROJECTS.Project_Identifier\r\nFROM\r\n        O_PLN_CRITICAL_ISSUE_TRACKER OPCIT\r\n    LEFT JOIN PROJECTS ON\r\n        OPCIT.Project = PROJECTS.Project_Short\r\nWHERE\r\n        TRIM(OPCIT.`Issue Description`) NOT IN ('')),\r\nAPPLYING_RANK AS (\r\nSELECT\r\n        *,\r\n        DENSE_RANK() OVER (PARTITION BY CRITICAL_CLEANING.SBU_SCLICER\r\nORDER BY\r\n        CRITICAL_CLEANING.`Upload Time` DESC) AS DENSER_RANK\r\nFROM\r\n        CRITICAL_CLEANING\r\nORDER BY\r\n        2\r\n),\r\nSTAGGING AS (\r\nSELECT\r\n        OPCIT.`Upload Time`,\r\n        OPCIT.`Reference Number`,\r\n        OPCIT.`PR / PO / Other Ref No`,\r\n        CASE \r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%jan%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'jan','01')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%feb%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'feb','02')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%mar%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'mar','03')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%apr%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'apr','04')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%may%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'may','05')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%jun%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'jun','06')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%jul%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'jul','07')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%aug%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'aug','08')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%sep%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'sep','09')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%oct%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'oct','10')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%nov%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'nov','11')\r\n            WHEN LOWER(OPCIT.`Raised On`) LIKE '%dec%' THEN REPLACE(LOWER(OPCIT.`Raised On`),'dec','12') \r\n            ELSE OPCIT.`Raised On`\r\n        END AS `Raised On`,\r\n        OPCIT.SBU_SCLICER,\r\n        CASE \r\n            WHEN OPCIT.SBU_SCLICER = 'SBU 1' THEN 1\r\n            WHEN OPCIT.SBU_SCLICER = 'SBU 2' THEN 2\r\n            WHEN OPCIT.SBU_SCLICER = 'SBU 3' THEN 3\r\n            WHEN OPCIT.SBU_SCLICER = 'SBU 4' THEN 4\r\n            WHEN OPCIT.SBU_SCLICER = 'SBU 5' THEN 5\r\n            ELSE 6\r\n        END AS SBU_SORT,        \r\n        OPCIT.`Pending With`,\r\n        OPCIT.`Issue Description`,\r\n        OPCIT.`Current Status`,\r\n        OPCIT.`Impact On`,\r\n        CASE\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%jan%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'jan','01')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%feb%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'feb','02')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%mar%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'mar','03')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%apr%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'apr','04')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%may%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'may','05')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%jun%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'jun','06')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%jul%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'jul','07')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%aug%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'aug','08')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%sep%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'sep','09')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%oct%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'oct','10')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%nov%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'nov','11')\r\n            WHEN LOWER(OPCIT.`Target Closure Date`) LIKE '%dec%' THEN REPLACE(LOWER(OPCIT.`Target Closure Date`),'dec','12')\r\n            ELSE OPCIT.`Target Closure Date`\r\n        END AS `Target Closure Date`,\r\n        OPCIT.Status,\r\n        CASE \r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%jan%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'jan','01')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%feb%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'feb','02')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%mar%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'mar','03')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%apr%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'apr','04')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%may%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'may','05')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%jun%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'jun','06')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%jul%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'jul','07')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%aug%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'aug','08')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%sep%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'sep','09')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%oct%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'oct','10')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%nov%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'nov','11')\r\n            WHEN LOWER(OPCIT.`Actual Closure Date`) LIKE '%dec%' THEN REPLACE(LOWER(OPCIT.`Actual Closure Date`),'dec','12')\r\n            ELSE OPCIT.`Actual Closure Date`    \r\n        END AS `Actual Closure Date`,\r\n        OPCIT.Project,\r\n        OPCIT.Project_Identifier\r\nFROM\r\n        APPLYING_RANK OPCIT \r\nWHERE\r\n        DENSER_RANK = 1),\r\nSTAGGING2 AS ( \r\n    SELECT     \r\n        ST.`Upload Time`,\r\n        ST.`Reference Number`,\r\n        ST.`PR / PO / Other Ref No`, \r\n        ST.SBU_SCLICER,\r\n        ST.SBU_SORT,\r\n        ST.`Pending With`,\r\n        ST.`Issue Description`,\r\n        ST.`Current Status`,\r\n        ST.`Impact On`,\r\n        ST.Status,\r\n        ST.Project,\r\n        ST.Project_Identifier,\r\n        CASE \r\n            WHEN ST.`Raised On` IS NOT NULL AND TRIM(ST.`Raised On`) NOT IN ('','-')  THEN STR_TO_DATE(ST.`Raised On`,'%d-%c-%y') \r\n            ELSE NULL \r\n        END AS `Raised On`,\r\n        CASE \r\n            WHEN ST.`Actual Closure Date` IS NOT NULL AND TRIM(ST.`Actual Closure Date`) NOT IN ('','-')  THEN STR_TO_DATE(ST.`Actual Closure Date`,'%d-%c-%y') \r\n            ELSE NULL \r\n        END AS `Actual Closure Date`,\r\n        CASE \r\n            WHEN ST.`Target Closure Date` IS NOT NULL AND TRIM(ST.`Target Closure Date`) NOT IN ('','-')  THEN STR_TO_DATE(ST.`Target Closure Date`,'%d-%c-%y') \r\n            ELSE NULL \r\n        END AS `Target Closure Date`\r\n    FROM STAGGING ST),\r\nFINAL_OUTPUT AS (\r\n    SELECT \r\n        ST2.*,\r\n        CASE \r\n            WHEN TRIM(LOWER(ST2.Status)) = 'open' THEN DATEDIFF(CURRENT_DATE(),DATE(ST2.`Raised On`))\r\n            WHEN TRIM(LOWER(ST2.Status)) = 'closed' AND ST2.`Actual Closure Date` IS NOT NULL THEN  DATEDIFF(ST2.`Actual Closure Date`,ST2.`Raised On`)\r\n        ELSE NULL \r\n    END AS Ageing        \r\n    FROM STAGGING2 ST2)\r\n    SELECT \r\n        FO.*,\r\n        CASE \r\n            WHEN FO.Ageing <=7  THEN  '(0-7)'\r\n            WHEN FO.Ageing <= 14 THEN '(8-14)'\r\n            WHEN FO.Ageing <= 21 THEN '(15-21)'\r\n            WHEN FO.Ageing <= 30 THEN '(22-30)'\r\n            WHEN FO.Ageing IS NULL THEN NULL\r\n            ELSE '>30'\r\n        END AS Agetub,\r\n        CASE \r\n            WHEN FO.Ageing <=7  THEN 1\r\n            WHEN FO.Ageing <=14 THEN 2\r\n            WHEN FO.Ageing <=21 THEN 3\r\n            WHEN FO.Ageing <=30 THEN 4\r\n            WHEN FO.Ageing IS NULL THEN NULL\r\n            ELSE 5\r\n        END AS Agetub_sort        \r\n    FROM FINAL_OUTPUT FO ;\r\n    \r\n    /**/\r\n\r\n    SELECT 1;",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "DS_MySQL_Data_Loads_DB",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-16T21:49:34Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_Pln_Weekly_copy1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -3155,7 +3196,7 @@
 						"     allowSchemaDrift: false,",
 						"     validateSchema: false,",
 						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'SELECT \\n    P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n    BA.TOWER,\\n    BA.[LEVEL],\\n    P.PROJECT_IDENTIFIER ,\\n    BA.FLAT,\\n    \\'Balcony Area\\' as Sclicer,\\n    BA.ACTIVITY_ID,\\n    CASE \\n        WHEN BA.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE BA.VALUE\\n    END AS VALUE,\\n    BA.TYPE_OF_WORK,\\n    BA.CATEGORY,\\n    BA.UPLOAD_DATE\\nFROM (\\n     SELECT BR.UPLOAD_TIME AS UPLOAD_DATE,\\n             BR.PROJECT_ID,\\n             BR.TOWER,\\n             BR.[LEVEL],\\n             BR.FLAT,\\n             COLUMN_NAME.*,\\n             BM.ACTIVITY_ID,\\n             BM.SBU_ID,\\n             BM.CATEGORY,\\n             DENSE_RANK () OVER (PARTITION BY  PROJECT_ID ORDER BY  CAST(UPLOAD_TIME AS DATE) DESC) AS DRANK\\n         FROM [STG].[O_PLN_BALCONYAREA_RAW_STG] BR\\n         CROSS APPLY  (\\n               SELECT        [MARKING_FOR_RAIN_WATER_PIPE] , \\'MARKING FOR RAIN WATER PIPE\\'\\n     UNION ALL SELECT  [RAIN_WATER_PIPE] , \\'RAIN WATER PIPE\\'\\n     UNION ALL SELECT  [RAIN_WATER_PIPE_PACKING] , \\'RAIN WATER PIPE PACKING\\'\\n     UNION ALL SELECT  [BALCONY_BLOCKWORK] , \\'BALCONY BLOCKWORK\\'\\n     UNION ALL SELECT  [BALCONY_PLASTER] , \\'BALCONY PLASTER\\'\\n     UNION ALL SELECT  [F_CHANNEL_INSTALLATION] , \\'F CHANNEL INSTALLATION\\'\\n     UNION ALL SELECT  [NON_SHRINK_GROUT] , \\'NON SHRINK GROUT\\'\\n     UNION ALL SELECT  [TOP_RAIL_BRACKET_INSTALLATION] , \\'TOP RAIL BRACKET INSTALLATION\\'\\n     UNION ALL SELECT  [EIFS_INSTALLATION] , \\'EIFS INSTALLATION\\'\\n     UNION ALL SELECT  [BALCONY_EIFS_PLASTER] , \\'BALCONY EIFS PLASTER\\'\\n     UNION ALL SELECT  [GRINDING_CLEARANCE] , \\'GRINDING CLEARANCE\\'\\n     UNION ALL SELECT  [CEILING_SKIM_COAT_AND_PRIMER] , \\'CEILING SKIM COAT & PRIMER\\'\\n     UNION ALL SELECT  [BALCONY_SCREED] , \\'BALCONY SCREED\\'\\n     UNION ALL SELECT  [DRAIN_FIXING] , \\'DRAIN FIXING\\'\\n     UNION ALL SELECT  [CEILING_BALCONY_BOX_INSTALLATION] , \\'CEILING BALCONY BOX INSTALLATION\\'\\n     UNION ALL SELECT  [LEFT_OVER_SCREED_IF_ANY] , \\'LEFT OVER SCREED (IF ANY)\\'\\n     UNION ALL SELECT  [EIFS_WALL_TEXTURE] , \\'EIFS WALL TEXTURE\\'\\n     UNION ALL SELECT  [BALUSTRADE_GLASS_INSTALLATION] , \\'BALUSTRADE GLASS INSTALLATION\\'\\n     UNION ALL SELECT  [BALUSTRADE_TOP_RAIL] , \\'BALUSTRADE TOP RAIL\\'\\n     UNION ALL SELECT  [BALCONY_UNDER_TILE_WATER_PROOFING] , \\'BALCONY UNDER TILE WATER PROOFING\\'\\n     UNION ALL SELECT  [BALCONY_FLOOR_TILING] , \\'BALCONY FLOOR TILING\\'\\n     UNION ALL SELECT  [BALUSTRADE_INTERNAL_FLASHING] , \\'BALUSTRADE - INTERNAL FLASHING\\'\\n     UNION ALL SELECT  [BALCONY_SKIRTING] , \\'BALCONY SKIRTING\\'\\n     UNION ALL SELECT  [METAL_CEILING] , \\'METAL CEILING\\'\\n     UNION ALL SELECT  [BALCONY_CEILING_TEXTURE] , \\'BALCONY CEILING TEXTURE\\'\\n     UNION ALL SELECT  [COMPLETE_WALL_TEXTURE] , \\'COMPLETE WALL TEXTURE\\'\\n     UNION ALL SELECT  [BALCONY_GROUTING] , \\'BALCONY GROUTING\\'\\n     UNION ALL SELECT  [BALCONY_SILICONE] , \\'BALCONY SILICONE\\'\\n     UNION ALL SELECT  [BALCONY_MEP_FINAL_FIXTURES] , \\'BALCONY MEP FINAL FIXTURES\\'\\n     UNION ALL SELECT  [BALCONY_FINAL_COAT_PAINT] , \\'BALCONY FINAL COAT PAINT\\'\\n     UNION ALL SELECT  [BALCONY_DRAIN_COVER_SUPPLY] , \\'BALCONY DRAIN COVER SUPPLY\\'\\n     UNION ALL SELECT  [COVER_FIXING_FOR_BALCONY_DRAIN] , \\'COVER FIXING FOR BALCONY DRAIN\\'\\n     UNION ALL SELECT  [COVER_PLATE_BW_ACP_AND_EIFS] , \\'COVER PLATE B/W ACP & EIFS\\'\\n             ) AS COLUMN_NAME (VALUE,TYPE_OF_WORK)\\n               \\n     left JOIN  STG.O_PLN_BALCONYAREA_MAP_STG  BM\\n     ON COLUMN_NAME.TYPE_OF_WORK = BM.ACTIVITY_SEQUENCE\\n     WHERE VALUE IS NOT NULL  AND VALUE !=\\'\\') BA\\nLeft JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          BA.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON         BA.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          BA.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          BA.DRANK = 1',",
+						"     query: 'SELECT \\n    P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n    BA.TOWER,\\n    BA.[LEVEL],\\n    P.PROJECT_IDENTIFIER ,\\n    BA.FLAT,\\n    \\'Balcony Area\\' as Sclicer,\\n    BA.ACTIVITY_ID,\\n    CASE \\n        WHEN BA.VALUE IN (\\'\\',\\'NA\\') THEN \\'0%\\'\\n        ELSE BA.VALUE\\n    END AS VALUE,\\n    BA.TYPE_OF_WORK,\\n    BA.CATEGORY,\\n    BA.UPLOAD_DATE\\nFROM (\\n     SELECT BR.UPLOAD_TIME AS UPLOAD_DATE,\\n             BR.PROJECT_ID,\\n             BR.TOWER,\\n             BR.[LEVEL],\\n             BR.FLAT,\\n             COLUMN_NAME.*,\\n             BM.ACTIVITY_ID,\\n             BM.SBU_ID,\\n             BM.CATEGORY,\\n             DENSE_RANK () OVER (PARTITION BY  PROJECT_ID,BM.SBU_ID ORDER BY  CAST(UPLOAD_TIME AS DATE) DESC) AS DRANK\\n         FROM [STG].[O_PLN_BALCONYAREA_RAW_STG] BR\\n         CROSS APPLY  (\\n               SELECT        [MARKING_FOR_RAIN_WATER_PIPE] , \\'MARKING FOR RAIN WATER PIPE\\'\\n     UNION ALL SELECT  [RAIN_WATER_PIPE] , \\'RAIN WATER PIPE\\'\\n     UNION ALL SELECT  [RAIN_WATER_PIPE_PACKING] , \\'RAIN WATER PIPE PACKING\\'\\n     UNION ALL SELECT  [BALCONY_BLOCKWORK] , \\'BALCONY BLOCKWORK\\'\\n     UNION ALL SELECT  [BALCONY_PLASTER] , \\'BALCONY PLASTER\\'\\n     UNION ALL SELECT  [F_CHANNEL_INSTALLATION] , \\'F CHANNEL INSTALLATION\\'\\n     UNION ALL SELECT  [NON_SHRINK_GROUT] , \\'NON SHRINK GROUT\\'\\n     UNION ALL SELECT  [TOP_RAIL_BRACKET_INSTALLATION] , \\'TOP RAIL BRACKET INSTALLATION\\'\\n     UNION ALL SELECT  [EIFS_INSTALLATION] , \\'EIFS INSTALLATION\\'\\n     UNION ALL SELECT  [BALCONY_EIFS_PLASTER] , \\'BALCONY EIFS PLASTER\\'\\n     UNION ALL SELECT  [GRINDING_CLEARANCE] , \\'GRINDING CLEARANCE\\'\\n     UNION ALL SELECT  [CEILING_SKIM_COAT_AND_PRIMER] , \\'CEILING SKIM COAT & PRIMER\\'\\n     UNION ALL SELECT  [BALCONY_SCREED] , \\'BALCONY SCREED\\'\\n     UNION ALL SELECT  [DRAIN_FIXING] , \\'DRAIN FIXING\\'\\n     UNION ALL SELECT  [CEILING_BALCONY_BOX_INSTALLATION] , \\'CEILING BALCONY BOX INSTALLATION\\'\\n     UNION ALL SELECT  [LEFT_OVER_SCREED_IF_ANY] , \\'LEFT OVER SCREED (IF ANY)\\'\\n     UNION ALL SELECT  [EIFS_WALL_TEXTURE] , \\'EIFS WALL TEXTURE\\'\\n     UNION ALL SELECT  [BALUSTRADE_GLASS_INSTALLATION] , \\'BALUSTRADE GLASS INSTALLATION\\'\\n     UNION ALL SELECT  [BALUSTRADE_TOP_RAIL] , \\'BALUSTRADE TOP RAIL\\'\\n     UNION ALL SELECT  [BALCONY_UNDER_TILE_WATER_PROOFING] , \\'BALCONY UNDER TILE WATER PROOFING\\'\\n     UNION ALL SELECT  [BALCONY_FLOOR_TILING] , \\'BALCONY FLOOR TILING\\'\\n     UNION ALL SELECT  [BALUSTRADE_INTERNAL_FLASHING] , \\'BALUSTRADE - INTERNAL FLASHING\\'\\n     UNION ALL SELECT  [BALCONY_SKIRTING] , \\'BALCONY SKIRTING\\'\\n     UNION ALL SELECT  [METAL_CEILING] , \\'METAL CEILING\\'\\n     UNION ALL SELECT  [BALCONY_CEILING_TEXTURE] , \\'BALCONY CEILING TEXTURE\\'\\n     UNION ALL SELECT  [COMPLETE_WALL_TEXTURE] , \\'COMPLETE WALL TEXTURE\\'\\n     UNION ALL SELECT  [BALCONY_GROUTING] , \\'BALCONY GROUTING\\'\\n     UNION ALL SELECT  [BALCONY_SILICONE] , \\'BALCONY SILICONE\\'\\n     UNION ALL SELECT  [BALCONY_MEP_FINAL_FIXTURES] , \\'BALCONY MEP FINAL FIXTURES\\'\\n     UNION ALL SELECT  [BALCONY_FINAL_COAT_PAINT] , \\'BALCONY FINAL COAT PAINT\\'\\n     UNION ALL SELECT  [BALCONY_DRAIN_COVER_SUPPLY] , \\'BALCONY DRAIN COVER SUPPLY\\'\\n     UNION ALL SELECT  [COVER_FIXING_FOR_BALCONY_DRAIN] , \\'COVER FIXING FOR BALCONY DRAIN\\'\\n     UNION ALL SELECT  [COVER_PLATE_BW_ACP_AND_EIFS] , \\'COVER PLATE B/W ACP & EIFS\\'\\n             ) AS COLUMN_NAME (VALUE,TYPE_OF_WORK)\\n               \\n     left JOIN  STG.O_PLN_BALCONYAREA_MAP_STG  BM\\n     ON COLUMN_NAME.TYPE_OF_WORK = BM.ACTIVITY_SEQUENCE\\n     WHERE VALUE IS NOT NULL  AND VALUE !=\\'\\') BA\\nLeft JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM] AS LM\\n     ON          BA.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON         BA.PROJECT_ID=P.PROJECT_IDENTIFIER \\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          BA.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          BA.DRANK = 1',",
 						"     format: 'query',",
 						"     staged: true) ~> source1",
 						"source1 keyGenerate(output(SurrogateKey_ID as long),",
@@ -3437,124 +3478,6 @@
 						"          month_sort,",
 						"          year_sort,",
 						"          Cummulative,",
-						"          LoadDateTime",
-						"     )) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DF_PLN_CORRIDOR')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "DWH/Facts"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DS_O_PLN_CORRIDOR_RAW_STG_TRG",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DS_PLN_CORRIDOR_TRG",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "surrogateKey1"
-						},
-						{
-							"name": "derivedColumn1"
-						}
-					],
-					"scriptLines": [
-						"parameters{",
-						"     MAX_ID as integer (0)",
-						"}",
-						"source(output(",
-						"          PROJECT_ID as integer,",
-						"          LEVEL_ID as integer,",
-						"          SBU_ID as integer,",
-						"          TOWER as string,",
-						"          Activity_Id as integer,",
-						"          PROJECT_IDENTIFIER as string,",
-						"          LEVEL as string,",
-						"          Scilicer as string,",
-						"          value as decimal(24,6),",
-						"          TYPE_OF_WORK as string,",
-						"          CATEGORY as string,",
-						"          CATEGORY_SORT as integer,",
-						"          UPLOAD_DATE as date",
-						"     ),",
-						"     allowSchemaDrift: false,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     query: 'SELECT \\n    P.Sort_ID as PROJECT_ID,\\n    LM.LEVEL_MAP_ID AS LEVEL_ID,\\n    SM.SBU_MAP_ID AS SBU_ID,\\n    A.TOWER    ,\\n     A.Activity_Id,\\n     P.PROJECT_IDENTIFIER,\\n     A.LEVEL,\\n     \\'Corridor\\' as Scilicer,\\n  --CASE\\n  --          WHEN TRIM(A.value) IN (\\'\\',\\'-\\',\\'0%\\',\\'00%\\') THEN 0\\n  --          WHEN A.value IS NOT NULL AND TRIM(A.value) NOT IN (\\'\\',\\'-\\',\\'0%\\',\\'00%\\') THEN 1\\n  --          ELSE 0\\n  --      END AS value,\\n  \\n  CAST(REPLACE(CASE     WHEN TRIM(A.value) IN (\\'\\',\\'NA\\') THEN \\'0%\\' else TRIM(A.value) end, \\'%\\', \\'\\') AS Decimal)/100 AS value,\\n\\n    A.TYPE_OF_WORK    ,\\n    A.CATEGORY   ,\\n\\n          CASE \\n            WHEN TRIM(A.CATEGORY) IN(\\'BUILDERS WORK\\') THEN  2\\n            WHEN TRIM(A.CATEGORY) IN(\\'MEP\\') THEN  12\\n            WHEN TRIM(A.CATEGORY) IN(\\'PLASTER\\') THEN  3\\n            WHEN TRIM(A.CATEGORY) IN(\\'SCREED\\') THEN  5\\n            WHEN TRIM(A.CATEGORY) IN(\\'TILE\\') THEN  9\\n            WHEN TRIM(A.CATEGORY) IN(\\'MARBLE\\') THEN  10\\n            WHEN TRIM(A.CATEGORY) IN(\\'FACADE\\') THEN  11\\n            WHEN TRIM(A.CATEGORY) IN(\\'GYAUM\\') THEN  6\\n            WHEN TRIM(A.CATEGORY) IN(\\'PAINT\\') THEN  8\\n            ELSE 20\\n        END AS CATEGORY_SORT,\\n    A.UPLOAD_DATE  \\n         \\nFROM\\n(\\n        SELECT CAST(O_PLN_CORRIDOR_RAW.UPLOAD_TIME AS DATE) AS UPLOAD_DATE,\\n        O_PLN_CORRIDOR_RAW.PROJECT_ID,\\n        O_PLN_CORRIDOR_RAW.TOWER,\\n        O_PLN_CORRIDOR_RAW.LEVEL,\\n     COLUMN_NAME.* ,\\n        \\'CORRIDOR\\' AS SCLICER,\\n       \\n        O_PLN_CORRIDOR_MAP.ACTIVITY_ID,\\n        O_PLN_CORRIDOR_MAP.SBU_ID,\\n        O_PLN_CORRIDOR_MAP.CATEGORY,\\n\\n        DENSE_RANK () OVER     (PARTITION BY  PROJECT_ID\\n                            ORDER BY  CAST(UPLOAD_TIME AS DATE) DESC\\n                            )     PROJECT_UDATE_DRANK\\n FROM [STG].[O_PLN_CORRIDOR_RAW_STG]  O_PLN_CORRIDOR_RAW\\nCROSS APPLY (\\n\\nSELECT     CORRIDOR_MEP_MARKING_FOR_BUILDERS_WORK     ,     \\'Corridor MEP Marking for Builders Work\\'\\nUNION ALL SELECT CORRIDOR_CUTTING_AND_CHASING_OF_BLOCKWORK     ,    \\'Corridor Cutting & Chasing of Blockwork\\'\\nUNION ALL SELECT CORRIDOR_MEP_SERVICES_INSTALLATION     ,     \\'Corridor MEP Services Installation\\'\\nUNION ALL SELECT CORRIDOR_WALL_MEP_SERVICES_PACKING     ,     \\'Corridor Wall MEP Services Packing\\'\\nUNION ALL SELECT CORRIDOR_PLASTER     ,     \\'Corridor Plaster\\'\\nUNION ALL SELECT CORRIDOR_SCREED     ,     \\'Corridor Screed\\'\\nUNION ALL SELECT GRINDING_CLEARANCE_FOR_TILE     ,     \\'Grinding Clearance for Tile\\'\\nUNION ALL SELECT TILE_MARKING     ,    \\'Tile Marking\\'\\nUNION ALL SELECT BULL_MARKING     ,     \\'Bull Marking\\'\\nUNION ALL SELECT ELECTRICAL_CONDUITS     ,     \\'Electrical Conduits\\'\\nUNION ALL SELECT COLD_WATER_SUPPLY     ,     \\'Cold water supply\\'\\nUNION ALL SELECT FIRE_FIGHTING_PIPE_SUPPORT     ,     \\'Fire Fighting Pipe Support\\'\\nUNION ALL SELECT MODULAR_INSTALATION     ,    \\'Modular Instalation\\'\\nUNION ALL SELECT FRAMING_CLEARANCE_BY_MEP     ,     \\'Framing Clearance by MEP\\'\\nUNION ALL SELECT CENTER_LINE_MARKING_FOR_FACADE_INSTALLATION     ,     \\'Center line marking for Facade Installation\\'\\nUNION ALL SELECT CORRIDOR_CURTAIN_WALL_BOX_INSTALLATION     ,    \\'Corridor Curtain Wall Box Installation\\'\\nUNION ALL SELECT CORRIDOR_CURTAIN_WALL_FRAME_INSTALLATION     ,    \\'Corridor Curtain Wall Frame Installation\\'\\nUNION ALL SELECT CORRIDOR_CURTAIN_WALL_GLASS_INSTALLATION     ,     \\'Corridor Curtain Wall Glass Installation\\'\\nUNION ALL SELECT CORRIDOR_CURTAIN_WALL_FLASHING_INSTALLATION     ,    \\'Corridor Curtain Wall Flashing Installation\\'\\nUNION ALL SELECT CORRIDOR_FLOOR_TILE     ,    \\'Corridor Floor Tile\\'\\nUNION ALL SELECT CORRIDOR_WALL_TILE     ,          \\'Corridor Wall Tile\\'\\nUNION ALL SELECT FIRE_HOSE_REEL_CABINET_INSTALLATION     ,     \\'Fire Hose Reel Cabinet Installation\\'\\nUNION ALL SELECT GROUTING_FOR_FRAMING_CLEARANCE     ,     \\'Grouting for Framing Clearance\\'\\nUNION ALL SELECT CORRIDOR_FC_FRAMING     ,     \\'Corridor FC Framing\\'\\nUNION ALL SELECT MEP_ACCESS_PANEL_MARKINGS_AND_INSPECTION     ,     \\'MEP Access Panel Markings & Inspection\\'\\nUNION ALL SELECT MEP_WORKS_FOR_BOARDING_CLEARANCE     ,    \\'MEP Works for Boarding Clearance \\'\\nUNION ALL SELECT FRAMING_LEVELLING     ,     \\'Framing Levelling\\'\\nUNION ALL SELECT CORRIDOR_FC_BOARDING     ,     \\'Corridor FC Boarding\\'\\nUNION ALL SELECT JOINT_TAPING_AND_SANDING     ,    \\'Joint Taping & Sanding\\'\\nUNION ALL SELECT CORRIDOR_CEILING_PRIMER     ,     \\'Corridor Ceiling Primer\\'\\nUNION ALL SELECT CORRIDOR_CEILING_STUCCO_1ST_AND_2ND_COAT     ,     \\'Corridor Ceiling Stucco (1st and 2nd Coat)\\'\\nUNION ALL SELECT CORRIDOR_CEILING_FIRST_COAT_PAINT     ,    \\'Corridor Ceiling First Coat Paint\\'\\nUNION ALL SELECT CORRIDOR_GROUTING     ,     \\'Corridor Grouting\\'\\nUNION ALL SELECT CORRIDOR_SILICONE     ,     \\'Corridor Silicone\\'\\nUNION ALL SELECT LEFT_OVER_SCREED     ,    \\'Left over Screed\\'\\nUNION ALL SELECT LEFT_OVER_AREA_FLOOR_TILE     ,    \\'Left Over Area Floor Tile\\'\\nUNION ALL SELECT LEFT_OVER_AREA_WALL_TILE     ,    \\'Left Over Area Wall Tile\\'\\nUNION ALL SELECT REMAINING_GROUT_AND_SILICONE_WORKS     ,     \\'Remaining Grout and Silicone Works\\'\\nUNION ALL SELECT CORRIDOR_MEP_FINAL_FIXTURES     ,    \\'Corridor MEP Final Fixtures\\'\\nUNION ALL SELECT CORRIDOR_FINAL_COAT_PAINT     ,    \\'Corridor Final Coat Paint\\'          \\n)AS COLUMN_NAME(VALUE,TYPE_OF_WORK)\\n   JOIN [STG].[O_PLN_CORRIDOR_MAP_STG]  O_PLN_CORRIDOR_MAP\\n    ON TRIM(COLUMN_NAME.TYPE_OF_WORK) = TRIM(O_PLN_CORRIDOR_MAP.ACTIVITY_SEQUENCE)\\n    WHERE VALUE IS NOT NULL) A\\n   \\n   INNER JOIN [DWH].[PLN_LEVEL_MAP_ALL_DIM]  LM\\n     ON          A.[LEVEL] = LM.[LEVEL]\\nLEFT JOIN [DWH].[PROJECTS_NEW_DIM] P\\n      ON          A.PROJECT_ID=P.PROJECT_IDENTIFIER\\nLEFT JOIN [DWH].[PLN_SBU_MAPPING_DIM] SM\\n     ON          A.SBU_ID=SM.SBU_IDENTIFIER\\nWHERE          A.PROJECT_UDATE_DRANK = 1\\n',",
-						"     format: 'query',",
-						"     staged: true) ~> source1",
-						"source1 keyGenerate(output(SurrogateKey_ID as long),",
-						"     startAt: 1L,",
-						"     stepValue: 1L) ~> surrogateKey1",
-						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
-						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
-						"derivedColumn1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          ID as integer,",
-						"          Project_ID as integer,",
-						"          Project_Identifier as string,",
-						"          SBU_ID as integer,",
-						"          Level_ID as integer,",
-						"          Tower as string,",
-						"          Level as string,",
-						"          Scilicer as string,",
-						"          Activity_ID as integer,",
-						"          Value as decimal(14,4),",
-						"          Type_of_work as string,",
-						"          Category as string,",
-						"          Category_Sort as string,",
-						"          Update_Date as date,",
-						"          LoadDateTime as timestamp",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     staged: true,",
-						"     allowCopyCommand: true,",
-						"     preSQLs:['TRUNCATE TABLE DWH.PLN_CORRIDOR_FACT;'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          ID,",
-						"          Project_ID = PROJECT_ID,",
-						"          Project_Identifier = PROJECT_IDENTIFIER,",
-						"          SBU_ID,",
-						"          Level_ID = LEVEL_ID,",
-						"          Tower = TOWER,",
-						"          Level = LEVEL,",
-						"          Scilicer,",
-						"          Activity_ID = Activity_Id,",
-						"          Value = value,",
-						"          Type_of_work = TYPE_OF_WORK,",
-						"          Category = CATEGORY,",
-						"          Category_Sort = CATEGORY_SORT,",
-						"          Update_Date = UPLOAD_DATE,",
 						"          LoadDateTime",
 						"     )) ~> sink1"
 					]

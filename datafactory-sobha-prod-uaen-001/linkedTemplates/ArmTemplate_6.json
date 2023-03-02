@@ -13,6 +13,64 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_WETAREA_MAP_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_SHORT",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_ID",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "CATEGORY",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_wetarea_map"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_WETAREA_MAP_STG_TRG')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1576,162 +1634,6 @@
 				"typeProperties": {
 					"schema": "STG",
 					"table": "PG_Project_Master_STG"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_PG_TASK_REPORT_FACT_TRG')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_AzureSynapseAnalytics_DW",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DWH/Facts"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "Id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Project_ID",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Project_Name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Task_ID",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Stamp",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Title",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Description",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Date",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Status",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Type",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Sheet",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Location",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Root_Cause",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Created_By",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Assigned_To",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Watchers",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Photos",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Archived",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Start_Date",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Due_Date",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Cost_Impact",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Cost_Impact_Amount",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 3
-					},
-					{
-						"name": "Schedule_Impact",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Schedule_Impact_Amount_Days",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Last_Updated_On",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Closed_on",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Task_Refresh_Date",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Task_Ref_No",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LoadDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "DWH",
-					"table": "PG_TASK_REPORT_FACT"
 				}
 			},
 			"dependsOn": []

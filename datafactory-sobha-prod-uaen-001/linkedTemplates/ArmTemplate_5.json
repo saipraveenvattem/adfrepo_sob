@@ -829,6 +829,409 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_STRUCTURE_POURING_STG_SP')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "STRUCTURE_POURING_id_",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "sbu_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_3",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_3",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_3",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_4",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_4",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_4",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_5",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_5",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_5",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_6",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_6",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_6",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_7",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_7",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_7",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_8",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_8",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_8",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_9",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_9",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_9",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_10",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_10",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_10",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_11",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_11",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_11",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_12",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_12",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_13",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_13",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_13",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_14",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_14",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_14",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_15",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_15",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_15",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_16",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_16",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_16",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_17",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_17",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_17",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_18",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_18",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_18",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_19",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_19",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_19",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_20",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_20",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_20",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_21",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_21",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_21",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_22",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_22",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_22",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_23",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_23",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_23",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_24",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_24",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_24",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_25",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_25",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_25",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_26",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_26",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_26",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_27",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_27",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_27",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_28",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_28",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_28",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_29",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_29",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_29",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Wall_30",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Slab_30",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Staircase_12",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_STRUCTURE_POURING_STG_SRC')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4545,64 +4948,6 @@
 				"typeProperties": {
 					"schema": "STG",
 					"table": "O_PLN_WATERROOM_RAW_STG"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_WETAREA_MAP_STG_SRC')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_Azure_MySQL_DL",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staging"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [
-					{
-						"name": "id_",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "ACTIVITY_ID",
-						"type": "int",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SBU_SHORT",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "SBU_ID",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "CATEGORY",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					},
-					{
-						"name": "ACTIVITY_SEQUENCE",
-						"type": "varchar",
-						"precision": 0,
-						"scale": 0
-					}
-				],
-				"typeProperties": {
-					"tableName": "o_pln_wetarea_map"
 				}
 			},
 			"dependsOn": []

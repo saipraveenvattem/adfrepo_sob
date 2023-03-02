@@ -25,6 +25,161 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_SA_DIM_USERINFO_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "UserID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Badgenumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DefaultdeptID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Password",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Card",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Privilege",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AccGroup",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TimeZones",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Gender",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Birthday",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "street",
+						"type": "nvarchar"
+					},
+					{
+						"name": "zip",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ophone",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FPHONE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "pager",
+						"type": "nvarchar"
+					},
+					{
+						"name": "minzu",
+						"type": "nvarchar"
+					},
+					{
+						"name": "title",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SSN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "State",
+						"type": "nvarchar"
+					},
+					{
+						"name": "City",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SECURITYFLAGS",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "DelTag",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "RegisterOT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AutoSchPlan",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MinAutoSchInterval",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Image_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Last_Refresh_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "SA_DIM_USERINFO_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_SA_DIM_USERINFO_TRG')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2680,272 +2835,6 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2022-12-30T13:08:02Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_MANPOWER_MERGE_STG')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"queryTimeout": "02:00:00"
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"preCopyScript": "truncate table [STG].[MANPOWER_MERGE_STG]",
-								"writeBehavior": "Insert",
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "SL NO",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "SL_NO",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "EMP ID NO.",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "EMP_ID_NO",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "TECHNICIAN NAME",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "TECHNICIAN_NAME",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "ACTUAL DOJ",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "ACTUAL_DOJ",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "TRADE AS PER ADMIN",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "TRADE_AS_PER_ADMIN",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "TRADE GROUP",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "TRADE_GROUP",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "WORK STATUS/COST HEAD",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "WORK_STATUS_COST_HEAD",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "DIVISION",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "DIVISION",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "UNIT",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "UNIT",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "WORK STATUS",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "WORK_STATUS",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "SHIFT",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "SHIFT",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "COMPANY",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "COMPANY",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "SOURCE",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "SOURCE",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Type",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "Type",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "name",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "name",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Emp_ID",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "Emp_ID",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Login_Time",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "Login_Time",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_MANPOWER_STG_SRC",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_MANPOWER_MERGE_STG_TRG",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Staging"
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-01-13T08:31:42Z"
 			},
 			"dependsOn": []
 		}

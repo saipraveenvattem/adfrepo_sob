@@ -13,6 +13,102 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Corridor_Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Corridore_Map_Stg",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_O_PLN_CORRIDOR_MAP_STG",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Corridore_Raw_STG",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Corridore_Map_Stg",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_O_PLN_CORRIDOR_RAW_STG",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Corridore_Fact",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Corridore_Raw_STG",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_PLN_CORRIDOR",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Project_Progress_summary",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Corridore_Fact",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_PLN_PROJECT_PROGRESS_SUMMARY_FACT",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Master"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-13T10:05:52Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Critical_Issue_Master')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2030,6 +2126,7 @@
 				"[concat(variables('factoryId'), '/pipelines/ServiceRoom_Master')]",
 				"[concat(variables('factoryId'), '/pipelines/KeepOut_Master')]",
 				"[concat(variables('factoryId'), '/pipelines/Staircase_Master')]",
+				"[concat(variables('factoryId'), '/pipelines/Corridor_Master')]",
 				"[concat(variables('factoryId'), '/pipelines/Drawing_Master')]",
 				"[concat(variables('factoryId'), '/pipelines/Taskreport_Master')]"
 			]
@@ -2073,85 +2170,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Trg_Daily')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Dim_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "DoorDelivery_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "WoodenDoor_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "Struncture_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "Projection_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Week",
-						"interval": 1,
-						"startTime": "2023-02-10T10:56:00",
-						"timeZone": "Arabian Standard Time",
-						"schedule": {
-							"minutes": [
-								0
-							],
-							"hours": [
-								22
-							],
-							"weekDays": [
-								"Sunday",
-								"Monday",
-								"Tuesday",
-								"Wednesday",
-								"Thursday",
-								"Friday",
-								"Saturday"
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Dim_Master')]",
-				"[concat(variables('factoryId'), '/pipelines/DoorDelivery_Master')]",
-				"[concat(variables('factoryId'), '/pipelines/WoodenDoor_Master')]",
-				"[concat(variables('factoryId'), '/pipelines/Struncture_Master')]",
-				"[concat(variables('factoryId'), '/pipelines/Projection_Master')]"
-			]
 		}
 	]
 }
