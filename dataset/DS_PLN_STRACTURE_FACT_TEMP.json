@@ -91,7 +91,7 @@
 		],
 		"typeProperties": {
 			"schema": "DWH",
-			"table": "PLN_STRUCTURE_FACT"
+			"table": "O_PLN_STRUCTURE_POURING_STG2"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
