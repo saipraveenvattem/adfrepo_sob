@@ -8,10 +8,6 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "DS_PLN_STRACTURE_FACT_SP",
-						"type": "DatasetReference"
-					},
 					"name": "source1"
 				}
 			],
@@ -36,31 +32,8 @@
 				"parameters{",
 				"     MAX_ID as integer (0)",
 				"}",
-				"source(output(",
-				"          UPLOAD_DATE as timestamp,",
-				"          PROJECT_Id as integer,",
-				"          AREA as string,",
-				"          Project_Identifier as string,",
-				"          LEVEL_ID as integer,",
-				"          SBU_ID as integer,",
-				"          LEVEL as string,",
-				"          POUR_COUNT as string,",
-				"          POUR as string,",
-				"          SEQUENCE_OF_APPEARANCE as integer,",
-				"          VALUE as string,",
-				"          NEXT_DATE as string,",
-				"          AVG_DAYS as integer,",
-				"          VIEW_MAP as integer,",
-				"          VALUE_AVERAGE as integer",
-				"     ),",
-				"     allowSchemaDrift: false,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     procedureName: '',",
-				"     schemaName: 'DWH',",
-				"     resultSet: true,",
-				"     format: 'procedure',",
-				"     staged: true) ~> source1",
+				"source(allowSchemaDrift: false,",
+				"     validateSchema: false) ~> source1",
 				"source1 keyGenerate(output(SurrogateKey_ID as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
