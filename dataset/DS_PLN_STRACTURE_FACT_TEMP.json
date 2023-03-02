@@ -90,7 +90,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "DWH",
+			"schema": "STG",
 			"table": "O_PLN_STRUCTURE_POURING_STG2"
 		}
 	},
