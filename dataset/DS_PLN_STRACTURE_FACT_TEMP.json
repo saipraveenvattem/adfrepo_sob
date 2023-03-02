@@ -1,5 +1,5 @@
 {
-	"name": "DS_PLN_STRACTURE_FACT_SP",
+	"name": "DS_PLN_STRACTURE_FACT_TEMP",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_AzureSynapseAnalytics_DW",
@@ -88,7 +88,11 @@
 				"precision": 23,
 				"scale": 3
 			}
-		]
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "O_PLN_STRUCTURE_POURING_STG2"
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
