@@ -1200,6 +1200,106 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_STRACTURE_FACT_TEMP')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Upload_Date",
+						"type": "date"
+					},
+					{
+						"name": "Project_Identifier",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Sbu_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Area",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Level",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Pour_count",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Pour",
+						"type": "varchar"
+					},
+					{
+						"name": "Sequence_of_Appearance",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "value",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Next_Date",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Avg_days",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "View_Map",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "value_Average",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_STRUCTURE_POURING_STG2"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_PLN_STRACTURE_FACT_TRG')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2515,161 +2615,6 @@
 				"typeProperties": {
 					"schema": "DWH",
 					"table": "PROJECTS_NEW_DIM"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_SA_DIM_USERINFO_STG_SRC')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Sobha_Azure_Attendance",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staging"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "userid",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "badgenumber",
-						"type": "nvarchar"
-					},
-					{
-						"name": "defaultdeptid",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Password",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Card",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Privilege",
-						"type": "nvarchar"
-					},
-					{
-						"name": "AccGroup",
-						"type": "nvarchar"
-					},
-					{
-						"name": "TimeZones",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Gender",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Birthday",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "street",
-						"type": "nvarchar"
-					},
-					{
-						"name": "zip",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ophone",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FPHONE",
-						"type": "nvarchar"
-					},
-					{
-						"name": "pager",
-						"type": "nvarchar"
-					},
-					{
-						"name": "minzu",
-						"type": "nvarchar"
-					},
-					{
-						"name": "title",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SN",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SSN",
-						"type": "nvarchar"
-					},
-					{
-						"name": "UTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "State",
-						"type": "nvarchar"
-					},
-					{
-						"name": "City",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SECURITYFLAGS",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "DelTag",
-						"type": "smallint",
-						"precision": 5
-					},
-					{
-						"name": "RegisterOT",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "AutoSchPlan",
-						"type": "nvarchar"
-					},
-					{
-						"name": "MinAutoSchInterval",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Image_id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Last_Refresh_Date",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "dim_userinfo"
 				}
 			},
 			"dependsOn": []

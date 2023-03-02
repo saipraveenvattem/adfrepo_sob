@@ -13,6 +13,148 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_O_PLN_FIRELIFTLOBBY_MAP_STG')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "O_PLN_FIRELIFTLOBBY_MAP_STG",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"preCopyScript": "TRUNCATE TABLE STG.O_PLN_FIRELIFTLOBBY_MAP_STG;",
+								"writeBehavior": "Insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id_",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "Fireliftlobby_Map_Id_",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "ACTIVITY_ID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "Activity_Id",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "SBU_SHORT",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Sbu_Short",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SBU_ID",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Sbu_Id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "CATEGORY",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Category",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACTIVITY_SEQUENCE",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Activity_Sequence",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_O_PLN_FIRELIFTLOBBY_MAP_STG_SRC",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_O_PLN_FIRELIFTLOBBY_MAP_STG_TRG",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-01-12T09:26:16Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_O_PLN_FIRELIFTLOBBY_RAW_STG')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -7949,112 +8091,6 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-02-09T14:55:44Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_O_PLN_TOWER_PODIUM_MAP_STG')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "O_PLN_TOWER_PODIUM_MAP",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"queryTimeout": "02:00:00"
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"preCopyScript": "TRUNCATE TABLE [STG].[O_PLN_TOWER_PODIUM_MAP_STG];",
-								"writeBehavior": "Insert",
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "Project",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "Project",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Area",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "Area",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Level",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "Level",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_O_PLN_TOWER_PODIUM_MAP_STG_SRC",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_O_PLN_TOWER_PODIUM_MAP_STG_TRG",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Staging"
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-01-11T12:07:50Z"
 			},
 			"dependsOn": []
 		}

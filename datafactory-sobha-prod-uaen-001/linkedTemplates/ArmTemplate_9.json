@@ -25,6 +25,161 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_SA_DIM_USERINFO_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Sobha_Azure_Attendance",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "userid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "badgenumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "defaultdeptid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Password",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Card",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Privilege",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AccGroup",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TimeZones",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Gender",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Birthday",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "street",
+						"type": "nvarchar"
+					},
+					{
+						"name": "zip",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ophone",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FPHONE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "pager",
+						"type": "nvarchar"
+					},
+					{
+						"name": "minzu",
+						"type": "nvarchar"
+					},
+					{
+						"name": "title",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SSN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "State",
+						"type": "nvarchar"
+					},
+					{
+						"name": "City",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SECURITYFLAGS",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "DelTag",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "RegisterOT",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AutoSchPlan",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MinAutoSchInterval",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Image_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Last_Refresh_Date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "dim_userinfo"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_SA_DIM_USERINFO_STG_TRG')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2669,172 +2824,6 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2022-12-30T13:12:11Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_DT_SUBCATEGORY_STG')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "DT_SUBCATEGORY_STG",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlMISource",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"preCopyScript": "TRUNCATE TABLE [STG].[DT_SUBCATEGORY_STG];",
-								"writeBehavior": "Insert",
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "id",
-											"type": "Int64",
-											"physicalType": "bigint"
-										},
-										"sink": {
-											"name": "Subcategory_ID",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "subcategory_name",
-											"type": "String",
-											"physicalType": "nvarchar"
-										},
-										"sink": {
-											"name": "Subcategory_name",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "category_id",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "Category_id",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "status",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "Status",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "created_at",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										},
-										"sink": {
-											"name": "Created_at",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "updated_at",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										},
-										"sink": {
-											"name": "Updated_at",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "created_by",
-											"type": "String",
-											"physicalType": "nvarchar"
-										},
-										"sink": {
-											"name": "Created_by",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "updated_by",
-											"type": "String",
-											"physicalType": "nvarchar"
-										},
-										"sink": {
-											"name": "Updated_by",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_DT_SUBCATEGORY_STG_SRC",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_DT_SUBCATEGORY_STG_TRG",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Staging"
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-12-30T13:08:02Z"
 			},
 			"dependsOn": []
 		}

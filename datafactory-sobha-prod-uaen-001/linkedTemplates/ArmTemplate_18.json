@@ -13,6 +13,60 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Checkinout_Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "CHECKINOUT_STG",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_SA_FACT_CHECKINOUT_STG",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "CHECKINOUT_FACT",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "CHECKINOUT_STG",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_SA_FACT_CHECKINOUT",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Master"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-15T04:19:48Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Corridor_Master')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1828,9 +1882,9 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "O_PLN_STRUCTURE_POURING_STG",
+								"activity": "O_PLN_STRUCTURE_SP_TEMPTABLE",
 								"dependencyConditions": [
-									"Succeeded"
+									"Completed"
 								]
 							}
 						],
@@ -1842,6 +1896,33 @@
 							},
 							"waitOnCompletion": true,
 							"parameters": {}
+						}
+					},
+					{
+						"name": "O_PLN_STRUCTURE_SP_TEMPTABLE",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "O_PLN_STRUCTURE_POURING_STG",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[DWH].[O_PLN_STRUCTURE]"
+						},
+						"linkedServiceName": {
+							"referenceName": "LS_AzureSynapseAnalytics_DW",
+							"type": "LinkedServiceReference"
 						}
 					}
 				],
@@ -2128,48 +2209,9 @@
 				"[concat(variables('factoryId'), '/pipelines/Staircase_Master')]",
 				"[concat(variables('factoryId'), '/pipelines/Corridor_Master')]",
 				"[concat(variables('factoryId'), '/pipelines/Drawing_Master')]",
+				"[concat(variables('factoryId'), '/pipelines/Checkinout_Master')]",
 				"[concat(variables('factoryId'), '/pipelines/Taskreport_Master')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TRG_Monthly_10th_Day')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Runs every 10th of the month. Refreshes Business Plan tables. ",
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "BusinessPlan_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Month",
-						"interval": 1,
-						"startTime": "2023-02-22T10:44:00",
-						"timeZone": "Arabian Standard Time",
-						"schedule": {
-							"minutes": [
-								0
-							],
-							"hours": [
-								22
-							],
-							"monthDays": [
-								10
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": []
 		}
 	]
 }
