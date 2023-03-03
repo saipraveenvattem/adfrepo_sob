@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "GAANT HURRY",
+				"name": "GAANT HURRY1",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
