@@ -155,7 +155,11 @@
 								"referenceName": "DS_PLN_STRACTURE_FACT_TRG",
 								"type": "DatasetReference"
 							},
-							"name": "sink1"
+							"name": "sink1",
+							"rejectedDataLinkedService": {
+								"referenceName": "LS_AzureDataLakeStorage",
+								"type": "LinkedServiceReference"
+							}
 						}
 					],
 					"transformations": [
@@ -199,12 +203,12 @@
 						"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
 						"          LoadDateTime = currentUTC()) ~> derivedColumn1",
 						"derivedColumn1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
+						"     validateSchema: true,",
 						"     input(",
 						"          Id as integer,",
 						"          Upload_Date as date,",
 						"          Project_Identifier as string,",
-						"          Project_Id as string,",
+						"          project_id as integer,",
 						"          Level_Id as integer,",
 						"          Sbu_id as integer,",
 						"          Area as string,",
@@ -227,14 +231,12 @@
 						"     staged: true,",
 						"     allowCopyCommand: true,",
 						"     preSQLs:['TRUNCATE TABLE [DWH].[PLN_STRUCTURE_FACT];'],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
 						"     errorHandlingOption: 'stopOnFirstError',",
 						"     mapColumn(",
 						"          Id = ID,",
 						"          Upload_Date,",
 						"          Project_Identifier = Proect_Identifier,",
-						"          Project_Id = project_id,",
+						"          project_id,",
 						"          Level_Id,",
 						"          Sbu_id = sbu_id,",
 						"          Area,",

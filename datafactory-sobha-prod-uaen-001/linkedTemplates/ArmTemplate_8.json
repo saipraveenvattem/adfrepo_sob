@@ -1328,8 +1328,9 @@
 						"type": "nvarchar"
 					},
 					{
-						"name": "Project_Id",
-						"type": "nvarchar"
+						"name": "project_id",
+						"type": "int",
+						"precision": 10
 					},
 					{
 						"name": "Level_Id",
