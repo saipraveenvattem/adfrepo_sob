@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "DF_Gaant_Hurry",
+						"referenceName": "DF_Gaant_Hurry1",
 						"type": "DataFlowReference",
 						"parameters": {
 							"MAX_ID": "0"
@@ -33,7 +33,8 @@
 						"coreCount": 8,
 						"computeType": "General"
 					},
-					"traceLevel": "Fine"
+					"traceLevel": "Fine",
+					"sourceStagingConcurrency": 1
 				}
 			}
 		],
