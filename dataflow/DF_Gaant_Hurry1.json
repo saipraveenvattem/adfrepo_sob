@@ -151,10 +151,10 @@
 					"name": "derivedColumn1"
 				},
 				{
-					"name": "union1"
+					"name": "unionfacttables"
 				},
 				{
-					"name": "ACTUALSCOLLECTOR"
+					"name": "addActivityMapping"
 				},
 				{
 					"name": "joinwithProjectsDim",
@@ -507,8 +507,8 @@
 				"     stepValue: 1L) ~> surrogateKey1",
 				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
 				"          LoadDateTime = currentUTC()) ~> derivedColumn1",
-				"DRYAREAGAANTFINAL, WETAREAGAANTFINAL, CORRIDORGAANTFINAL, KITCHENGAANTFINAL, BALCONYGAANTFINAL, SLIDINGDOORGAANTFINAL, KITCHENCABINETGAANTFINAL, KEEPOUTGAANTFINAL, BLOCKWORKGAANTFINAL, BALUSTRADEWORKSGAANTFINAL, STRUCTUREGAANTFINAL union(byName: true)~> union1",
-				"union1 derive(Milestone_Activity_Map = case(     \r",
+				"DRYAREAGAANTFINAL, WETAREAGAANTFINAL, CORRIDORGAANTFINAL, KITCHENGAANTFINAL, BALCONYGAANTFINAL, SLIDINGDOORGAANTFINAL, KITCHENCABINETGAANTFINAL, KEEPOUTGAANTFINAL, BLOCKWORKGAANTFINAL, BALUSTRADEWORKSGAANTFINAL, STRUCTUREGAANTFINAL union(byName: true)~> unionfacttables",
+				"unionfacttables derive(Milestone_Activity_Map = case(     \r",
 				"     trim(Type_of_work) == 'FC BOARDING WITH JOINT TAPING' && Source_Table == 'PLN_DRYAREA_FACT','False Ceiling - Boarding',\r",
 				"     trim(Type_of_work) == 'Plaster' && Source_Table == 'PLN_DRYAREA_FACT','Plaster',\r",
 				"     trim(Type_of_work) == 'Screed' && Source_Table == 'PLN_DRYAREA_FACT','Screed',\r",
@@ -540,13 +540,13 @@
 				"     trim(Type_of_work)  == 'Podium'&& Source_Table == 'PLN_STRUCTURE_FACT','Podium Slabs',\r",
 				"     trim(Type_of_work)  == 'Grade Slab'&& Source_Table == 'PLN_STRUCTURE_FACT','Grade Slab',\r",
 				"     trim(Type_of_work)  == 'Typical Floor'&& Source_Table == 'PLN_STRUCTURE_FACT','Typical Floor Slabs'\r",
-				"     )) ~> ACTUALSCOLLECTOR",
+				"     )) ~> addActivityMapping",
 				"MILESTONEMAINTABLE, PLNPROJECTSDIM join(project_id == Project_Identifier,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> joinwithProjectsDim",
-				"joinwithProjectsDim, ACTUALSCOLLECTOR join(Sort_ID == union1@project_id",
+				"joinwithProjectsDim, addActivityMapping join(Sort_ID == union1@project_id",
 				"     && Activity_Description == Milestone_Activity_Map",
 				"     && Source_Templet == Source_Table,",
 				"     joinType:'left',",
@@ -748,7 +748,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> Finalselect",
-				"ACTUALSCOLLECTOR, MILESTONEMAINTABLEPlan1 join(union1@Project_Identifier == MILESTONEMAINTABLEPlan1@Project_Identifier",
+				"addActivityMapping, MILESTONEMAINTABLEPlan1 join(unionfacttables@Project_Identifier == MILESTONEMAINTABLEPlan1@Project_Identifier",
 				"     && Milestone_Activity_Map == Activity_Description",
 				"     && Source_Table == Source_Templet,",
 				"     joinType:'left',",
