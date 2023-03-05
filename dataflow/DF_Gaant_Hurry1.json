@@ -225,7 +225,7 @@
 					"name": "Finalselect"
 				},
 				{
-					"name": "join2"
+					"name": "Actualjoinwithforecast"
 				}
 			],
 			"scriptLines": [
@@ -709,13 +709,13 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> Finalselect",
-				"addActivityMapping, MILESTONEMAINTABLEActual join(unionfacttables@Project_Identifier == MILESTONEMAINTABLEActual@Project_Identifier",
-				"     && Milestone_Activity_Map == Activity_Description",
-				"     && Source_Table == Source_Templet,",
-				"     joinType:'right',",
+				"MILESTONEMAINTABLEActual, addActivityMapping join(MILESTONEMAINTABLEActual@Project_Identifier == unionfacttables@Project_Identifier",
+				"     && Source_Templet == Source_Table",
+				"     && Activity_Description == Milestone_Activity_Map,",
+				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join2",
+				"     broadcast: 'auto')~> Actualjoinwithforecast",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
