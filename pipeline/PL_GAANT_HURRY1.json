@@ -64,6 +64,13 @@
 							"MAX_ID": "0"
 						}
 					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "LS_AzureDataLakeStorage",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "sobhasyndatafs01/Staging_Folder"
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
