@@ -57,6 +57,13 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_Gaant_Hurry2",
+						"type": "DataFlowReference",
+						"parameters": {
+							"MAX_ID": "0"
+						}
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
