@@ -1,5 +1,5 @@
 {
-	"name": "DS_Gaant_Hurry_Actual",
+	"name": "DS_Gaant_Hurry_ALL",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_AzureSynapseAnalytics_DW",
