@@ -141,6 +141,13 @@
 					},
 					"name": "sink1",
 					"description": "Export data to DS_GAANT_HURRY_TRG"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_Gaant_Hurry_Actual",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
 				}
 			],
 			"transformations": [
@@ -791,7 +798,39 @@
 				"          Legend,",
 				"          PLN_ACT,",
 				"          LoadDateTime",
-				"     )) ~> sink1"
+				"     )) ~> sink1",
+				"AddAchivedtoActuals sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Upload_Time,",
+				"          Project_Identifier,",
+				"          Group,",
+				"          Activity_Description,",
+				"          Actual_Start_Date,",
+				"          Actual_Finish_Date,",
+				"          Total_days,",
+				"          Days_elapsed,",
+				"          Source_Templet,",
+				"          Sort_Group,",
+				"          Sort_Activity,",
+				"          Activity_New,",
+				"          Actual_Percentage,",
+				"          Source_Table,",
+				"          FLAT_COUNT,",
+				"          SUM_ALL,",
+				"          Actual_Achived",
+				"     )) ~> sink2"
 			]
 		}
 	}
