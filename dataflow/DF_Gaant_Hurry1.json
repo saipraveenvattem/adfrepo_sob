@@ -229,6 +229,9 @@
 				},
 				{
 					"name": "select3"
+				},
+				{
+					"name": "AddAchivedtoActuals"
 				}
 			],
 			"scriptLines": [
@@ -732,12 +735,14 @@
 				"          Sort_Group,",
 				"          Sort_Activity,",
 				"          Activity_New,",
-				"          FLAT_COUNT,",
 				"          Actual_Percentage,",
-				"          Source_Table",
+				"          Source_Table,",
+				"          FLAT_COUNT,",
+				"          SUM_ALL",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
+				"select3 derive(Actual_Achived = toDecimal(SUM_ALL/FLAT_COUNT)) ~> AddAchivedtoActuals",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
