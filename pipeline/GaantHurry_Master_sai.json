@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "PLN_GAANT_HURRY_FACT",
+				"name": "PLN_GAANT_HURRY_FACT1",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
