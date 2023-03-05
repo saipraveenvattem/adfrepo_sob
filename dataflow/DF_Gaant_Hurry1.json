@@ -125,15 +125,7 @@
 					"name": "OPLNMILESTONEMAPSTG"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "DS_Gaant_Hurry_Actual",
-						"type": "DatasetReference"
-					},
-					"name": "sink2"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "unionfacttables"
@@ -155,6 +147,9 @@
 				},
 				{
 					"name": "AddAchivedtoActuals"
+				},
+				{
+					"name": "select4"
 				}
 			],
 			"scriptLines": [
@@ -452,20 +447,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
 				"select3 derive(Actual_Achived = toDecimal(SUM_ALL/FLAT_COUNT)) ~> AddAchivedtoActuals",
-				"AddAchivedtoActuals sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     recreate:true,",
-				"     format: 'table',",
-				"     staged: true,",
-				"     allowCopyCommand: true,",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
+				"AddAchivedtoActuals select(mapColumn(",
 				"          Upload_Time,",
 				"          Project_Identifier,",
 				"          Group,",
@@ -480,10 +462,10 @@
 				"          Activity_New,",
 				"          Actual_Percentage,",
 				"          Source_Table,",
-				"          FLAT_COUNT,",
-				"          SUM_ALL,",
 				"          Actual_Achived",
-				"     )) ~> sink2"
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select4"
 			]
 		}
 	}
