@@ -223,10 +223,6 @@
 				},
 				{
 					"name": "Finalselect"
-				},
-				{
-					"name": "Acctualcollectorandmanualmain",
-					"description": "Left  join on 'ACTUALSCOLLECTOR' and 'MILESTONEMAINTABLE'"
 				}
 			],
 			"scriptLines": [
@@ -617,7 +613,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectListforMILESTONEMAINTABLEPlan",
-				"select1 derive(Legend = 'Plan') ~> LegendderivedColumnForMILESTONEMAINTABLEPlan",
+				"selectListforMILESTONEMAINTABLEPlan derive(Legend = 'Plan') ~> LegendderivedColumnForMILESTONEMAINTABLEPlan",
 				"LegendderivedColumnForOutputplan, LegendderivedColumnForMILESTONEMAINTABLEPlan union(byName: true)~> UnionAllFinal",
 				"UnionAllFinal, ManualActuals join(UnionAllFinal@Activity_New == ManualActuals@Activity_New",
 				"     && UnionAllFinal@Project_ID == ManualActuals@project_id",
@@ -748,13 +744,6 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> Finalselect",
-				"addActivityMapping, MILESTONEMAINTABLEPlan1 join(unionfacttables@Project_Identifier == MILESTONEMAINTABLEPlan1@Project_Identifier",
-				"     && Milestone_Activity_Map == Activity_Description",
-				"     && Source_Table == Source_Templet,",
-				"     joinType:'left',",
-				"     matchType:'exact',",
-				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> Acctualcollectorandmanualmain",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
