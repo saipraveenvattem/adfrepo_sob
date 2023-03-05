@@ -223,6 +223,10 @@
 				},
 				{
 					"name": "Finalselect"
+				},
+				{
+					"name": "Acctualcollectorandmanualmain",
+					"description": "Left  join on 'ACTUALSCOLLECTOR' and 'MILESTONEMAINTABLE'"
 				}
 			],
 			"scriptLines": [
@@ -744,6 +748,11 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> Finalselect",
+				"ACTUALSCOLLECTOR, MILESTONEMAINTABLE join(Project_Identifier == project_id,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> Acctualcollectorandmanualmain",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
