@@ -446,6 +446,7 @@
 				"     format: 'table',",
 				"     staged: true,",
 				"     allowCopyCommand: true,",
+				"     preSQLs:['truncate table DWH.O_PLN_GAANT_HURRY_ALL'],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> AutualandPlanSInk"
