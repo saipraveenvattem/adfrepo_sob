@@ -150,6 +150,9 @@
 				},
 				{
 					"name": "select4"
+				},
+				{
+					"name": "addLegendActuals"
 				}
 			],
 			"scriptLines": [
@@ -465,7 +468,8 @@
 				"          Actual_Achived",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select4"
+				"     skipDuplicateMapOutputs: true) ~> select4",
+				"select4 derive(Legend = 'Actuals') ~> addLegendActuals"
 			]
 		}
 	}
