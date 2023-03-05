@@ -419,7 +419,6 @@
 				"          Sort_Group,",
 				"          Sort_Activity,",
 				"          Activity_New,",
-				"          FLAT_COUNT,",
 				"          Actual_Percentage",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
