@@ -17,7 +17,14 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
 			"scriptLines": [
 				"parameters{",
 				"     MAX_ID as integer (0)",
@@ -42,7 +49,12 @@
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     query: ' select a.*, CONCAT(Legend,\\' : \\',CAST(Actual_Achived*100 AS DECIMAL),\\'%\\') AS PLN_ACT from \\n (SELECT  Upload_Time, Project_Identifier, [Group], Sort_Grp, Activity_New, Activity_Description, Sort_Activity,\\n    Actual_Start_Date,  Actual_Finish_Date, Original_Actuals,\\n    CASE \\n        WHEN Actual_Achived <= Manual_Values AND Legend = \\'Actuals\\' THEN Manual_Values\\n        ELSE Actual_Achived\\n    END AS Actual_Achived,    Legend\\nFROM\\n (select AGT.Upload_Time,    AGT.Project_Identifier,    AGT.[Group],    AGT.Sort_Group as Sort_Grp,\\n    AGT.Activity_New,   AA.NEW_ACT AS Activity_Description,    AA.Sort_Activity,\\n    AGT.Original_Actuals, AGT.Actual_Achived, AGT.Actual_Start_Date, AGT.Actual_Finish_Date,\\n    AGT.Legend,\\n     CASE  WHEN Actual_Percentage IS NULL OR TRIM(Actual_Percentage) IN (\\'\\') THEN 0\\n    ELSE CAST(REPLACE(Actual_Percentage,\\'%\\',\\'\\') AS DECIMAL)/100 END AS Manual_Values, \\n     AGT.Actual_Percentage, AGT.PLN_ACT from\\n (SELECT  Upload_Time, Project_Identifier,[Group],Activity_Description,Activity_New, Actual_Achived AS Original_Actuals,\\n        CASE \\n            WHEN ISNULL(Actual_Achived,0) >1 THEN 1\\n            ELSE ISNULL(Actual_Achived,0)\\n        END AS     Actual_Achived,\\n        Actual_Start_Date, Actual_Finish_Date, Total_days, Days_elapsed, Source_Templet,\\n        Source_Table, Sort_Group, Sort_Activity, Legend, Actual_Percentage,\\n          CONCAT(Legend,\\' : \\',CAST(Actual_Achived*100 AS DECIMAL),\\'%\\') AS PLN_ACT FROM(   \\n     SELECT \\n        UAF.Upload_Time,\\n        UAF.Project_Identifier,\\n        UAF.[Group],\\n        UAF.Activity_Description,\\n        UAF.Activity_New,\\n        CASE \\n            WHEN TRIM(UAF.Activity_New) IN (\\'BCC - Inspection & Approval\\',\\'Power on\\',\\'LV Inspection & Approval\\',\\n                                        \\'Wooden Decking\\',\\'ACP Works\\',\\'Kids Play Area/ Outdoor Play Area\\',\\n                                        \\'Swimming Pool\\',\\'Changing Rooms / GYM\\',\\'Lift - Balance passenger lifts\\',\\n                                        \\'Lift - CTU\\',\\'Pile Cap\\',\\'Transformer payment\\',\\'Pile\\')\\n                    AND UAF.Legend = \\'Actuals\\' THEN MD.Actuals \\n            ELSE UAF.Actual_Achived\\n        END AS Actual_Achived, UAF.Actual_Start_Date, UAF.Actual_Finish_Date, UAF.Total_days, UAF.Days_elapsed,\\n        UAF.Source_Templet, UAF.Source_Table, UAF.Sort_Group, UAF.Sort_Activity, UAF.Legend, UAF.Actual_Percentage\\n        FROM DWH.O_PLN_GAANT_HURRY_ALL UAF \\n    LEFT JOIN (select a.Actuals,c.Project_Identifier,b.Activity_New,\\'Actuals\\' AS Legend from\\n(SELECT CAST(Upload_time as DATE) AS Upload_Date, Project_ID, tower, SBU_ID,\\n    Activity, CASE \\n        WHEN Actual_Percentage IS NULL OR TRIM(Actual_Percentage) IN (\\'\\') THEN 0\\n        ELSE ISNULL(CAST(REPLACE(Actual_Percentage,\\'%\\',\\'\\') AS DECIMAL),0.00)/100\\n    END AS Actuals, DENSE_RANK () OVER (PARTITION BY project_id ORDER BY CAST(Upload_time as DATE) DESC) AS Dense_Ranker\\n from [DWH].[PLN_MILESTONE_ACTUALS_TEMP_FACT]) a\\n left join (select * from [STG].[O_PLN_MILESTONE_MAP_STG]) b  ON a.Activity = b.Activity\\nleft join (select * from [DWH].[PLN_PROJECTS_DIM]) c on a.Project_ID = c.Project_ID \\n    WHERE Dense_Ranker = 1) MD \\n    ON UAF.Activity_New = MD.Activity_New\\n    AND UAF.Project_Identifier  = MD.Project_Identifier\\n    AND UAF.Legend  = MD.Legend) a WHERE Activity_New IS NOT NULL) AGT\\n\\n     left join\\n     (SELECT Sort_Group, Sort_Activity+0.1 AS Sort_Activity, [Group], Activity, Activity_New, \\'Actuals\\' AS Legend,\\n    CONCAT(Activity_New,\\' : (A)\\') AS NEW_ACT  FROM [STG].[O_PLN_MILESTONE_MAP_STG] opmm \\n    UNION ALL \\n     SELECT  Sort_Group, Sort_Activity, [Group], Activity, Activity_New, \\'Plan\\' AS Legend,\\n     CONCAT(Activity_New,\\' : (P)\\') AS NEW_ACT  FROM [STG].[O_PLN_MILESTONE_MAP_STG]  opmm) AA\\n     ON AGT.Legend = AA.Legend AND AGT.Activity_New = AA.Activity_New AND AGT.Activity_Description = AA.Activity\\n                AND AGT.[Group] = AA.[Group]) a)a',",
 				"     format: 'query',",
-				"     staged: true) ~> MILESTONEMAINTABLEPlan1"
+				"     staged: true) ~> MILESTONEMAINTABLEPlan1",
+				"MILESTONEMAINTABLEPlan1 keyGenerate(output(SurrogateKey_ID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 derive(ID = SurrogateKey_ID+$MAX_ID,",
+				"          LoadDateTime = currentUTC()) ~> derivedColumn1"
 			]
 		}
 	}
