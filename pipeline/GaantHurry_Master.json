@@ -29,7 +29,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "PL_GAANT_HURRY",
+						"referenceName": "PL_GAANT_HURRY1",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
