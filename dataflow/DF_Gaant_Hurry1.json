@@ -180,7 +180,7 @@
 					"name": "selectListforMILESTONEMAINTABLEPlan"
 				},
 				{
-					"name": "LegendderivedColumnForMILESTONEMAINTABLEPlan"
+					"name": "addLegendPlan"
 				},
 				{
 					"name": "UnionAllFinal"
@@ -613,8 +613,8 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectListforMILESTONEMAINTABLEPlan",
-				"selectListforMILESTONEMAINTABLEPlan derive(Legend = 'Plan') ~> LegendderivedColumnForMILESTONEMAINTABLEPlan",
-				"LegendderivedColumnForOutputplan, LegendderivedColumnForMILESTONEMAINTABLEPlan union(byName: true)~> UnionAllFinal",
+				"selectListforMILESTONEMAINTABLEPlan derive(Legend = 'Plan') ~> addLegendPlan",
+				"LegendderivedColumnForOutputplan, addLegendPlan union(byName: true)~> UnionAllFinal",
 				"UnionAllFinal, ManualActuals join(UnionAllFinal@Activity_New == ManualActuals@Activity_New",
 				"     && UnionAllFinal@Project_ID == ManualActuals@project_id",
 				"     && UnionAllFinal@Legend == ManualActuals@Legend,",
