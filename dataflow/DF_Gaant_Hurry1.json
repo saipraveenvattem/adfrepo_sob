@@ -153,6 +153,9 @@
 				},
 				{
 					"name": "addLegendActuals"
+				},
+				{
+					"name": "union1"
 				}
 			],
 			"scriptLines": [
@@ -469,7 +472,8 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select4",
-				"select4 derive(Legend = 'Actuals') ~> addLegendActuals"
+				"select4 derive(Legend = 'Actuals') ~> addLegendActuals",
+				"addLegendActuals, addLegendPlan union(byName: true)~> union1"
 			]
 		}
 	}
