@@ -734,8 +734,6 @@
 				"          Activity_New,",
 				"          FLAT_COUNT,",
 				"          Actual_Percentage,",
-				"          Type_of_work,",
-				"          SUM_ALL,",
 				"          Source_Table",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
