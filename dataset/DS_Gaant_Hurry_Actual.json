@@ -10,7 +10,11 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlDWTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "O_PLN_GAANT_HURRY_ACTUAL"
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
