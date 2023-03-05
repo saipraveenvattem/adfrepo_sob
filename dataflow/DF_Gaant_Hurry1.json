@@ -226,6 +226,9 @@
 				},
 				{
 					"name": "Actualjoinwithforecast"
+				},
+				{
+					"name": "select3"
 				}
 			],
 			"scriptLines": [
@@ -716,6 +719,27 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> Actualjoinwithforecast",
+				"Actualjoinwithforecast select(mapColumn(",
+				"          Upload_Time,",
+				"          Project_Identifier = MILESTONEMAINTABLEActual@Project_Identifier,",
+				"          Group,",
+				"          Activity_Description,",
+				"          Actual_Start_Date,",
+				"          Actual_Finish_Date,",
+				"          Total_days,",
+				"          Days_elapsed,",
+				"          Source_Templet,",
+				"          Sort_Group,",
+				"          Sort_Activity,",
+				"          Activity_New,",
+				"          FLAT_COUNT,",
+				"          Actual_Percentage,",
+				"          Type_of_work,",
+				"          SUM_ALL,",
+				"          Source_Table",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
