@@ -89,7 +89,7 @@
 		],
 		"typeProperties": {
 			"schema": "DWH",
-			"table": "PLN_GAANT_HURRY_FACT"
+			"table": "PLN_GAANT_HURRY_FACT1"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
