@@ -19,12 +19,17 @@
 			},
 			{
 				"name": "project_id",
-				"type": "nvarchar"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "SBU_Id",
 				"type": "int",
 				"precision": 10
+			},
+			{
+				"name": "Sbu_Identifier",
+				"type": "nvarchar"
 			},
 			{
 				"name": "Level_ID",
