@@ -5,11 +5,31 @@
 			{
 				"name": "PLN_GAANT_HURRY_FACT1",
 				"type": "ExecutePipeline",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "O_PLN_TOWER_PODIUM_MAP_STG",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "PL_GAANT_HURRY1",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "O_PLN_TOWER_PODIUM_MAP_STG",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_O_PLN_TOWER_PODIUM_MAP_STG",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
