@@ -13,6 +13,88 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Project_Master_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Sobha_PG_DB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Created_ON",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Project_Status",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Project_Master"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PG_Project_Master_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "Project_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Project_Created_ON",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Project_Status",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "PG_Project_Master_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_PG_TASK_REPORT_FACT_TRG')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2035,174 +2117,6 @@
 				"typeProperties": {
 					"schema": "DWH",
 					"table": "PLN_LEVEL_MAP_ALL_DIM"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_PLN_MANPOWER_TRG')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_AzureSynapseAnalytics_DW",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DWH/Facts"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "SL_NO",
-						"type": "nvarchar"
-					},
-					{
-						"name": "EMP_ID_NO",
-						"type": "nvarchar"
-					},
-					{
-						"name": "TECHNICIAN_NAME",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ACTUAL_DOJ",
-						"type": "nvarchar"
-					},
-					{
-						"name": "TRADE_AS_PER_ADMIN",
-						"type": "nvarchar"
-					},
-					{
-						"name": "TRADE_GROUP",
-						"type": "nvarchar"
-					},
-					{
-						"name": "WORK_STATUS_COST_HEAD",
-						"type": "nvarchar"
-					},
-					{
-						"name": "DIVISION",
-						"type": "nvarchar"
-					},
-					{
-						"name": "UNIT",
-						"type": "nvarchar"
-					},
-					{
-						"name": "WORK_STATUS",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SHIFT",
-						"type": "nvarchar"
-					},
-					{
-						"name": "COMPANY",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SOURCE",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Type",
-						"type": "nvarchar"
-					},
-					{
-						"name": "name",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Emp_ID",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Login_Time",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LoadDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "DWH",
-					"table": "PLN_MANPOWER_MERGE_FACT"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_PLN_MILESTONE_ACTUALS_TEMP_TRG')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_AzureSynapseAnalytics_DW",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DWH/Facts"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Project_ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "SBU_ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Milestone_Actuals_Temp_Id",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Upload_time",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Tower",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Group",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Activity",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Actual_Percentage",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LoadDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "DWH",
-					"table": "PLN_MILESTONE_ACTUALS_TEMP_FACT"
 				}
 			},
 			"dependsOn": []

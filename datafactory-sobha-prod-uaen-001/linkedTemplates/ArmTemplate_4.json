@@ -13,6 +13,296 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_GARBAGEROOM_RAW_STG_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "GARBAGEROOM_RAW_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "upload_time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "project_id",
+						"type": "varchar"
+					},
+					{
+						"name": "tower",
+						"type": "varchar"
+					},
+					{
+						"name": "sbu_id",
+						"type": "varchar"
+					},
+					{
+						"name": "Level",
+						"type": "varchar"
+					},
+					{
+						"name": "Outer_Wall_Blockwork",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Garbage_chute_Works",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Piping_Works",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Pressure_test_and_Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Inner_wall_Blockwork",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Marking_for_Builders_Work",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Cutting_and_Chasing_of_Blockwork",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Services_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_MEP_Services_Packing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Plaster",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Core_Cutting_and_Chipping",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Sleeve_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Bore_Packing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Under_Screed_Water_Proofing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Screed",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Wall_Tile",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Framing_Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "False_Ceiling_Framing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Boarding_Clearance",
+						"type": "nvarchar"
+					},
+					{
+						"name": "False_Ceiling_Boarding",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_Primer",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_Stucco_1st_and_2nd_Coat",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Ceiling_First_Coat_Paint",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Under_Tile_Water_Proofing",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Threshold",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Floor_Tile",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Skirting",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Grouting",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Silicone",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Hopper_Door",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Frame_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Architrave_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Shutter_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Ironmongery_Installation",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Door_Silicone",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Signage",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MEP_Final_Fixtures",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Final_Coat_Paint",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "STG",
+					"table": "O_PLN_GARBAGEROOM_RAW_STG"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_KEEPOUTS_MAP_STG_SRC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_MySQL_DL",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"type": "AzureMySqlTable",
+				"schema": [
+					{
+						"name": "id_",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_ID",
+						"type": "int",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "SBU_ID",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "PREDECESSOR_DATA",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ENGINEER_RESPONSIBLE",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE_Actual",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "PREDECESSOR_DATA_Actual",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "ACTIVITY_SEQUENCE_Plan",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "PREDECESSOR_DATA_Plan",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					},
+					{
+						"name": "Predecessor_Activity_allowed_lag",
+						"type": "varchar",
+						"precision": 0,
+						"scale": 0
+					}
+				],
+				"typeProperties": {
+					"tableName": "o_pln_keepouts_map"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_KEEPOUTS_MAP_STG_TRG')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2246,109 +2536,6 @@
 				],
 				"typeProperties": {
 					"tableName": "o_pln_projection_raw"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_PROJECTION_RAW_STG_TRG')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_AzureSynapseAnalytics_DW",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staging"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "PROJECTION_RAW_ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "upload_time",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "project_id",
-						"type": "varchar"
-					},
-					{
-						"name": "tower",
-						"type": "varchar"
-					},
-					{
-						"name": "sbu_id",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Sl_No",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SBU",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Area",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Category",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Activity_Description",
-						"type": "varchar"
-					},
-					{
-						"name": "Projection_for_the_month",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Plan_as_on_date",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Actual_as_on_date",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Shortfall_Reasons",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "STG",
-					"table": "O_PLN_PROJECTION_RAW_STG"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_O_PLN_STAIRCASE_MAP_STG_SRC')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_Azure_MySQL_DL",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staging"
-				},
-				"annotations": [],
-				"type": "AzureMySqlTable",
-				"schema": [],
-				"typeProperties": {
-					"tableName": "o_pln_staircase_map"
 				}
 			},
 			"dependsOn": []

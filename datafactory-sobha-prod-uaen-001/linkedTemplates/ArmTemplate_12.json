@@ -13,6 +13,674 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_O_PLN_TELEPHONEROOM_MAP_STG')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "O_PLN_TELEPHONEROOM_MAP",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"preCopyScript": "TRUNCATE TABLE [STG].[O_PLN_TELEPHONEROOM_MAP_STG];",
+								"writeBehavior": "Insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id_",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "TELEPHONEROOM_MAP_id",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "ACTIVITY_ID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "ACTIVITY_ID",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "SBU_SHORT",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SBU_SHORT",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SBU_ID",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SBU_ID",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "CATEGORY",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "CATEGORY",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACTIVITY_SEQUENCE",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "ACTIVITY_SEQUENCE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_O_PLN_TELEPHONEROOM_MAP_STG_SRC",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_O_PLN_TELEPHONEROOM_MAP_STG_TRG",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-12-23T12:48:05Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_O_PLN_TELEPHONEROOM_RAW_STG')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "O_PLN_TELEPHONEROOM_RAW",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureMySqlSource",
+								"queryTimeout": "02:00:00"
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"preCopyScript": "TRUNCATE TABLE [STG].[O_PLN_TELEPHONEROOM_RAW_STG];",
+								"writeBehavior": "Insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "id_",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "Telephoneroom_Raw_id",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "upload_time",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "upload_time",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "project_id",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "project_id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "tower",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "tower",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "sbu_id",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "sbu_id",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Level",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Level",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Blockwork Layout",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Blockwork_Layout",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Blockwork",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Blockwork",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "MEP Marking for Builders Work",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "MEP_Marking_for_Builders_Work",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Cutting & Chasing of Blockwork",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Cutting_&_Chasing_of_Blockwork",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "MEP Services Installation",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "MEP_Services_Installation",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Wall MEP Services Packing",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Wall_MEP_Services_Packing",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Plaster",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Plaster",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Screed",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Screed",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Ceiling Stucco (1st and 2nd Coat)",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Ceiling_Stucco_(1st_and_2nd_Coat)",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Wall Stucco (1st and 2nd Coat)",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Wall_Stucco_(1st_and_2nd_Coat)",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Ceiling First Coat Paint",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Ceiling_First_Coat_Paint",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Wall First Coat Paint",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Wall_First_Coat_Paint",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Installation of cable tray and trunking",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Installation_of_cable_tray_and_trunking",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Installation of Panels",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Installation_of_Panels",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Cable laying and glanding works",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Cable_laying_and_glanding_works",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Fire Sealant",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Fire_Sealant",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Epoxy Grinding",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Epoxy_Grinding",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Epoxy Bug Fill",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Epoxy_Bug_Fill",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Epoxy Primer",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Epoxy_Primer",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Epoxy First Coat",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Epoxy_First_Coat",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Epoxy Final Coat",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Epoxy_Final_Coat",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Floor Tile",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Floor_Tile",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Skirting",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Skirting",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "POP",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "POP",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Grout",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Grout",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Threshold",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Threshold",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Door-Frame Installation",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Door_Frame_Installation",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Door-Architrave Installation",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Door_Architrave_Installation",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Door-Shutter Installation",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Door_Shutter_Installation",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Door-Ironmongery Installation",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Door_Ironmongery_Installation",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "MEP Final Fixtures",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "MEP_Final_Fixtures",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Final Coat Paint",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Final_Coat_Paint",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_O_PLN_TELEPHONEROOM_RAW_STG_SRC",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_O_PLN_TELEPHONEROOM_RAW_STG_TRG",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Staging"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-09T14:55:44Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PL_O_PLN_TOWER_PODIUM_MAP_STG')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -4646,280 +5314,6 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-01-01T12:06:38Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_Pln_Monthly')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Business Plan Template 2022",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "TRUNCATE TABLE f_pln_business_plan_1;\r\nINSERT IGNORE INTO f_pln_business_plan_1 (Upload_date,project_id,`Type`,SBU,`Month`,`value`,`DENSE_RANK`,sbu_sort,month_sort,year_sort,Cummulative)\r\nWITH DATA_FORMATTER AS (\r\n    SELECT\r\n        DATE(upload_time) AS Upload_date,\r\n        project_id,\r\n        tower,\r\n        sbu_id,\r\n        `Type`,\r\n        SBU,\r\n        Column_Name.`Month`,\r\n        CASE \r\n            WHEN TRIM(Column_Name.VALUE) IN ('',' ','-')  AND `Type` = 'Plan'  THEN '0'\r\n            ELSE Column_Name.VALUE\r\n        END AS Value\r\n        FROM o_pln_business_plan_raw\r\n        cross join lateral (\r\n                        SELECT `Jan-22` ,  'Jan-22'\r\n                    UNION ALL SELECT `Feb-22` ,  'Feb-22'\r\n                    UNION ALL SELECT `Mar-22` ,  'Mar-22'\r\n                    UNION ALL SELECT `Apr-22` ,  'Apr-22'\r\n                    UNION ALL SELECT `May-22` ,  'May-22'\r\n                    UNION ALL SELECT `Jun-22` ,  'Jun-22'\r\n                    UNION ALL SELECT `Jul-22` ,  'Jul-22'\r\n                    UNION ALL SELECT `Aug-22` ,  'Aug-22'\r\n                    UNION ALL SELECT `Sep-22` ,  'Sep-22'\r\n                    UNION ALL SELECT `Oct-22` ,  'Oct-22'\r\n                    UNION ALL SELECT `Nov-22` ,  'Nov-22'\r\n                    UNION ALL SELECT `Dec-22` ,  'Dec-22'\r\n        )as Column_Name(value,`Month`)\r\n        WHERE\r\n    --     TRIM(SBU) NOT IN ('',' ', 'Overall','Cumulative','%') AND\r\n--         TRIM(value) NOT IN ('',' ', '-','Jan-22','Feb-22','Mar-22','Apr-22','May-22','Jun-22','Jul-22','Aug-22','Sep-22','Oct-22','Nov-22','Dec-22')\r\n        TRIM(value) NOT IN ('Jan-22','Feb-22','Mar-22','Apr-22','May-22','Jun-22','Jul-22','Aug-22','Sep-22','Oct-22','Nov-22','Dec-22')\r\n        AND TRIM(SBU) NOT IN ('',' ','Cumulative','%','Total Revenue (BOQ)','Achieved Revenue (Till 2021)','Overall')\r\n    ),\r\nSTAGGING AS (\r\n        SELECT\r\n            Upload_Date,\r\n            project_id,\r\n            `Type`,\r\n            SBU,\r\n            `Month`,\r\n            IFNULL(REPLACE(value,',',''),0.00) AS value,    \r\n            DENSE_RANK() OVER(PARTITION BY project_id ORDER BY DATE(Upload_Date) DESC) AS `DENSE_RANK`\r\n        FROM DATA_FORMATTER opbp\r\n        /*WHERE TRIM(value) NOT IN ('','-',' ')*/\r\n        GROUP BY 1,2,3,4,5,6 ORDER BY 1,2,3,4,5 DESC),\r\n    PRILIM_OUTPUT AS (\r\n            SELECT\r\n                Upload_Date,\r\n                project_id,\r\n                `Type`,\r\n                SBU,\r\n                CASE\r\n                    WHEN SBU = 'SBU 1' THEN 1\r\n                    WHEN SBU = 'SBU 2' THEN 2\r\n                    WHEN SBU = 'SBU 3' THEN 3\r\n                    WHEN SBU = 'SBU 4' THEN 4\r\n                    WHEN SBU = 'SBU 5' THEN 5\r\n                    ELSE 6\r\n                END AS SBU_Custom_Sort,\r\n                `Month`,\r\n                value                \r\n            FROM STAGGING WHERE `DENSE_RANK` = 1 AND TRIM(SBU) NOT IN ('',' ','Cumulative','%','Total Revenue (BOQ)','Achieved Revenue (Till 2021)','Overall')),\r\nPRE_FINAL AS (\r\nSELECT\r\n    FPBP.Upload_Date,\r\n    FPBP.project_id,\r\n    FPBP.`Type`,\r\n    FPBP.SBU,\r\n    FPBP.SBU_Custom_Sort,\r\n    FPBP.`Month`,\r\n        CASE\r\n        WHEN TRIM(FPBP.`Month`) IN ('Total Revenue (BOQ)','Achieved Revenue (Till 2021)') THEN null\r\n        ELSE replace(date_format(str_to_date(concat('01-',FPBP.`Month`),'%d-%b-%y'),'%Y-%m'),'-','')\r\nEND AS ORDER_Month,\r\n        /*concat(\r\n        substring(date_format(str_to_date(concat('01-',FPBP.`Month`,'01-01-1900'),'%d-%b-%y'),'%d-%m-%Y'), 7,4),\r\n        substring(date_format(str_to_date(concat('01-',FPBP.`Month`,'01-01-1900'),'%d-%b-%y'),'%d-%m-%Y'), 4,2)\r\n        ) A,*/\r\n    \r\n    FPBP.value\r\nFROM PRILIM_OUTPUT FPBP ORDER BY 2,3,5,7),\r\nCummulative_Sum AS (\r\n    SELECT\r\n        *,\r\n        SUM(CAST(value AS DECIMAL) ) OVER(PARTITION BY project_id,`Type`,SBU_Custom_Sort ORDER BY ORDER_Month) AS Cummulative\r\n    FROM PRE_FINAL\r\n        )\r\nSelect Upload_date\r\n\t\t,project_id\r\n        ,`Type`\r\n        ,SBU\r\n        ,`Month`\r\n        ,Case when TRIM(`value`) = '0' Then '' else TRIM(`value`) end `value`\r\n        ,DENSE_RANK() OVER(PARTITION BY project_id ORDER BY DATE(Upload_Date) DESC) AS `DENSE_RANK`\r\n        ,SBU_Custom_Sort `sbu_sort`\r\n        ,ROW_NUMBER() OVER(PARTITION BY project_id, SBU, `Type` ORDER BY ORDER_month ASC) AS `month_sort`\r\n        ,DENSE_RANK() OVER(PARTITION BY project_id ORDER BY YEAR(DATE(ORDER_month)) DESC) AS `year_sort`\r\n        ,Cummulative\r\n\t\t\t\r\nFrom (         \r\nSELECT     PF.*,\r\n        CUM.Cummulative        \r\n  \r\nFROM PRE_FINAL PF LEFT JOIN Cummulative_Sum CUM\r\n    on PF.project_id = CUM.project_id\r\n    and PF.`Type` = CUM.`Type`\r\n    and PF.SBU = CUM.SBU\r\n    and PF.SBU_Custom_Sort = CUM.SBU_Custom_Sort\r\n    and PF.ORDER_Month = CUM.ORDER_Month\r\n    and PF.value = CUM.value  \r\n) A;\r\n\r\n    /**/\r\n\r\n    SELECT 1;",
-								"queryTimeout": "02:00:00"
-							},
-							"dataset": {
-								"referenceName": "DS_MySQL_Data_Loads_DB",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Business Plan Template 2023",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Business Plan Template 2022",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "INSERT IGNORE INTO f_pln_business_plan_1\r\nWITH DATA_FORMATTER AS (\r\n SELECT\r\n        DATE(upload_time) AS Upload_date,\r\n        project_id,\r\n        tower,\r\n        sbu_id,\r\n        `Type`,\r\n        SBU,\r\n        Column_Name.`Month`,\r\n        CASE \r\n            WHEN TRIM(Column_Name.VALUE) IN ('',' ','-')  AND `Type` = 'Plan'  THEN '0'\r\n            ELSE Column_Name.VALUE\r\n        END AS Value\r\n        FROM o_pln_business_plan_1\r\n        cross join lateral (\r\n                        SELECT `Jan-23` ,  'Jan-23'\r\n                    UNION ALL SELECT `Feb-23` ,  'Feb-23'\r\n                    UNION ALL SELECT `Mar-23` ,  'Mar-23'\r\n                    UNION ALL SELECT `Apr-23` ,  'Apr-23'\r\n                    UNION ALL SELECT `May-23` ,  'May-23'\r\n                    UNION ALL SELECT `Jun-23` ,  'Jun-23'\r\n                    UNION ALL SELECT `Jul-23` ,  'Jul-23'\r\n                    UNION ALL SELECT `Aug-23` ,  'Aug-23'\r\n                    UNION ALL SELECT `Sep-23` ,  'Sep-23'\r\n                    UNION ALL SELECT `Oct-23` ,  'Oct-23'\r\n                    UNION ALL SELECT `Nov-23` ,  'Nov-23'\r\n                    UNION ALL SELECT `Dec-23` ,  'Dec-23'\r\n        )as Column_Name(value,`Month`)\r\n        WHERE\r\n    --     TRIM(SBU) NOT IN ('',' ', 'Overall','Cumulative','%') AND\r\n--         TRIM(value) NOT IN ('',' ', '-','Jan-23','Feb-23','Mar-23','Apr-23','May-23','Jun-23','Jul-23','Aug-23','Sep-23','Oct-23','Nov-23','Dec-23')\r\n        TRIM(value) NOT IN ('Jan-23','Feb-23','Mar-23','Apr-23','May-23','Jun-23','Jul-23','Aug-23','Sep-23','Oct-23','Nov-23','Dec-23')\r\n        AND TRIM(SBU) NOT IN ('',' ','Cumulative','%','Total Revenue (BOQ)','Achieved Revenue (Till 2021)','Overall')\r\n    ),\r\nSTAGGING AS (\r\n        SELECT\r\n            Upload_Date,\r\n            project_id,\r\n            `Type`,\r\n            SBU,\r\n            `Month`,\r\n            IFNULL(REPLACE(value,',',''),0.00) AS value,    \r\n            DENSE_RANK() OVER(PARTITION BY project_id ORDER BY DATE(Upload_Date) DESC) AS `DENSE_RANK`\r\n        FROM DATA_FORMATTER opbp\r\n        /*WHERE TRIM(value) NOT IN ('','-',' ')*/\r\n        GROUP BY 1,2,3,4,5,6 ORDER BY 1,2,3,4,5 DESC),\r\n    PRILIM_OUTPUT AS (\r\n            SELECT\r\n                Upload_Date,\r\n                project_id,\r\n                `Type`,\r\n                SBU,\r\n                CASE\r\n                    WHEN SBU = 'SBU 1' THEN 1\r\n                    WHEN SBU = 'SBU 2' THEN 2\r\n                    WHEN SBU = 'SBU 3' THEN 3\r\n                    WHEN SBU = 'SBU 4' THEN 4\r\n                    WHEN SBU = 'SBU 5' THEN 5\r\n                    ELSE 6\r\n                END AS SBU_Custom_Sort,\r\n                `Month`,\r\n                value                \r\n            FROM STAGGING WHERE `DENSE_RANK` = 1 AND TRIM(SBU) NOT IN ('',' ','Cumulative','%','Total Revenue (BOQ)','Achieved Revenue (Till 2021)','Overall')),\r\nPRE_FINAL AS (\r\nSELECT\r\n    FPBP.Upload_Date,\r\n    FPBP.project_id,\r\n    FPBP.`Type`,\r\n    FPBP.SBU,\r\n    FPBP.SBU_Custom_Sort,\r\n    FPBP.`Month`,\r\n        CASE\r\n        WHEN TRIM(FPBP.`Month`) IN ('Total Revenue (BOQ)','Achieved Revenue (Till 2021)') THEN null\r\n        ELSE replace(date_format(str_to_date(concat('01-',FPBP.`Month`),'%d-%b-%y'),'%Y-%m'),'-','')\r\nEND AS ORDER_Month,\r\n        /*concat(\r\n        substring(date_format(str_to_date(concat('01-',FPBP.`Month`,'01-01-1900'),'%d-%b-%y'),'%d-%m-%Y'), 7,4),\r\n        substring(date_format(str_to_date(concat('01-',FPBP.`Month`,'01-01-1900'),'%d-%b-%y'),'%d-%m-%Y'), 4,2)\r\n        ) A,*/\r\n    \r\n    FPBP.value\r\nFROM PRILIM_OUTPUT FPBP ORDER BY 2,3,5,7),\r\nCummulative_Sum AS (\r\n    SELECT\r\n        *,\r\n        SUM(CAST(value AS DECIMAL) ) OVER(PARTITION BY project_id,`Type`,SBU_Custom_Sort ORDER BY ORDER_Month) AS Cummulative\r\n    FROM PRE_FINAL\r\n        )\r\nSelect Upload_date\r\n\t\t,project_id\r\n        ,`Type`\r\n        ,SBU\r\n        ,`Month`\r\n        ,Case when TRIM(`value`) = '0' Then '' else TRIM(`value`) end `value`\r\n        ,DENSE_RANK() OVER(PARTITION BY project_id ORDER BY DATE(Upload_Date) DESC) AS `DENSE_RANK`\r\n        ,SBU_Custom_Sort `sbu_sort`\r\n        ,ROW_NUMBER() OVER(PARTITION BY project_id, SBU, `Type` ORDER BY ORDER_month ASC) AS `month_sort`\r\n        ,DENSE_RANK() OVER(PARTITION BY project_id ORDER BY YEAR(DATE(ORDER_month)) DESC)+1 AS `year_sort`\r\n        ,Cummulative\r\nFrom (         \r\nSELECT     PF.*,\r\n        CUM.Cummulative\r\n  \r\nFROM PRE_FINAL PF LEFT JOIN Cummulative_Sum CUM\r\n    on PF.project_id = CUM.project_id\r\n    and PF.`Type` = CUM.`Type`\r\n    and PF.SBU = CUM.SBU\r\n    and PF.SBU_Custom_Sort = CUM.SBU_Custom_Sort\r\n    and PF.ORDER_Month = CUM.ORDER_Month\r\n    and PF.value = CUM.value  \r\n) A;\r\n\r\n    /**/\r\n\r\n    SELECT 1;",
-								"queryTimeout": "02:00:00"
-							},
-							"dataset": {
-								"referenceName": "DS_MySQL_Data_Loads_DB",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-02-24T10:44:56Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_Pln_Service_Room')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Electrical Room",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "TRUNCATE TABLE f_pln_electricalroom;\r\nINSERT INTO f_pln_electricalroom\r\nWITH PRE_STAGGING AS(    \r\n        SELECT DATE(O_PLN_ELECTRICALROOM_RAW.upload_time) AS Upload_Date,\r\n        O_PLN_ELECTRICALROOM_RAW.project_id,\r\n        O_PLN_ELECTRICALROOM_RAW.tower,\r\n        O_PLN_ELECTRICALROOM_RAW.Level,\r\n        'Electrical Room' AS sclicer,\r\n        Column_Name.*,\r\n        O_PLN_ELECTRICALROOM_MAP.ACTIVITY_ID,\r\n        O_PLN_ELECTRICALROOM_MAP.SBU_ID,\r\n        O_PLN_ELECTRICALROOM_MAP.CATEGORY,\r\n        DENSE_RANK () OVER     (PARTITION BY  project_id\r\n                            ORDER BY  DATE(upload_time) DESC\r\n                            )     Project_Udate_DRANK\r\n    FROM O_PLN_ELECTRICALROOM_RAW\r\n    CROSS JOIN LATERAL (\r\n                        SELECT\t`Blockwork Layout`\t,\t'Blockwork Layout'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Blockwork`\t,\t'Blockwork'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`MEP Marking for Builders Work`\t,\t'MEP Marking for Builders Work'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Cutting & Chasing of Blockwork`\t,\t'Cutting & Chasing of Blockwork'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`MEP Services Installation`\t,\t'MEP Services Installation'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Wall MEP Services Packing`\t,\t'Wall MEP Services Packing'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Plaster`\t,\t'Plaster'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Screed`\t,\t'Screed'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Wall & Ceiling Primer`\t,\t'Wall & Ceiling Primer'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Ceiling Stucco (1st and 2nd Coat)`\t,\t'Ceiling Stucco (1st and 2nd Coat)'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Wall Stucco (1st and 2nd Coat)`\t,\t'Wall Stucco (1st and 2nd Coat)'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Ceiling First Coat Paint`\t,\t'Ceiling First Coat Paint'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Wall First Coat Paint`\t,\t'Wall First Coat Paint'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Meter Board Fixing`\t,\t'Meter Board Fixing'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Meter Board Painting`\t,\t'Meter Board Painting'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Installation of cable tray and trunking`\t,\t'Installation of cable tray and trunking'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Installation of Panels`\t,\t'Installation of Panels'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Cable laying and glanding works`\t,\t'Cable laying and glanding works'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Dressing and termination of SMDB & Panels`\t,\t'Dressing and termination of SMDB & Panels'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Bus bar with Tap off Box completion`\t,\t'Bus bar with Tap off Box completion'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Threshold`\t,\t'Threshold'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Floor Tile`\t,\t'Floor Tile'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Door-Frame Installation`\t,\t'Door-Frame Installation'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Door-Architrave Installation`\t,\t'Door-Architrave Installation'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Door-Shutter Installation`\t,\t'Door-Shutter Installation'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Door-Ironmongery Installation`\t,\t'Door-Ironmongery Installation'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Door-Silicone`\t,\t'Door-Silicone'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Epoxy Grinding`\t,\t'Epoxy Grinding'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Epoxy Bug Fill`\t,\t'Epoxy Bug Fill'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Epoxy Primer`\t,\t'Epoxy Primer'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Epoxy First Coat`\t,\t'Epoxy First Coat'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Epoxy Final Coat`\t,\t'Epoxy Final Coat'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Skirting`\t,\t'Skirting'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`POP Works`\t,\t'POP Works'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Electrical Room Top Boarding`\t,\t'Electrical Room Top Boarding'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Fire Sealant Works`\t,\t'Fire Sealant Works'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Angle Fixing`\t,\t'Angle Fixing'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Shaft Boarding`\t,\t'Shaft Boarding'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Grouting`\t,\t'Grouting'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Silicone`\t,\t'Silicone'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Signage`\t,\t'Signage'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`MEP Final Fixtures`\t,\t'MEP Final Fixtures'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Electric Meter Installation`\t,\t'Electric Meter Installation'\r\n\t\t\t\t\t\tUNION ALL SELECT\t`Final Coat Paint`\t,\t'Final Coat Paint'\r\n                        )as Column_Name(value,Type_of_work)\r\n    JOIN O_PLN_ELECTRICALROOM_MAP \r\n    ON Column_Name.Type_of_work = O_PLN_ELECTRICALROOM_MAP.ACTIVITY_SEQUENCE\r\n    WHERE VALUE IS NOT NULL)\r\nSELECT \r\n    PS.Upload_Date    ,\r\n    PS.project_id    ,\r\n    PS.tower    ,\r\n    PS.`Level`    ,\r\n    PS.sclicer    ,\r\n    CASE \r\n        WHEN PS.value IN ('','NA') THEN '0%'\r\n        ELSE PS.value\r\n    END AS value,\r\n    PS.Type_of_work    ,\r\n    PS.ACTIVITY_ID    ,\r\n    PS.SBU_ID    ,\r\n    PS.CATEGORY    ,\r\n    OLMA.level_map\r\nFROM PRE_STAGGING PS\r\n    LEFT JOIN O_LEVEL_MAP_ALL OLMA\r\n        ON PS.`Level` = OLMA.`level`\r\nWHERE PS.Project_Udate_DRANK = 1 ORDER BY value DESC;\r\n\r\n/**/\r\n\r\nSELECT 1;",
-								"queryTimeout": "02:00:00"
-							},
-							"dataset": {
-								"referenceName": "DS_MySQL_Data_Loads_DB",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Fire-Lift Lobby",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Electrical Room",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "TRUNCATE TABLE f_pln_fireliftlobby;\r\nINSERT INTO f_pln_fireliftlobby\r\nWITH PRE_STAGGING AS (\r\n        SELECT DATE(O_PLN_FIRELIFTLOBBY_RAW.upload_time) AS Upload_Date,\r\n        O_PLN_FIRELIFTLOBBY_RAW.project_id,\r\n        O_PLN_FIRELIFTLOBBY_RAW.tower,\r\n        O_PLN_FIRELIFTLOBBY_RAW.Level,\r\n        'Fire Lift Lobby' AS sclicer,\r\n        Column_Name.*,\r\n        O_PLN_FIRELIFTLOBBY_MAP.ACTIVITY_ID,\r\n        O_PLN_FIRELIFTLOBBY_MAP.SBU_ID,\r\n        O_PLN_FIRELIFTLOBBY_MAP.CATEGORY,\r\n        DENSE_RANK () OVER     (PARTITION BY  project_id\r\n                            ORDER BY  DATE(upload_time) DESC\r\n                            )     Project_Udate_DRANK\r\n    FROM O_PLN_FIRELIFTLOBBY_RAW\r\n    CROSS JOIN LATERAL (\r\n                        SELECT    `MEP Marking for Builders Work`    ,    'MEP Marking for Builders Work'\r\n                        UNION ALL SELECT    `Cutting & Chasing of Blockwork`    ,    'Cutting & Chasing of Blockwork'\r\n                        UNION ALL SELECT    `MEP Services Installation`    ,    'MEP Services Installation'\r\n                        UNION ALL SELECT    `Wall MEP Services Packing`    ,    'Wall MEP Services Packing'\r\n                        UNION ALL SELECT    `Plaster`    ,    'Plaster'\r\n                        UNION ALL SELECT    `Screed`    ,    'Screed'\r\n                        UNION ALL SELECT    `Lift Door Installation & Jamb Installation`    ,    'Lift Door Installation & Jamb Installation'\r\n                        UNION ALL SELECT    `Beside Lift Door Blockwork`    ,    'Beside Lift Door Blockwork'\r\n                        UNION ALL SELECT    `Beside Lift Door Plaster`    ,    'Beside Lift Door Plaster'\r\n                        UNION ALL SELECT    `MEP High Level Works`    ,    'MEP High Level Works'\r\n                        UNION ALL SELECT    `FC Framing`    ,    'FC Framing'\r\n                        UNION ALL SELECT    `MEP Boarding Clearance`    ,    'MEP Boarding Clearance'\r\n                        UNION ALL SELECT    `FC Boarding`    ,    'FC Boarding'\r\n                        UNION ALL SELECT    `Joint Taping and Sanding`    ,    'Joint Taping and Sanding'\r\n                        UNION ALL SELECT    `Ceiling Primer`    ,    'Ceiling Primer'\r\n                        UNION ALL SELECT    `Ceiling Stucco 1st and 2nd Coat`    ,    'Ceiling Stucco 1st and 2nd Coat'\r\n                        UNION ALL SELECT    `Ceiling First Coat Paint`    ,    'Ceiling First Coat Paint'\r\n                        UNION ALL SELECT    `Wall Primer`    ,    'Wall Primer'\r\n                        UNION ALL SELECT    `Wall Stucco 1st and 2nd Coat`    ,    'Wall Stucco 1st and 2nd Coat'\r\n                        UNION ALL SELECT    `Wall First Coat Paint`    ,    'Wall First Coat Paint'\r\n                        UNION ALL SELECT    `Floor Tile`    ,    'Floor Tile'\r\n                        UNION ALL SELECT    `Door-Frame Installation`    ,    'Door-Frame Installation'\r\n                        UNION ALL SELECT    `Door-Architrave Installation`    ,    'Door-Architrave Installation'\r\n                        UNION ALL SELECT    `Door-Shutter Installation`    ,    'Door-Shutter Installation'\r\n                        UNION ALL SELECT    `Door-Ironmongery Installation`    ,    'Door-Ironmongery Installation'\r\n                        UNION ALL SELECT    `Door-Silicone`    ,    'Door-Silicone'\r\n                        UNION ALL SELECT    `Epoxy Grinding`    ,    'Epoxy Grinding'\r\n                        UNION ALL SELECT    `Epoxy Bug Fill`    ,    'Epoxy Bug Fill'\r\n                        UNION ALL SELECT    `Epoxy Primer`    ,    'Epoxy Primer'\r\n                        UNION ALL SELECT    `Epoxy First Coat`    ,    'Epoxy First Coat'\r\n                        UNION ALL SELECT    `Epoxy Final Coat`    ,    'Epoxy Final Coat'\r\n                        UNION ALL SELECT    `Skirting`    ,    'Skirting'\r\n                        UNION ALL SELECT    `Grout`    ,    'Grout'\r\n                        UNION ALL SELECT    `Silicone`    ,    'Silicone'\r\n                        UNION ALL SELECT    `Signage`    ,    'Signage'\r\n                        UNION ALL SELECT    `MEP Final Fixtures`    ,    'MEP Final Fixtures'\r\n                        UNION ALL SELECT    `Final Coat`    ,    'Final Coat'\r\n                        )as Column_Name(value,Type_of_work)\r\n    JOIN O_PLN_FIRELIFTLOBBY_MAP \r\n    ON Column_Name.Type_of_work = O_PLN_FIRELIFTLOBBY_MAP.ACTIVITY_SEQUENCE\r\n    WHERE VALUE IS NOT NULL\r\n    )\r\nSELECT \r\n    PS.Upload_Date    ,\r\n    PS.project_id    ,\r\n    PS.tower    ,\r\n    PS.`Level`    ,\r\n    PS.sclicer    ,\r\n    CASE \r\n        WHEN PS.value IN ('','NA') THEN '0%'\r\n        ELSE PS.value\r\n    END AS value,\r\n    PS.Type_of_work    ,\r\n    PS.ACTIVITY_ID    ,\r\n    PS.SBU_ID    ,\r\n    PS.CATEGORY    ,\r\n    OLMA.level_map\r\nFROM PRE_STAGGING PS\r\n    LEFT JOIN O_LEVEL_MAP_ALL OLMA\r\n        ON PS.`Level` = OLMA.`level`\r\nWHERE PS.Project_Udate_DRANK = 1;\r\n\r\n/**/\r\n\r\nSELECT 1;",
-								"queryTimeout": "02:00:00"
-							},
-							"dataset": {
-								"referenceName": "DS_MySQL_Data_Loads_DB",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Garbage Room",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Fire-Lift Lobby",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "TRUNCATE TABLE f_pln_garbageroom;\r\nINSERT INTO f_pln_garbageroom\r\nWITH PRE_STAGGING AS(\r\n        SELECT DATE(O_PLN_GARBAGEROOM_RAW.upload_time) AS Upload_Date,\r\n        O_PLN_GARBAGEROOM_RAW.project_id,\r\n        O_PLN_GARBAGEROOM_RAW.tower,\r\n        O_PLN_GARBAGEROOM_RAW.Level,\r\n        'Garbage Room' AS sclicer,\r\n        Column_Name.*,\r\n        O_PLN_GARBAGEROOM_MAP.ACTIVITY_ID,\r\n        O_PLN_GARBAGEROOM_MAP.SBU_ID,\r\n        O_PLN_GARBAGEROOM_MAP.CATEGORY,\r\n        DENSE_RANK () OVER     (PARTITION BY  project_id\r\n                            ORDER BY  DATE(upload_time) DESC\r\n                            )     Project_Udate_DRANK\r\n    FROM O_PLN_GARBAGEROOM_RAW\r\n    CROSS JOIN LATERAL (\r\n                        SELECT    `Outer Wall Blockwork`    ,    'Outer Wall Blockwork'\r\n                        UNION ALL SELECT    `Garbage chute Works`    ,    'Garbage chute Works'\r\n                        UNION ALL SELECT    `MEP Piping Works`    ,    'MEP Piping Works'\r\n                        UNION ALL SELECT    `MEP Pressure test & Clearance`    ,    'MEP Pressure test & Clearance'\r\n                        UNION ALL SELECT    `Inner wall Blockwork`    ,    'Inner wall Blockwork'\r\n                        UNION ALL SELECT    `MEP Marking for Builders Work`    ,    'MEP Marking for Builders Work'\r\n                        UNION ALL SELECT    `Cutting & Chasing of Blockwork`    ,    'Cutting & Chasing of Blockwork'\r\n                        UNION ALL SELECT    `MEP Services Installation`    ,    'MEP Services Installation'\r\n                        UNION ALL SELECT    `Wall MEP Services Packing`    ,    'Wall MEP Services Packing'\r\n                        UNION ALL SELECT    `Plaster`    ,    'Plaster'\r\n                        UNION ALL SELECT    `Core Cutting & Chipping`    ,    'Core Cutting & Chipping'\r\n                        UNION ALL SELECT    `MEP Sleeve Installation`    ,    'MEP Sleeve Installation'\r\n                        UNION ALL SELECT    `Bore Packing`    ,    'Bore Packing'\r\n                        UNION ALL SELECT    `Under Screed Water Proofing`    ,    'Under Screed Water Proofing'\r\n                        UNION ALL SELECT    `Screed`    ,    'Screed'\r\n                        UNION ALL SELECT    `Wall Tile`    ,    'Wall Tile'\r\n                        UNION ALL SELECT    `MEP Framing Clearance`    ,    'MEP Framing Clearance'\r\n                        UNION ALL SELECT    `False Ceiling Framing`    ,    'False Ceiling Framing'\r\n                        UNION ALL SELECT    `MEP Boarding Clearance`    ,    'MEP Boarding Clearance'\r\n                        UNION ALL SELECT    `False Ceiling Boarding`    ,    'False Ceiling Boarding'\r\n                        UNION ALL SELECT    `Ceiling Primer`    ,    'Ceiling Primer'\r\n                        UNION ALL SELECT    `Ceiling Stucco (1st and 2nd Coat)`    ,    'Ceiling Stucco (1st and 2nd Coat)'\r\n                        UNION ALL SELECT    `Ceiling First Coat Paint`    ,    'Ceiling First Coat Paint'\r\n                        UNION ALL SELECT    `Under Tile Water Proofing`    ,    'Under Tile Water Proofing'\r\n                        UNION ALL SELECT    `Threshold`    ,    'Threshold'\r\n                        UNION ALL SELECT    `Floor Tile`    ,    'Floor Tile'\r\n                        UNION ALL SELECT    `Skirting`    ,    'Skirting'\r\n                        UNION ALL SELECT    `Grouting`    ,    'Grouting'\r\n                        UNION ALL SELECT    `Silicone`    ,    'Silicone'\r\n                        UNION ALL SELECT    `Hopper Door`    ,    'Hopper Door'\r\n                        UNION ALL SELECT    `Door-Frame Installation`    ,    'Door-Frame Installation'\r\n                        UNION ALL SELECT    `Door-Architrave Installation`    ,    'Door-Architrave Installation'\r\n                        UNION ALL SELECT    `Door-Shutter Installation`    ,    'Door-Shutter Installation'\r\n                        UNION ALL SELECT    `Door-Ironmongery Installation`    ,    'Door-Ironmongery Installation'\r\n                        UNION ALL SELECT    `Door-Silicone`    ,    'Door-Silicone'\r\n                        UNION ALL SELECT    `Signage`    ,    'Signage'\r\n                        UNION ALL SELECT    `MEP Final Fixtures`    ,    'MEP Final Fixtures'\r\n                        UNION ALL SELECT    `Final Coat Paint`    ,    'Final Coat Paint'\r\n                        )as Column_Name(value,Type_of_work)\r\n    JOIN O_PLN_GARBAGEROOM_MAP \r\n    ON Column_Name.Type_of_work = O_PLN_GARBAGEROOM_MAP.ACTIVITY_SEQUENCE\r\n    WHERE VALUE IS NOT NULL)\r\nSELECT \r\n    PS.Upload_Date  ,\r\n    PS.project_id    ,\r\n    PS.tower    ,\r\n    PS.`Level`    ,\r\n    PS.sclicer    ,\r\n    CASE \r\n        WHEN PS.value IN ('','NA') THEN '0%'\r\n        ELSE PS.value\r\n    END AS value,\r\n    PS.Type_of_work    ,\r\n    PS.ACTIVITY_ID    ,\r\n    PS.SBU_ID    ,\r\n    PS.CATEGORY    ,\r\n    OLMA.level_map\r\nFROM PRE_STAGGING PS\r\n    LEFT JOIN O_LEVEL_MAP_ALL OLMA\r\n        ON PS.`Level` = OLMA.`level`\r\nWHERE PS.Project_Udate_DRANK = 1;\r\n\r\n/**/\r\nSELECT 1;",
-								"queryTimeout": "02:00:00"
-							},
-							"dataset": {
-								"referenceName": "DS_MySQL_Data_Loads_DB",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Telephone Room",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Garbage Room",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "TRUNCATE TABLE f_pln_telephoneroom;\nINSERT INTO f_pln_telephoneroom\nWITH PRE_STAGGING AS(\n        SELECT DATE(O_PLN_TELEPHONEROOM_RAW.upload_time) AS Upload_Date,\n        O_PLN_TELEPHONEROOM_RAW.project_id,\n        O_PLN_TELEPHONEROOM_RAW.tower,\n        O_PLN_TELEPHONEROOM_RAW.Level,\n        'Telephone Room' AS sclicer,\n        Column_Name.*,\n        O_PLN_TELEPHONEROOM_MAP.ACTIVITY_ID,\n        O_PLN_TELEPHONEROOM_MAP.SBU_ID,\n        O_PLN_TELEPHONEROOM_MAP.CATEGORY,\n        DENSE_RANK () OVER     (PARTITION BY  project_id\n                            ORDER BY  DATE(upload_time) DESC\n                            )     Project_Udate_DRANK\n    FROM O_PLN_TELEPHONEROOM_RAW\n    CROSS JOIN LATERAL (\n\t\t\t\t\t\tSELECT\t`Blockwork Layout`\t,\t'Blockwork Layout'\n\t\t\t\t\t\tUNION ALL SELECT\t`Blockwork`\t,\t'Blockwork'\n\t\t\t\t\t\tUNION ALL SELECT\t`MEP Marking for Builders Work`\t,\t'MEP Marking for Builders Work'\n\t\t\t\t\t\tUNION ALL SELECT\t`Cutting & Chasing of Blockwork`\t,\t'Cutting & Chasing of Blockwork'\n\t\t\t\t\t\tUNION ALL SELECT\t`MEP Services Installation`\t,\t'MEP Services Installation'\n\t\t\t\t\t\tUNION ALL SELECT\t`Wall MEP Services Packing`\t,\t'Wall MEP Services Packing'\n\t\t\t\t\t\tUNION ALL SELECT\t`Plaster`\t,\t'Plaster'\n\t\t\t\t\t\tUNION ALL SELECT\t`Screed`\t,\t'Screed'\n\t\t\t\t\t\tUNION ALL SELECT\t`Ceiling Stucco (1st and 2nd Coat)`\t,\t'Ceiling Stucco (1st and 2nd Coat)'\n\t\t\t\t\t\tUNION ALL SELECT\t`Wall Stucco (1st and 2nd Coat)`\t,\t'Wall Stucco (1st and 2nd Coat)'\n\t\t\t\t\t\tUNION ALL SELECT\t`Ceiling First Coat Paint`\t,\t'Ceiling First Coat Paint'\n\t\t\t\t\t\tUNION ALL SELECT\t`Wall First Coat Paint`\t,\t'Wall First Coat Paint'\n\t\t\t\t\t\tUNION ALL SELECT\t`Installation of cable tray and trunking`\t,\t'Installation of cable tray and trunking'\n\t\t\t\t\t\tUNION ALL SELECT\t`Installation of Panels`\t,\t'Installation of Panels'\n\t\t\t\t\t\tUNION ALL SELECT\t`Cable laying and glanding works`\t,\t'Cable laying and glanding works'\n\t\t\t\t\t\tUNION ALL SELECT\t`Fire Sealant`\t,\t'Fire Sealant'\n\t\t\t\t\t\tUNION ALL SELECT\t`Epoxy Grinding`\t,\t'Epoxy Grinding'\n\t\t\t\t\t\tUNION ALL SELECT\t`Epoxy Bug Fill`\t,\t'Epoxy Bug Fill'\n\t\t\t\t\t\tUNION ALL SELECT\t`Epoxy Primer`\t,\t'Epoxy Primer'\n\t\t\t\t\t\tUNION ALL SELECT\t`Epoxy First Coat`\t,\t'Epoxy First Coat'\n\t\t\t\t\t\tUNION ALL SELECT\t`Epoxy Final Coat`\t,\t'Epoxy Final Coat'\n\t\t\t\t\t\tUNION ALL SELECT\t`Floor Tile`\t,\t'Floor Tile'\n\t\t\t\t\t\tUNION ALL SELECT\t`Skirting`\t,\t'Skirting'\n\t\t\t\t\t\tUNION ALL SELECT\t`POP`\t,\t'POP'\n\t\t\t\t\t\tUNION ALL SELECT\t`Grout`\t,\t'Grout'\n\t\t\t\t\t\tUNION ALL SELECT\t`Threshold`\t,\t'Threshold'\n\t\t\t\t\t\tUNION ALL SELECT\t`Door-Frame Installation`\t,\t'Door-Frame Installation'\n\t\t\t\t\t\tUNION ALL SELECT\t`Door-Architrave Installation`\t,\t'Door-Architrave Installation'\n\t\t\t\t\t\tUNION ALL SELECT\t`Door-Shutter Installation`\t,\t'Door-Shutter Installation'\n\t\t\t\t\t\tUNION ALL SELECT\t`Door-Ironmongery Installation`\t,\t'Door-Ironmongery Installation'\n\t\t\t\t\t\tUNION ALL SELECT\t`MEP Final Fixtures`\t,\t'MEP Final Fixtures'\n\t\t\t\t\t\tUNION ALL SELECT\t`Final Coat Paint`\t,\t'Final Coat Paint'\n                        )as Column_Name(value,Type_of_work)\n    JOIN O_PLN_TELEPHONEROOM_MAP \n    ON Column_Name.Type_of_work = O_PLN_TELEPHONEROOM_MAP.ACTIVITY_SEQUENCE\n    WHERE VALUE IS NOT NULL)\nSELECT \n    PS.Upload_Date ,\n    PS.project_id    ,\n    PS.tower    ,\n    PS.`Level`    ,\n    PS.sclicer    ,\n    CASE \n        WHEN PS.value IN ('','NA') THEN '0%'\n        ELSE PS.value\n    END AS value,\n    PS.Type_of_work    ,\n    PS.ACTIVITY_ID    ,\n    PS.SBU_ID    ,\n    PS.CATEGORY    ,\n    OLMA.level_map\nFROM PRE_STAGGING PS\n    LEFT JOIN O_LEVEL_MAP_ALL OLMA\n        ON PS.`Level` = OLMA.`level`\nWHERE PS.Project_Udate_DRANK = 1 ;\n\n/**/\nSELECT 1;",
-								"queryTimeout": "02:00:00"
-							},
-							"dataset": {
-								"referenceName": "DS_MySQL_Data_Loads_DB",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Watermeter Room",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Telephone Room",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "TRUNCATE TABLE f_pln_waterroom;\r\nINSERT INTO f_pln_waterroom\r\nWITH PRE_STAGGING AS (\r\n        SELECT DATE(O_PLN_WATERROOM_RAW.upload_time) AS Upload_Date,\r\n        O_PLN_WATERROOM_RAW.project_id,\r\n        O_PLN_WATERROOM_RAW.tower,\r\n        O_PLN_WATERROOM_RAW.`Level`,\r\n        'Water Room' AS sclicer,\r\n        Column_Name.*,\r\n        O_PLN_WATERROOM_MAP.ACTIVITY_ID,\r\n        O_PLN_WATERROOM_MAP.SBU_ID,\r\n        O_PLN_WATERROOM_MAP.CATEGORY,\r\n        DENSE_RANK () OVER     (PARTITION BY  project_id\r\n                            ORDER BY  DATE(upload_time) DESC\r\n                            )     Project_Udate_DRANK\r\n    from O_PLN_WATERROOM_RAW\r\n    cross join lateral (\r\n                SELECT  `Blockwork Layout` , 'Blockwork Layout'\r\n            UNION ALL SELECT Blockwork , 'Blockwork'\r\n            UNION ALL SELECT `MEP Marking for Builders Work` , 'MEP Marking for Builders Work'\r\n            UNION ALL SELECT `Cutting & Chasing of Blockwork` , 'Cutting & Chasing of Blockwork'\r\n            UNION ALL SELECT `MEP Services Installation` , 'MEP Services Installation'\r\n            UNION ALL SELECT `Wall MEP Services Packing` , 'Wall MEP Services Packing'\r\n            UNION ALL SELECT Plaster , 'Plaster'\r\n            UNION ALL SELECT `Core Cutting & Chipping` , 'Core Cutting & Chipping'\r\n            UNION ALL SELECT `MEP Sleeve Installation` , 'MEP Sleeve Installation'\r\n            UNION ALL SELECT `Bore Packing` , 'Bore Packing'\r\n            UNION ALL SELECT Screed , 'Screed'\r\n            UNION ALL SELECT `Wall Primer` , 'Wall Primer'\r\n            UNION ALL SELECT `Wall Stucco (1st and 2nd Coat)` , 'Wall Stucco (1st and 2nd Coat)'\r\n            UNION ALL SELECT `Wall First Coat Paint` , 'Wall First Coat Paint'\r\n            UNION ALL SELECT `Installation of PPR pipes` , 'Installation of PPR pipes'\r\n            UNION ALL SELECT `Manifold & Valve installation` , 'Manifold & Valve installation'\r\n            UNION ALL SELECT `PRV installation & connections` , 'PRV installation & connections'\r\n            UNION ALL SELECT `Testing of Pipes` , 'Testing of Pipes'\r\n            UNION ALL SELECT `Fire Sealant Works` , 'Fire Sealant Works'\r\n            UNION ALL SELECT `MEP Framing Clearance` , 'MEP Framing Clearance'\r\n            UNION ALL SELECT `False Ceiling Framing` , 'False Ceiling Framing'\r\n            UNION ALL SELECT `MEP Boarding Clearance` , 'MEP Boarding Clearance'\r\n            UNION ALL SELECT `False Ceiling Boarding` , 'False Ceiling Boarding'\r\n            UNION ALL SELECT `Ceiling Primer` , 'Ceiling Primer'\r\n            UNION ALL SELECT `Ceiling Stucco (1st and 2nd Coat)` , 'Ceiling Stucco (1st and 2nd Coat)'\r\n            UNION ALL SELECT `First Coat Paint` , 'First Coat Paint'\r\n            UNION ALL SELECT Threshold , 'Threshold'\r\n            UNION ALL SELECT `Door-Frame Installation` , 'Door-Frame Installation'\r\n            UNION ALL SELECT `Door-Architrave Installation` , 'Door-Architrave Installation'\r\n            UNION ALL SELECT `Door-Shutter Installation` , 'Door-Shutter Installation'\r\n            UNION ALL SELECT `Door-Ironmongery Installation` , 'Door-Ironmongery Installation'\r\n            UNION ALL SELECT `Epoxy Grinding` , 'Epoxy Grinding'\r\n            UNION ALL SELECT `Epoxy Bug Fill` , 'Epoxy Bug Fill'\r\n            UNION ALL SELECT `Epoxy Primer` , 'Epoxy Primer'\r\n            UNION ALL SELECT `Epoxy First Coat` , 'Epoxy First Coat'\r\n            UNION ALL SELECT `Epoxy Final Coat` , 'Epoxy Final Coat'\r\n            UNION ALL SELECT Skirting , 'Skirting'\r\n            UNION ALL SELECT `POP Works` , 'POP Works'\r\n            UNION ALL SELECT Grouting , 'Grouting'\r\n            UNION ALL SELECT Silicone , 'Silicone'\r\n            UNION ALL SELECT `MEP Final Fixtures` , 'MEP Final Fixtures'\r\n            UNION ALL SELECT `PSV Installation` , 'Pressure Safety Valve Installation'\r\n            UNION ALL SELECT `Water Meter Installation` , 'Water Meter Installation'\r\n            UNION ALL SELECT `Final Coat Paint` , 'Final Coat Paint'\r\n    )\r\n        as Column_Name(value,Type_of_work)\r\n    JOIN O_PLN_WATERROOM_MAP \r\n    ON Column_Name.Type_of_work = O_PLN_WATERROOM_MAP.ACTIVITY_SEQUENCE\r\n    WHERE value IS NOT NULL)\r\nSELECT \r\n    PS.Upload_Date ,\r\n    PS.project_id    ,\r\n    PS.tower    ,\r\n    PS.`Level`    ,\r\n    PS.sclicer    ,\r\n    CASE \r\n        WHEN PS.value IN ('','NA') THEN '0%'\r\n        ELSE PS.value\r\n    END AS value,\r\n    PS.Type_of_work    ,\r\n    PS.ACTIVITY_ID    ,\r\n    PS.SBU_ID    ,\r\n    PS.CATEGORY    ,\r\n    OLMA.level_map\r\nFROM PRE_STAGGING PS\r\n    LEFT JOIN O_LEVEL_MAP_ALL OLMA\r\n        ON PS.`Level` = OLMA.`level`\r\nWHERE PS.Project_Udate_DRANK = 1;\r\n\r\n/**/\r\nSELECT 1;",
-								"queryTimeout": "02:00:00"
-							},
-							"dataset": {
-								"referenceName": "DS_MySQL_Data_Loads_DB",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Service Room",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Watermeter Room",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureMySqlSource",
-								"query": "TRUNCATE TABLE f_pln_servicerooms;\r\nINSERT INTO f_pln_servicerooms\r\n    WITH UNION_ALL AS (\r\n        SELECT * FROM F_PLN_WATERROOM\r\n            UNION ALL\r\n        SELECT * FROM F_PLN_ELECTRICALROOM\r\n            UNION ALL\r\n        SELECT * FROM F_PLN_GARBAGEROOM\r\n            UNION ALL\r\n        SELECT * FROM F_PLN_TELEPHONEROOM\r\n            UNION ALL\r\n        SELECT * FROM F_PLN_FIRELIFTLOBBY\r\n    )\r\n    SELECT \r\n        UNION_ALL.Upload_Date,    \r\n        UNION_ALL.project_id,\r\n        UNION_ALL.tower,\r\n        UNION_ALL.`Level`,\r\n        UNION_ALL.sclicer,\r\n        CAST(REPLACE(UNION_ALL.value,'%','') AS DECIMAL)/100 AS value,\r\n        UNION_ALL.ACTIVITY_ID,\r\n        UNION_ALL.SBU_ID,\r\n        UNION_ALL.CATEGORY,\r\n        CASE\r\n            WHEN Type_of_work = 'Blockwork' AND sclicer = 'Electrical Room' THEN 'Blockwork ER'\r\n            WHEN Type_of_work = 'Blockwork Layout' AND sclicer = 'Electrical Room' THEN 'Blockwork Layout ER'\r\n            WHEN Type_of_work = 'Bore Packing' AND sclicer = 'Electrical Room' THEN 'Bore Packing ER'\r\n            WHEN Type_of_work = 'Bus bar with Tap off Box completion' AND sclicer = 'Electrical Room' THEN 'Bus bar with Tap off Box completion ER'\r\n            WHEN Type_of_work = 'Cable laying and glanding works' AND sclicer = 'Electrical Room' THEN 'Cable laying and glanding works ER'\r\n            WHEN Type_of_work = 'Ceiling First Coat Paint' AND sclicer = 'Electrical Room' THEN 'Ceiling First Coat Paint ER'\r\n            WHEN Type_of_work = 'Ceiling Stucco (1st and 2nd Coat)' AND sclicer = 'Electrical Room' THEN 'Ceiling Stucco (1st and 2nd Coat) ER'\r\n            WHEN Type_of_work = 'Core Cutting & Chipping' AND sclicer = 'Electrical Room' THEN 'Core Cutting & Chipping ER'\r\n            WHEN Type_of_work = 'Cutting & Chasing of Blockwork' AND sclicer = 'Electrical Room' THEN 'Cutting & Chasing of Blockwork ER'\r\n            WHEN Type_of_work = 'Door-Architrave Installation' AND sclicer = 'Electrical Room' THEN 'Door-Architrave Installation ER'\r\n            WHEN Type_of_work = 'Door-Frame Installation' AND sclicer = 'Electrical Room' THEN 'Door-Frame Installation ER'\r\n            WHEN Type_of_work = 'Door-Ironmongery Installation' AND sclicer = 'Electrical Room' THEN 'Door-Ironmongery Installation ER'\r\n            WHEN Type_of_work = 'Door-Shutter Installation' AND sclicer = 'Electrical Room' THEN 'Door-Shutter Installation ER'\r\n            WHEN Type_of_work = 'Door-Silicone' AND sclicer = 'Electrical Room' THEN 'Door-Silicone ER'\r\n            WHEN Type_of_work = 'Epoxy Bug Fill' AND sclicer = 'Electrical Room' THEN 'Epoxy Bug Fill ER'\r\n            WHEN Type_of_work = 'Epoxy Final Coat' AND sclicer = 'Electrical Room' THEN 'Epoxy Final Coat ER'\r\n            WHEN Type_of_work = 'Epoxy First Coat' AND sclicer = 'Electrical Room' THEN 'Epoxy First Coat ER'\r\n            WHEN Type_of_work = 'Epoxy Grinding' AND sclicer = 'Electrical Room' THEN 'Epoxy Grinding ER'\r\n            WHEN Type_of_work = 'Epoxy Primer' AND sclicer = 'Electrical Room' THEN 'Epoxy Primer ER'\r\n            WHEN Type_of_work = 'Final Coat Paint' AND sclicer = 'Electrical Room' THEN 'Final Coat Paint ER'\r\n            WHEN Type_of_work = 'Fire Sealant Works' AND sclicer = 'Electrical Room' THEN 'Fire Sealant Works ER'\r\n            WHEN Type_of_work = 'Floor Tile' AND sclicer = 'Electrical Room' THEN 'Floor Tile ER'\r\n            WHEN Type_of_work = 'Grouting' AND sclicer = 'Electrical Room' THEN 'Grouting ER'\r\n            WHEN Type_of_work = 'Installation of cable tray and trunking' AND sclicer = 'Electrical Room' THEN 'Installation of cable tray and trunking ER'\r\n            WHEN Type_of_work = 'Installation of Panels' AND sclicer = 'Electrical Room' THEN 'Installation of Panels ER'\r\n            WHEN Type_of_work = 'MEP Final Fixtures' AND sclicer = 'Electrical Room' THEN 'MEP Final Fixtures ER'\r\n            WHEN Type_of_work = 'MEP Marking for Builders Work' AND sclicer = 'Electrical Room' THEN 'MEP Marking for Builders Work ER'\r\n            WHEN Type_of_work = 'MEP Services Installation' AND sclicer = 'Electrical Room' THEN 'MEP Services Installation ER'\r\n            WHEN Type_of_work = 'MEP Sleeve Installation' AND sclicer = 'Electrical Room' THEN 'MEP Sleeve Installation ER'\r\n            WHEN Type_of_work = 'Plaster' AND sclicer = 'Electrical Room' THEN 'Plaster ER'\r\n            WHEN Type_of_work = 'POP Works' AND sclicer = 'Electrical Room' THEN 'POP Works ER'\r\n            WHEN Type_of_work = 'Screed' AND sclicer = 'Electrical Room' THEN 'Screed ER'\r\n            WHEN Type_of_work = 'Signage' AND sclicer = 'Electrical Room' THEN 'Signage ER'\r\n            WHEN Type_of_work = 'Silicone' AND sclicer = 'Electrical Room' THEN 'Silicone ER'\r\n            WHEN Type_of_work = 'Skirting' AND sclicer = 'Electrical Room' THEN 'Skirting ER'\r\n            WHEN Type_of_work = 'Threshold' AND sclicer = 'Electrical Room' THEN 'Threshold ER'\r\n            WHEN Type_of_work = 'Wall First Coat Paint' AND sclicer = 'Electrical Room' THEN 'Wall First Coat Paint ER'\r\n            WHEN Type_of_work = 'Wall MEP Services Packing' AND sclicer = 'Electrical Room' THEN 'Wall MEP Services Packing ER'\r\n            WHEN Type_of_work = 'Wall Stucco (1st and 2nd Coat)' AND sclicer = 'Electrical Room' THEN 'Wall Stucco (1st and 2nd Coat) ER'\r\n            WHEN Type_of_work = 'Ceiling First Coat Paint' AND sclicer = 'Fire Lift Lobby' THEN 'Ceiling First Coat Paint FLL'\r\n            WHEN Type_of_work = 'Ceiling Primer' AND sclicer = 'Fire Lift Lobby' THEN 'Ceiling Primer FLL'\r\n            WHEN Type_of_work = 'Cutting & Chasing of Blockwork' AND sclicer = 'Fire Lift Lobby' THEN 'Cutting & Chasing of Blockwork FLL'\r\n            WHEN Type_of_work = 'Door-Shutter Installation' AND sclicer = 'Telephone Room' THEN 'Door-Shutter Installation TR'\r\n            WHEN Type_of_work = 'Epoxy Bug Fill' AND sclicer = 'Telephone Room' THEN 'Epoxy Bug Fill TR'\r\n            WHEN Type_of_work = 'Epoxy Final Coat' AND sclicer = 'Telephone Room' THEN 'Epoxy Final Coat TR'\r\n            WHEN Type_of_work = 'Epoxy First Coat' AND sclicer = 'Telephone Room' THEN 'Epoxy First Coat TR'\r\n            WHEN Type_of_work = 'Epoxy Grinding' AND sclicer = 'Telephone Room' THEN 'Epoxy Grinding TR'\r\n            WHEN Type_of_work = 'Epoxy Primer' AND sclicer = 'Telephone Room' THEN 'Epoxy Primer TR'\r\n            WHEN Type_of_work = 'Final Coat Paint' AND sclicer = 'Telephone Room' THEN 'Final Coat Paint TR'\r\n            WHEN Type_of_work = 'Floor Tile' AND sclicer = 'Telephone Room' THEN 'Floor Tile TR'\r\n            WHEN Type_of_work = 'Grout' AND sclicer = 'Telephone Room' THEN 'Grout TR'\r\n            WHEN Type_of_work = 'Installation of cable tray and trunking' AND sclicer = 'Telephone Room' THEN 'Installation of cable tray and trunking TR'\r\n            WHEN Type_of_work = 'Installation of Panels' AND sclicer = 'Telephone Room' THEN 'Installation of Panels TR'\r\n            WHEN Type_of_work = 'MEP Final Fixtures' AND sclicer = 'Telephone Room' THEN 'MEP Final Fixtures TR'\r\n            WHEN Type_of_work = 'MEP Marking for Builders Work' AND sclicer = 'Telephone Room' THEN 'MEP Marking for Builders Work TR'\r\n            WHEN Type_of_work = 'MEP Services Installation' AND sclicer = 'Telephone Room' THEN 'MEP Services Installation TR'\r\n            WHEN Type_of_work = 'Plaster' AND sclicer = 'Telephone Room' THEN 'Plaster TR'\r\n            WHEN Type_of_work = 'Screed' AND sclicer = 'Telephone Room' THEN 'Screed TR'\r\n            WHEN Type_of_work = 'Signage' AND sclicer = 'Telephone Room' THEN 'Signage TR'\r\n            WHEN Type_of_work = 'Skirting' AND sclicer = 'Telephone Room' THEN 'Skirting TR'\r\n            WHEN Type_of_work = 'Threshold' AND sclicer = 'Telephone Room' THEN 'Threshold TR'\r\n            WHEN Type_of_work = 'Wall First Coat Paint' AND sclicer = 'Telephone Room' THEN 'Wall First Coat Paint TR'\r\n            WHEN Type_of_work = 'Wall MEP Services Packing' AND sclicer = 'Telephone Room' THEN 'Wall MEP Services Packing TR'\r\n            WHEN Type_of_work = 'Wall Stucco (1st and 2nd Coat)' AND sclicer = 'Telephone Room' THEN 'Wall Stucco (1st and 2nd Coat) TR'\r\n            WHEN Type_of_work = 'Blockwork' AND sclicer = 'Water Meter Room' THEN 'Blockwork WMR'\r\n            WHEN Type_of_work = 'Blockwork Layout' AND sclicer = 'Water Meter Room' THEN 'Blockwork Layout WMR'\r\n            WHEN Type_of_work = 'Bore Packing' AND sclicer = 'Water Meter Room' THEN 'Bore Packing WMR'\r\n            WHEN Type_of_work = 'Ceiling Primer' AND sclicer = 'Water Meter Room' THEN 'Ceiling Primer WMR'\r\n            WHEN Type_of_work = 'Ceiling Stucco (1st and 2nd Coat)' AND sclicer = 'Water Meter Room' THEN 'Ceiling Stucco (1st and 2nd Coat) WMR'\r\n            WHEN Type_of_work = 'Core Cutting & Chipping' AND sclicer = 'Water Meter Room' THEN 'Core Cutting & Chipping WMR'\r\n            WHEN Type_of_work = 'Cutting & Chasing of Blockwork' AND sclicer = 'Water Meter Room' THEN 'Cutting & Chasing of Blockwork WMR'\r\n            WHEN Type_of_work = 'Door-Architrave Installation' AND sclicer = 'Water Meter Room' THEN 'Door-Architrave Installation WMR'\r\n            WHEN Type_of_work = 'Door-Frame Installation' AND sclicer = 'Water Meter Room' THEN 'Door-Frame Installation WMR'\r\n            WHEN Type_of_work = 'Door-Ironmongery Installation' AND sclicer = 'Water Meter Room' THEN 'Door-Ironmongery Installation WMR'\r\n            WHEN Type_of_work = 'Door-Shutter Installation' AND sclicer = 'Water Meter Room' THEN 'Door-Shutter Installation WMR'\r\n            WHEN Type_of_work = 'Door-Silicone' AND sclicer = 'Water Meter Room' THEN 'Door-Silicone WMR'\r\n            WHEN Type_of_work = 'Epoxy Bug Fill' AND sclicer = 'Water Meter Room' THEN 'Epoxy Bug Fill WMR'\r\n            WHEN Type_of_work = 'Epoxy Final Coat' AND sclicer = 'Water Meter Room' THEN 'Epoxy Final Coat WMR'\r\n            WHEN Type_of_work = 'Epoxy First Coat' AND sclicer = 'Water Meter Room' THEN 'Epoxy First Coat WMR'\r\n            WHEN Type_of_work = 'Epoxy Grinding' AND sclicer = 'Water Meter Room' THEN 'Epoxy Grinding WMR'\r\n            WHEN Type_of_work = 'Epoxy Primer' AND sclicer = 'Water Meter Room' THEN 'Epoxy Primer WMR'\r\n            WHEN Type_of_work = 'False Ceiling Boarding' AND sclicer = 'Water Meter Room' THEN 'False Ceiling Boarding WMR'\r\n            WHEN Type_of_work = 'False Ceiling Framing' AND sclicer = 'Water Meter Room' THEN 'False Ceiling Framing WMR'\r\n            WHEN Type_of_work = 'Fire Sealant Works' AND sclicer = 'Water Meter Room' THEN 'Fire Sealant Works WMR'\r\n            WHEN Type_of_work = 'Floor Tile' AND sclicer = 'Water Meter Room' THEN 'Floor Tile WMR'\r\n            WHEN Type_of_work = 'Grouting' AND sclicer = 'Water Meter Room' THEN 'Grouting WMR'\r\n            WHEN Type_of_work = 'MEP Boarding Clearance' AND sclicer = 'Water Meter Room' THEN 'MEP Boarding Clearance WMR'\r\n            WHEN Type_of_work = 'MEP Framing Clearance' AND sclicer = 'Water Meter Room' THEN 'MEP Framing Clearance WMR'\r\n            WHEN Type_of_work = 'MEP Marking for Builders Work' AND sclicer = 'Water Meter Room' THEN 'MEP Marking for Builders Work WMR'\r\n            WHEN Type_of_work = 'MEP Services Installation' AND sclicer = 'Water Meter Room' THEN 'MEP Services Installation WMR'\r\n            WHEN Type_of_work = 'MEP Sleeve Installation' AND sclicer = 'Water Meter Room' THEN 'MEP Sleeve Installation WMR'\r\n            WHEN Type_of_work = 'Plaster' AND sclicer = 'Water Meter Room' THEN 'Plaster WMR'\r\n            WHEN Type_of_work = 'POP Works' AND sclicer = 'Water Meter Room' THEN 'POP Works WMR'\r\n            WHEN Type_of_work = 'Screed' AND sclicer = 'Water Meter Room' THEN 'Screed WMR'\r\n            WHEN Type_of_work = 'Skirting' AND sclicer = 'Water Meter Room' THEN 'Skirting WMR'\r\n            WHEN Type_of_work = 'Threshold' AND sclicer = 'Water Meter Room' THEN 'Threshold WMR'\r\n            WHEN Type_of_work = 'Wall First Coat Paint' AND sclicer = 'Water Meter Room' THEN 'Wall First Coat Paint WMR'\r\n            WHEN Type_of_work = 'Wall MEP Services Packing' AND sclicer = 'Water Meter Room' THEN 'Wall MEP Services Packing WMR'\r\n            WHEN Type_of_work = 'Wall Primer' AND sclicer = 'Water Meter Room' THEN 'Wall Primer WMR'\r\n            WHEN Type_of_work = 'Wall Stucco (1st and 2nd Coat)' AND sclicer = 'Water Meter Room' THEN 'Wall Stucco (1st and 2nd Coat) WMR'\r\n             ELSE Type_of_work\r\n        END AS Type_of_work,\r\n        O_LEVEL_MAP_ALL.level_map,\r\n        CASE        \r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Blockwork') THEN  1\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Builders Work') THEN  2\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('MEP') THEN  16\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Plaster') THEN  3\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Screed') THEN  5\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Paint') THEN  8\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Gypsum') THEN  6\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Marble') THEN  10\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Tile') THEN  9\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Joinery') THEN  12\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Signage') THEN  7\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('SFD') THEN  15\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Epoxy') THEN  11\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Specialist Services') THEN  13\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Waterproofing')THEN  4\r\n            WHEN TRIM(UNION_ALL.CATEGORY) IN('Specialist System')THEN  14\r\n            ELSE 20\r\n        END AS CATEGORY_MAP\r\n    FROM UNION_ALL \r\n        LEFT JOIN O_LEVEL_MAP_ALL ON UNION_ALL.`Level` = O_LEVEL_MAP_ALL.`level`;\r\n\r\n    /**/\r\n\r\n    SELECT 1;",
-								"queryTimeout": "02:00:00"
-							},
-							"dataset": {
-								"referenceName": "DS_MySQL_Data_Loads_DB",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-01-01T12:15:50Z"
 			},
 			"dependsOn": []
 		}

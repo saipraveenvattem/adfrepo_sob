@@ -13,6 +13,174 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_MANPOWER_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "SL_NO",
+						"type": "nvarchar"
+					},
+					{
+						"name": "EMP_ID_NO",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TECHNICIAN_NAME",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ACTUAL_DOJ",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TRADE_AS_PER_ADMIN",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TRADE_GROUP",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WORK_STATUS_COST_HEAD",
+						"type": "nvarchar"
+					},
+					{
+						"name": "DIVISION",
+						"type": "nvarchar"
+					},
+					{
+						"name": "UNIT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "WORK_STATUS",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SHIFT",
+						"type": "nvarchar"
+					},
+					{
+						"name": "COMPANY",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SOURCE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "nvarchar"
+					},
+					{
+						"name": "name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Emp_ID",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Login_Time",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_MANPOWER_MERGE_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_PLN_MILESTONE_ACTUALS_TEMP_TRG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_AzureSynapseAnalytics_DW",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DWH/Facts"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Project_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SBU_ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Milestone_Actuals_Temp_Id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Upload_time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Tower",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Group",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Activity",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Actual_Percentage",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LoadDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "PLN_MILESTONE_ACTUALS_TEMP_FACT"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_PLN_PROCUREMENT_STG_SRC')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2077,545 +2245,6 @@
 				],
 				"typeProperties": {
 					"tableName": "projects_new"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_PROJECTS_NEW_STG_TRG')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_AzureSynapseAnalytics_DW",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Staging"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "Sort_ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Project_Identifier",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FLAT_COUNT",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Project_Short",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Total_Floors",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Total_Podiums",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Total_Typical_Floor",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Typical_Floor_Slab",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Podium_Slab",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ONE_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TWO_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ONE_FIVE_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TWO_FIVE_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "THEREE_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "FOUR_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "FIVE_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Actual_Start",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "BOQ_Value",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Bathrooms",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Center_Tower",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Built_Up_Area",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Chairman_Lift",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Delay",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Duplex",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Fire_Lifts",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Forecast_Duration",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Forecast_Finish",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Lat",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Long",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Office_Space",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Office_Use_Lift",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Parkings",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Pent_House",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Passenger_Lift",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Project_Configuration",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Project_Duration",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Project_Finish",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Project_Start",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Residence_Use_Lift",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Retail",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Service_Lift",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Staircase_GF_L1",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Staircase_GF_Roof",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Total_Units",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Tower_A",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Tower_B",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Tower_C",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Tower_D",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Towers",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Image_Link",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Render_Image",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "STG",
-					"table": "PROJECTS_NEW_STG"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_PROJECTS_NEW_TRG')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_AzureSynapseAnalytics_DW",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DWH/Dimensions"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Sort_ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Project_Identifier",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FLAT_COUNT",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Project_Short",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Total_Floors",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Total_Podiums",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Total_Typical_Floor",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Typical_Floor_Slab",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Podium_Slab",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ONE_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TWO_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ONE_FIVE_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TWO_FIVE_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "THEREE_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "FOUR_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "FIVE_BHK",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Actual_Start",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "BOQ_Value",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Bathrooms",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Center_Tower",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Built_Up_Area",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Chairman_Lift",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Delay",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Duplex",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Fire_Lifts",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Forecast_Duration",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Forecast_Finish",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Lat",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Long",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Office_Space",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Office_Use_Lift",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Parkings",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Pent_House",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Passenger_Lift",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Project_Configuration",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Project_Duration",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Project_Finish",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Project_Start",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Residence_Use_Lift",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Retail",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Service_Lift",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Staircase_GF_L1",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Staircase_GF_Roof",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Total_Units",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Tower_A",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Tower_B",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Tower_C",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Tower_D",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Towers",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Image_Link",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Render_Image",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LoadDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "DWH",
-					"table": "PROJECTS_NEW_DIM"
 				}
 			},
 			"dependsOn": []

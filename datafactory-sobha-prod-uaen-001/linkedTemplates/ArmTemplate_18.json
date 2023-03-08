@@ -13,6 +13,184 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/TRG_ADHOC_Daily')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Pln_Daily",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Week",
+						"interval": 1,
+						"startTime": "2023-01-16T23:02:00",
+						"timeZone": "Arabian Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								23
+							],
+							"weekDays": [
+								"Sunday",
+								"Monday",
+								"Tuesday",
+								"Wednesday",
+								"Thursday",
+								"Friday",
+								"Saturday"
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TRG_ADHOC_Weekly')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Pln_Weekly",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Week",
+						"interval": 1,
+						"startTime": "2023-01-16T22:25:00",
+						"timeZone": "Arabian Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								22
+							],
+							"weekDays": [
+								"Sunday"
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TRG_ADHOC_WeeklyTwice')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "PL_Pln_WeeklyTwice",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Week",
+						"interval": 1,
+						"startTime": "2023-01-16T21:56:00",
+						"timeZone": "Arabian Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								22
+							],
+							"weekDays": [
+								"Sunday",
+								"Wednesday"
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BusinessPlan_Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "O_PLN_BUSSINESS_PLAN_1_STG",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_O_PLN_BUSSINESS_PLAN_1_STG",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "BusinessPlan_Fact",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "O_PLN_BUSSINESS_PLAN_1_STG",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_PLN_BUSINESS_PLN_1",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Master"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-22T10:47:16Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Checkinout_Master')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1009,7 +1187,61 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "PL_GAANT_HURRY",
+								"referenceName": "PL_GAANT_HURRY1",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Master"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-14T09:02:32Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GaantHurry_Master_sai')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "PLN_GAANT_HURRY_FACT1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "O_PLN_TOWER_PODIUM_MAP_STG",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_GAANT_HURRY1",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "O_PLN_TOWER_PODIUM_MAP_STG",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_O_PLN_TOWER_PODIUM_MAP_STG",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -1835,383 +2067,6 @@
 				"lastPublishTime": "2023-02-14T09:47:17Z"
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Struncture_Master')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "O_PLN_STRUCTURES_POUR_MAP_STG",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PL_O_PLN_STRUCTURES_POUR_MAP_STG",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "O_PLN_STRUCTURE_POURING_STG",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "O_PLN_STRUCTURES_POUR_MAP_STG",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PL_O_PLN_STRUCTURE_POURING_STG",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "PLN_STRUCTURE_FACT",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "O_PLN_STRUCTURE_SP_TEMPTABLE",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PL_PLN_STRUCTURE",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "O_PLN_STRUCTURE_SP_TEMPTABLE",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "O_PLN_STRUCTURE_POURING_STG",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[DWH].[O_PLN_STRUCTURE]"
-						},
-						"linkedServiceName": {
-							"referenceName": "LS_AzureSynapseAnalytics_DW",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Master"
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-02-13T08:33:06Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Taskreport_Master')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "TASKREPORT_STG",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PL_PG_Task_Report_STG",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "TASKREPORT_FACT",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "TASKREPORT_STG",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PL_PG_TASK_REPORT",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Master"
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-02-15T04:22:34Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/WoodenDoor_Master')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "O_PLN_DOOR_MANPOWER_STG",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PL_O_PLN_DOOR_MANPOWER_STG",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "O_PLN_DOORMANPOWER_MAP_STG",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "O_PLN_DOOR_MANPOWER_STG",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PL_O_PLN_DOORMANPOWER_MAP_STG",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "WOODEN_DOOR_FACT",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "O_PLN_DOORMANPOWER_MAP_STG",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PL_WOODEN_DOOR",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Master"
-				},
-				"annotations": [],
-				"lastPublishTime": "2023-02-13T05:50:07Z"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TRG_ADHOC_Daily_ES')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "PL_Pln_Daily_Except_Sunday",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Week",
-						"interval": 1,
-						"startTime": "2023-01-16T22:51:00",
-						"timeZone": "Arabian Standard Time",
-						"schedule": {
-							"minutes": [
-								0
-							],
-							"hours": [
-								23
-							],
-							"weekDays": [
-								"Monday",
-								"Tuesday",
-								"Wednesday",
-								"Thursday",
-								"Friday",
-								"Saturday"
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TRG_Daily_Except_Sunday')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Flatfinishes_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "ServiceRoom_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "KeepOut_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "Staircase_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "Corridor_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "Drawing_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "Checkinout_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "Taskreport_Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Week",
-						"interval": 1,
-						"startTime": "2023-02-10T10:07:00",
-						"timeZone": "Arabian Standard Time",
-						"schedule": {
-							"minutes": [
-								0
-							],
-							"hours": [
-								23
-							],
-							"weekDays": [
-								"Monday",
-								"Tuesday",
-								"Wednesday",
-								"Thursday",
-								"Friday",
-								"Saturday"
-							]
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Flatfinishes_Master')]",
-				"[concat(variables('factoryId'), '/pipelines/ServiceRoom_Master')]",
-				"[concat(variables('factoryId'), '/pipelines/KeepOut_Master')]",
-				"[concat(variables('factoryId'), '/pipelines/Staircase_Master')]",
-				"[concat(variables('factoryId'), '/pipelines/Corridor_Master')]",
-				"[concat(variables('factoryId'), '/pipelines/Drawing_Master')]",
-				"[concat(variables('factoryId'), '/pipelines/Checkinout_Master')]",
-				"[concat(variables('factoryId'), '/pipelines/Taskreport_Master')]"
-			]
 		}
 	]
 }
