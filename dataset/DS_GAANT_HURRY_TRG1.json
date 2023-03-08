@@ -1,0 +1,20 @@
+{
+	"name": "DS_GAANT_HURRY_TRG1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH/Facts"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "PLN_GAANT_HURRY_FACT1"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

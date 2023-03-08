@@ -1,7 +1,27 @@
 {
-	"name": "GaantHurry_Master",
+	"name": "GaantHurry_Master_sai",
 	"properties": {
 		"activities": [
+			{
+				"name": "PLN_GAANT_HURRY_FACT1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "O_PLN_TOWER_PODIUM_MAP_STG",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PL_GAANT_HURRY1",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
 			{
 				"name": "O_PLN_TOWER_PODIUM_MAP_STG",
 				"type": "ExecutePipeline",
@@ -10,26 +30,6 @@
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "PL_O_PLN_TOWER_PODIUM_MAP_STG",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "PLN_GAANT_HURRY_FACT",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "O_PLN_TOWER_PODIUM_MAP_STG",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "PL_GAANT_HURRY1",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true

@@ -1,0 +1,20 @@
+{
+	"name": "DS_Gaant_Hurry_ALL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSynapseAnalytics_DW",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Staging"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "O_PLN_GAANT_HURRY_ALL"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
