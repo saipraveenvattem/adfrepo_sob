@@ -1739,6 +1739,10 @@
 					{
 						"name": "LoadDateTime",
 						"type": "date"
+					},
+					{
+						"name": "Max_Installation_Date",
+						"type": "date"
 					}
 				],
 				"typeProperties": {
