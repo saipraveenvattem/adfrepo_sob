@@ -1,5 +1,5 @@
 {
-	"name": "TRG_Monthly_10th_Day",
+	"name": "TRG_Monthly_6th_Day",
 	"properties": {
 		"description": "Runs every 10th of the month. Refreshes Business Plan tables. ",
 		"annotations": [],
@@ -27,7 +27,7 @@
 						22
 					],
 					"monthDays": [
-						10
+						6
 					]
 				}
 			}
